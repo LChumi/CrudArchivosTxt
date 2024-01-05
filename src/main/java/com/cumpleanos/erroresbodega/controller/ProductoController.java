@@ -21,8 +21,9 @@ public class ProductoController{
 
     private static final Logger CONSOLE= LoggerFactory.getLogger(ProductoController.class);
 
-    @GetMapping("/BuscarProducto/{data}")
-    public ResponseEntity<Producto> bucarProducto(@PathVariable String data){
+    @GetMapping("/BuscarProducto")
+    public ResponseEntity<Producto> bucarProducto(@RequestParam String data){
+
         try{
             Producto producto = productoService.getByProIdOrProId1(data);
             if (producto==null){

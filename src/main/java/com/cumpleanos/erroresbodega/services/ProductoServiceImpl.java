@@ -15,6 +15,7 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     public Producto getByProIdOrProId1(String data) {
         Long bodegaDefecto= 10000580L;
-        return productoRepository.getByPro_idOrPro_id1(bodegaDefecto,data);
+        List<Producto> productos=productoRepository.getByPro_idOrPro_id1(bodegaDefecto,data);
+        return productos.isEmpty() ? null:productos.get(0);
     }
 }
