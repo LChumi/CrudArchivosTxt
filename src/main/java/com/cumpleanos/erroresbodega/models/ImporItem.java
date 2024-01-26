@@ -16,26 +16,27 @@ import javax.persistence.Table;
 
 @Entity
 @Data
-@Table(name = "PRODUCTO")
-public class Producto {
+@Table(name = "IMPORITEM")
+public class ImporItem {
 
     @Id
-    @Column(name = "PRO_CODIGO")
-    private Long proCodigo;
+    @Column(name = "IIT_IMP_COMPROBA")
+    private Long iitImpComproba;
 
-    @Column(name = "PRO_ID")
-    private String proId;
+    @Column(name = "IIT_PRODUCTO")
+    private Long iitProducto;
 
-    @Column(name = "PRO_NOMBRE")
-    private String proNombre;
+    @Column(name = "IIT_EMPRESA")
+    private Long iitEmpresa;
 
-    @Column(name = "PRO_ID1")
-    private String proId1;
+    @Column(name = "IIT_CANT_LIQUIDADA")
+    private double iitCantLiquidada;
 
-    @Column(name = "PRO_EMPRESA")
-    private Long proEmpresa;
+    @Column(name = "IIT_PRECIO")
+    private double iitPrecio;
 
-    @Column(name = "PRO_PROVEEDOR")
-    private Long proProveedor;
+    @Column(name = "IIT_COSTO")
+    private double iitCosto;
+
 
 }

@@ -7,8 +7,8 @@
 
 package com.cumpleanos.erroresbodega.services;
 
-import com.cumpleanos.erroresbodega.models.Correccion;
-import com.cumpleanos.erroresbodega.models.Observacion;
+import com.cumpleanos.erroresbodega.models.storage.Correccion;
+import com.cumpleanos.erroresbodega.models.storage.Observacion;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

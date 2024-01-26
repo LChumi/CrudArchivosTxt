@@ -7,8 +7,8 @@
 
 package com.cumpleanos.erroresbodega.controller;
 
-import com.cumpleanos.erroresbodega.models.Observacion;
-import com.cumpleanos.erroresbodega.models.ObservacionCorrecion;
+import com.cumpleanos.erroresbodega.models.storage.Observacion;
+import com.cumpleanos.erroresbodega.models.storage.ObservacionCorrecion;
 import com.cumpleanos.erroresbodega.services.ObservacionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;

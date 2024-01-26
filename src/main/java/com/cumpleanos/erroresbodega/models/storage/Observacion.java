@@ -1,17 +1,18 @@
-package com.cumpleanos.erroresbodega.models;
+/*
+ * Copyright (c) 2024.
+ *  Este código es propiedad de Luis Chumi y está protegido por las leyes de derechos de autor.
+ *  Se concede el permiso para usar, copiar, modificar y distribuir este software con la condición de que se incluya este aviso en todas las copias o partes sustanciales del software.
+ *  Para obtener ayuda, soporte o permisos adicionales, contacta a Luis Chumi en luischumi.9@gmail.com.
+ */
 
-import lombok.Data;
+package com.cumpleanos.erroresbodega.models.storage;
+
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 @Getter
 @Setter

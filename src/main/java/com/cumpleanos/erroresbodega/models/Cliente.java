@@ -16,26 +16,16 @@ import javax.persistence.Table;
 
 @Entity
 @Data
-@Table(name = "PRODUCTO")
-public class Producto {
+@Table(name = "CLIENTE")
+public class Cliente {
 
     @Id
-    @Column(name = "PRO_CODIGO")
-    private Long proCodigo;
+    @Column(name = "CLI_CODIGO")
+    private Long cliCodigo;
 
-    @Column(name = "PRO_ID")
-    private String proId;
+    @Column(name = "CLI_NOMBRE")
+    private String cliNombre;
 
-    @Column(name = "PRO_NOMBRE")
-    private String proNombre;
-
-    @Column(name = "PRO_ID1")
-    private String proId1;
-
-    @Column(name = "PRO_EMPRESA")
-    private Long proEmpresa;
-
-    @Column(name = "PRO_PROVEEDOR")
-    private Long proProveedor;
-
+    @Column(name = "CLI_DIRECCION")
+    private String cliDireccion;
 }

@@ -1,14 +1,14 @@
 package com.cumpleanos.erroresbodega.repository;
 
-import com.cumpleanos.erroresbodega.models.Producto;
+import com.cumpleanos.erroresbodega.models.ProductoView;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ProductoRepository extends JpaRepository<Producto,String> {
+public interface ProductoRepository extends JpaRepository<ProductoView,String> {
 
-    @Query("SELECT P FROM Producto P WHERE P.bod_codigo = :bod_codigo AND (P.pro_id LIKE %:data% OR P.pro_id1 LIKE %:data%)")
-    List<Producto> getByPro_idOrPro_id1(@Param("bod_codigo")Long bod_codigo,@Param("data") String data);
+    @Query("SELECT P FROM ProductoView P WHERE P.bod_codigo = :bod_codigo AND (P.pro_id LIKE %:data% OR P.pro_id1 LIKE %:data%)")
+    List<ProductoView> getByPro_idOrPro_id1(@Param("bod_codigo")Long bod_codigo, @Param("data") String data);
 }

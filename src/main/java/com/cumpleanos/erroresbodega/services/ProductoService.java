@@ -1,9 +1,7 @@
 package com.cumpleanos.erroresbodega.services;
 
-import com.cumpleanos.erroresbodega.models.Producto;
-
-import java.util.List;
+import com.cumpleanos.erroresbodega.models.ProductoView;
 
 public interface ProductoService {
-    Producto getByProIdOrProId1(String data);
+    ProductoView getByProIdOrProId1(String data);
 }
