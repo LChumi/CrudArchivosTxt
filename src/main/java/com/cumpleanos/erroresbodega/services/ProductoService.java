@@ -4,4 +4,6 @@ import com.cumpleanos.erroresbodega.models.ProductoView;
 
 public interface ProductoService {
     ProductoView getByProIdOrProId1(String data);
+
+    ProductoView porBarraOItem(Long bodega, String data);
 }

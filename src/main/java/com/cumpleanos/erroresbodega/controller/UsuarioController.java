@@ -19,7 +19,7 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    private static final Logger CONSOLE = LoggerFactory.getLogger(UsuarioController.class);
+    private static final Logger console = LoggerFactory.getLogger(UsuarioController.class);
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
@@ -30,13 +30,13 @@ public class UsuarioController {
             Usuario user = usuarioService.login(username,password);
 
             if (user !=null ){
-                CONSOLE.info("Usuario ok"+user.getUsr_nombre());
+                console.info("Usuario ok"+user.getUsr_nombre());
                 return ResponseEntity.ok(user);
             }else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales invalidas");
             }
         }catch (Exception e){
-            CONSOLE.error(e.getMessage());
+            console.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error en el servidor");
         }
     }

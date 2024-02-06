@@ -18,4 +18,10 @@ public class ProductoServiceImpl implements ProductoService{
         List<ProductoView> productoViews =productoRepository.getByPro_idOrPro_id1(bodegaDefecto,data);
         return productoViews.isEmpty() ? null: productoViews.get(0);
     }
+
+    @Override
+    public ProductoView porBarraOItem(Long bodega, String data) {
+        List<ProductoView> producto=productoRepository.findByPro_idAndBod_codigo(bodega, data);
+        return producto.isEmpty() ? null : producto.get(0);
+    }
 }

@@ -17,7 +17,7 @@ public class ProductoController{
     @Autowired
     private ProductoService productoService;
 
-    private static final Logger CONSOLE= LoggerFactory.getLogger(ProductoController.class);
+    private static final Logger console= LoggerFactory.getLogger(ProductoController.class);
 
     @GetMapping("/BuscarProducto")
     public ResponseEntity<ProductoView> bucarProducto(@RequestParam String data){
@@ -29,7 +29,22 @@ public class ProductoController{
             }
             return new ResponseEntity<>(productoView,HttpStatus.OK);
         }catch (Exception e){
-            CONSOLE.error(e.getMessage(),"\n Ocurrio un error en el servicio");
+            console.error(e.getMessage(),"\n Ocurrio un error en el servicio");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @GetMapping("/BuscarProducto/{bodega}")
+    public ResponseEntity<ProductoView> buscarProdBod(@PathVariable long bodega,@RequestParam String data){
+        try{
+            ProductoView producto = productoService.porBarraOItem(bodega , data );
+            
+            if (producto ==null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(producto,HttpStatus.OK);
+        }catch (Exception e){
+            console.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -9,12 +9,15 @@ import javax.persistence.Table;
 
 @Data
 @Entity
-@Table(name = "BODEGA")
+@Table(name = "BODEGA_WEB_V")
 public class Bodega {
 
     @Id
     @Column(name = "BOD_CODIGO")
     private Long bod_codigo;
+
+    @Column(name = "BOD_USUARIO")
+    private Long bod_usuario;
 
     @Column(name = "BOD_EMPRESA")
     private Long bod_empresa;
