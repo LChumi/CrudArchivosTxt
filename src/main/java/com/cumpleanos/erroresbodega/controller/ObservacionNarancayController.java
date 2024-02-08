@@ -10,13 +10,14 @@ package com.cumpleanos.erroresbodega.controller;
 import com.cumpleanos.erroresbodega.models.storage.Observacion;
 import com.cumpleanos.erroresbodega.models.storage.ObservacionCorrecion;
 import com.cumpleanos.erroresbodega.services.ObservacionNarancayService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,23 +40,9 @@ public class ObservacionNarancayController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<Observacion>> Listar(){
-        try{
-            List<String> listaArchivos=narancayService.listarObservaciones();
-            List<Observacion> listaObservaciones =new ArrayList<>();
-
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            for (String nombreArchivo:listaArchivos){
-                List<String> contenidoArchivo= narancayService.obtenerContenidoObservacion(nombreArchivo);
-                for (String linea: contenidoArchivo){
-                    Observacion observacion = objectMapper.readValue(linea, Observacion.class);
-                    listaObservaciones.add(observacion);
-                }
-            }
-
-            Collections.sort(listaObservaciones);
-
+    public ResponseEntity<List<Observacion>> Listar() {
+        try {
+            List<Observacion> listaObservaciones = narancayService.listarObservaciones();
             return ResponseEntity.ok(listaObservaciones);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -63,11 +50,34 @@ public class ObservacionNarancayController {
     }
 
     @PutMapping("/agregarCorrecion/")
-    public Observacion agregarCorrecion(@RequestBody ObservacionCorrecion obj){
-        try{
-            return narancayService.editarObservacion(obj.getObservacion(), obj.getCorreccion());
+    public Observacion agregarCorrecion(@RequestBody ObservacionCorrecion obj) {
+        try {
+            List<Observacion> listaObservaciones = narancayService.listarObservaciones();
+
+            Collections.sort(listaObservaciones);
+
+            Observacion observacionEditada = narancayService.editarObservacion(obj.getObservacion(), obj.getCorreccion());
+
+            return observacionEditada;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+
+    @GetMapping("/exportar/excel")
+    public ResponseEntity<InputStreamResource> exportAllData() throws Exception {
+        ByteArrayInputStream stream = narancayService.exportarExcel();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=observaciones.xlsx");
+        headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // Tipo de contenido correcto
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(new InputStreamResource(stream));
+    }
+
+
+
 }
