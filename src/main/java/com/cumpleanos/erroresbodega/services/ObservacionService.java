@@ -140,7 +140,7 @@ public class ObservacionService {
 
     public ByteArrayInputStream exportarExcel() throws IOException{
 
-        String[] columns = {"FECHA","ITEM","DESCRIPCION","UBICACION BULTO","UBICACION UNIDADES","CXB","STOCK","PRECIO","PRECIO TOTAL","RESPONSABLE RECLAMO","OBSERVACION","RESPONSABLE SOLUCION","DETALLE", "FECHA SOLUCION"};
+        String[] columns = {"FECHA","ITEM","DESCRIPCION","UBICACION BULTO","UBICACION UNIDADES","CXB","STOCK","PRECIO","PRECIO TOTAL","RESPONSABLE RECLAMO","OBSERVACION","DIFERENCIA","RESPONSABLE SOLUCION","DETALLE", "FECHA SOLUCION"};
 
         Workbook workbook = new XSSFWorkbook();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -168,10 +168,13 @@ public class ObservacionService {
             row.createCell(8).setCellValue(observacion.getPrecioTotal());
             row.createCell(9).setCellValue(observacion.getUsuario());
             row.createCell(10).setCellValue(observacion.getDetalle());
+            if (observacion.getDiferencia() != null){
+                row.createCell(11).setCellValue(observacion.getDiferencia());
+            }
             if (observacion.getCorreccion() != null) {
-                row.createCell(11).setCellValue(observacion.getCorreccion().getUsuario());
-                row.createCell(12).setCellValue(observacion.getCorreccion().getDetalle());
-                row.createCell(13).setCellValue(observacion.getCorreccion().getFecha());
+                row.createCell(12).setCellValue(observacion.getCorreccion().getUsuario());
+                row.createCell(13).setCellValue(observacion.getCorreccion().getDetalle());
+                row.createCell(14).setCellValue(observacion.getCorreccion().getFecha());
             }
 
 

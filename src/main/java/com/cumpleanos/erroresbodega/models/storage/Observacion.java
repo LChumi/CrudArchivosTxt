@@ -29,6 +29,7 @@ public class Observacion implements Serializable, Comparable<Observacion> {
     private double precioTotal;
     private String usuario;
     private String detalle;
+    private String diferencia;
     private Correccion correccion;
 
     public void calcularPrecioTotal(){

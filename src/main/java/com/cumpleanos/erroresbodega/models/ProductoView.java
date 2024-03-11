@@ -7,11 +7,11 @@ import org.hibernate.annotations.Subselect;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Immutable
-@Subselect("SELECT V.SECUENCIA,V.BOD_NOMBRE,V.PRO_ID1,V.PRO_ID,V.PRO_NOMBRE,V.UNIDAD,V.BULTO,V.PVP,V.CXB,V.STOCK_REAL,V.BOD_CODIGO FROM INV_PRODINFGEN_WEB_V V")
 @Data
+@Table(name = "INV_PRODINFGEN_WEB_V")
 public class ProductoView {
 
     @Id
@@ -47,5 +47,11 @@ public class ProductoView {
 
     @Column(name = "BOD_CODIGO")
     private Long bod_codigo;
+
+    @Column(name = "PRO_EMPRESA")
+    private Long pro_empresa;
+
+    @Column(name = "PRO_CODIGO")
+    private Long pro_codigo;
 }
 

@@ -40,4 +40,21 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error en el servidor");
         }
     }
+
+    @GetMapping("/id/{codigo}")
+    public ResponseEntity<Usuario> porCodigo(@PathVariable Long codigo){
+        try {
+            Usuario usuario = usuarioService.buscarPorCodigo(codigo);
+
+            if (usuario !=null){
+                console.info("Usuario ok {}",usuario.getUsr_nombre());
+                return ResponseEntity.ok(usuario);
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

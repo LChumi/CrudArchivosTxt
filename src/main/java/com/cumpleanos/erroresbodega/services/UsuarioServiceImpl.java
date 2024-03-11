@@ -15,4 +15,9 @@ public class UsuarioServiceImpl implements UsuarioService{
     public Usuario login(String usuario, String password) {
         return usuarioRepository.findByUsr_idAndUsr_clave(usuario, password);
     }
+
+    @Override
+    public Usuario buscarPorCodigo(Long codigo) {
+        return usuarioRepository.findByUsr_codigo(codigo);
+    }
 }
