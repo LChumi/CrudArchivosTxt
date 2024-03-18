@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 @Entity
 @Data
-@Table(name = "CLIENTE")
+@Table(name = "cliente")
 public class Cliente {
 
     @Id
@@ -28,4 +28,8 @@ public class Cliente {
 
     @Column(name = "CLI_DIRECCION")
     private String cliDireccion;
+
+    @Column(name = "CLI_RUC_CEDULA")
+    private String cliCedula;
+
 }

@@ -7,4 +7,6 @@ public interface UsuarioService {
     Usuario login(String usuario,String password);
 
     Usuario buscarPorCodigo(Long codigo);
+
+    Usuario buscarPorId(String id);
 }

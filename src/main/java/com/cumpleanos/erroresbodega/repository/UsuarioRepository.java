@@ -11,4 +11,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
     @Query(value = "SELECT U FROM Usuario U WHERE U.usr_codigo=:codigo")
     public  Usuario findByUsr_codigo(Long codigo);
+
+    @Query(value = "SELECT U FROM Usuario U WHERE U.usr_id=UPPER(:id) ")
+    public Usuario findByUsr_id(String id);
 }

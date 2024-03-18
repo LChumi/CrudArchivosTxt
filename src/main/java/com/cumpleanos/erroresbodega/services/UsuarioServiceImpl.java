@@ -20,4 +20,9 @@ public class UsuarioServiceImpl implements UsuarioService{
     public Usuario buscarPorCodigo(Long codigo) {
         return usuarioRepository.findByUsr_codigo(codigo);
     }
+
+    @Override
+    public Usuario buscarPorId(String id) {
+        return usuarioRepository.findByUsr_id(id);
+    }
 }

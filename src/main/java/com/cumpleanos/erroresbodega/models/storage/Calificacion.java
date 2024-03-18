@@ -7,6 +7,7 @@
 
 package com.cumpleanos.erroresbodega.models.storage;
 
+import com.cumpleanos.erroresbodega.models.CalificacionEnum;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
@@ -32,7 +33,8 @@ public class Calificacion implements Serializable,Comparable<Calificacion> {
     private String empleado;
     private String observacion;
     @Enumerated(EnumType.STRING)
-    private String calificacion;
+    private CalificacionEnum calificacionEnum;
+    private boolean aceptaPoliticas;
 
     @Override
     public int compareTo(Calificacion calificacion) {

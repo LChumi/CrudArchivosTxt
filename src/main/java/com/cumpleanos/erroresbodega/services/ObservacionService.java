@@ -140,7 +140,7 @@ public class ObservacionService {
 
     public ByteArrayInputStream exportarExcel() throws IOException{
 
-        String[] columns = {"FECHA","ITEM","DESCRIPCION","UBICACION BULTO","UBICACION UNIDADES","CXB","STOCK","PRECIO","PRECIO TOTAL","RESPONSABLE RECLAMO","OBSERVACION","DIFERENCIA","RESPONSABLE SOLUCION","DETALLE", "FECHA SOLUCION"};
+        String[] columns = {"FECHA", "RESPONSABLE" , "ITEM" , "STOCK", "FISICO" , "DIFERENCIA" , "RESOPONSABLE SOLUCION" , "DETALLE" , "FECHA SOLUCION" , "UBICACION BULTO" , "UBICACION UNIDADES"};
 
         Workbook workbook = new XSSFWorkbook();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -158,24 +158,21 @@ public class ObservacionService {
         for (Observacion observacion:observaciones){
             row= sheet.createRow(initRow);
             row.createCell(0).setCellValue(observacion.getFecha());
-            row.createCell(1).setCellValue(observacion.getItem());
-            row.createCell(2).setCellValue(observacion.getDescripcion());
-            row.createCell(3).setCellValue(observacion.getBulto());
-            row.createCell(4).setCellValue(observacion.getUnidad());
-            row.createCell(5).setCellValue(observacion.getCxb());
-            row.createCell(6).setCellValue(observacion.getStock());
-            row.createCell(7).setCellValue(observacion.getPrecio());
-            row.createCell(8).setCellValue(observacion.getPrecioTotal());
-            row.createCell(9).setCellValue(observacion.getUsuario());
-            row.createCell(10).setCellValue(observacion.getDetalle());
+            row.createCell(1).setCellValue(observacion.getUsuario());
+            row.createCell(2).setCellValue(observacion.getItem());
+            row.createCell(3).setCellValue(observacion.getDescripcion());
+            row.createCell(4).setCellValue(observacion.getStock());
+            row.createCell(5).setCellValue(observacion.getDetalle());
             if (observacion.getDiferencia() != null){
-                row.createCell(11).setCellValue(observacion.getDiferencia());
+                row.createCell(6).setCellValue(observacion.getDiferencia());
             }
             if (observacion.getCorreccion() != null) {
-                row.createCell(12).setCellValue(observacion.getCorreccion().getUsuario());
-                row.createCell(13).setCellValue(observacion.getCorreccion().getDetalle());
-                row.createCell(14).setCellValue(observacion.getCorreccion().getFecha());
+                row.createCell(7).setCellValue(observacion.getCorreccion().getUsuario());
+                row.createCell(8).setCellValue(observacion.getCorreccion().getDetalle());
+                row.createCell(9).setCellValue(observacion.getCorreccion().getFecha());
             }
+            row.createCell(10).setCellValue(observacion.getBulto());
+            row.createCell(11).setCellValue(observacion.getUnidad());
 
 
             initRow++;

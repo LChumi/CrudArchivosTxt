@@ -9,9 +9,16 @@ package com.cumpleanos.erroresbodega.services;
 
 import com.cumpleanos.erroresbodega.models.storage.Calificacion;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,10 +38,10 @@ public class CalificacionService {
 
     public Calificacion guardarCalificacion(Calificacion calificacion) throws IOException{
         String fechaFormateada = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        calificacion.generarNuevoId();
         String nombreArchivo = String.format("calificacion_%s_%s_%s.txt",fechaFormateada,calificacion.getId(),calificacion.getEmpleado());
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
         calificacion.setFecha(fechaFormateada);
-        calificacion.generarNuevoId();
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonCalificacion = objectMapper.writeValueAsString(calificacion);
@@ -75,5 +82,38 @@ public class CalificacionService {
     public List<String> obtenerContenidoCalificacion(String nombreArchivo) throws  IOException{
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
         return Files.readAllLines(rutaArchivo);
+    }
+
+    public ByteArrayInputStream exportarExcel() throws IOException{
+        String[] columns = {"FECHA", "EMPLEADO", "CALIFICACION" ,"CLIENTE", "OBSERVACION", "ACEPTA POLITICAS"};
+
+        Workbook workbook = new XSSFWorkbook();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        Sheet sheet= workbook.createSheet("Calificaciones");
+        Row row = sheet.createRow(0);
+
+        for (int i=0; i<columns.length; i++){
+            Cell cell = row.createCell(i);
+            cell.setCellValue(columns[i]);
+        }
+
+        List<Calificacion> calificaciones = listarCalificaciones();
+        int initRow = 1;
+        for(Calificacion calificacion:calificaciones){
+            row= sheet.createRow(initRow);
+            row.createCell(0).setCellValue(calificacion.getFecha());
+            row.createCell(1).setCellValue(calificacion.getEmpleado());
+            row.createCell(2).setCellValue(calificacion.getCalificacionEnum().toString());
+            row.createCell(3).setCellValue(calificacion.getCliente());
+            row.createCell(4).setCellValue(calificacion.getObservacion());
+            row.createCell(5).setCellValue(calificacion.isAceptaPoliticas());
+
+            initRow++;
+        }
+
+        workbook.write(stream);
+        workbook.close();
+        return new ByteArrayInputStream(stream.toByteArray());
     }
 }
