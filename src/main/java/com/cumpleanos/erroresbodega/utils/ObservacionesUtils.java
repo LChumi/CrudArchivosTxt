@@ -1,11 +1,12 @@
 /*
- * Copyright (c) 2024.
- *  Este código es propiedad de Luis Chumi y está protegido por las leyes de derechos de autor.
- *  Se concede el permiso para usar, copiar, modificar y distribuir este software con la condición de que se incluya este aviso en todas las copias o partes sustanciales del software.
- *  Para obtener ayuda, soporte o permisos adicionales, contacta a Luis Chumi en luischumi.9@gmail.com.
+ * Copyright (c) 2024 Luis Chumi.
+ * Este software está licenciado bajo la Licencia Pública General de GNU versión 3.
+ * Puedes encontrar una copia de la licencia en https://www.gnu.org/licenses/gpl-3.0.html.
+ *
+ * Para consultas o comentarios, puedes contactarme en luischumi.9@gmail.com
  */
 
-package com.cumpleanos.erroresbodega.services;
+package com.cumpleanos.erroresbodega.utils;
 
 import com.cumpleanos.erroresbodega.models.storage.Correccion;
 import com.cumpleanos.erroresbodega.models.storage.Observacion;
@@ -15,8 +16,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -31,11 +30,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
-@Service
-public class ObservacionNarancayService {
+public class ObservacionesUtils {
 
-    @Value("${file.storage.path.narancay}")
     private String ruta;
+
+    public ObservacionesUtils(String ruta){
+        this.ruta=ruta;
+    }
 
     public Observacion guardarObservacion(Observacion observacion) throws IOException {
         String fechaFormateada = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
@@ -50,6 +51,23 @@ public class ObservacionNarancayService {
         List<String> lineas = Collections.singletonList(jsonObservacion);
         Files.write(rutaArchivo,lineas);
         return observacion;
+    }
+
+    public Observacion editarObservacion(Observacion observacion, Correccion correccion) throws IOException{
+        String fechaFormateada = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        correccion.setFecha(fechaFormateada);
+        String nombreArchivo=String.format("observacion_%s_%s_%s.txt",observacion.getFecha(),observacion.getUsuario(),observacion.getItem());
+        Path rutaArchivo = Paths.get(ruta, nombreArchivo);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Observacion observacionExisitente =objectMapper.readValue(Files.newBufferedReader(rutaArchivo), Observacion.class);
+
+        observacionExisitente.setCorreccion(correccion);
+
+        objectMapper.writeValue(rutaArchivo.toFile(),observacionExisitente);
+
+        return observacionExisitente;
     }
 
     public List<Observacion> listarObservaciones() throws IOException {
@@ -80,68 +98,29 @@ public class ObservacionNarancayService {
         return listaObservaciones;
     }
 
-
-
-
-    public Observacion editarObservacion(Observacion observacion, Correccion correccion) throws IOException{
-        String fechaFormateada = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        correccion.setFecha(fechaFormateada);
-        String nombreArchivo=String.format("observacion_%s_%s_%s.txt",observacion.getFecha(),observacion.getUsuario(),observacion.getItem());
-        Path rutaArchivo = Paths.get(ruta, nombreArchivo);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        Observacion observacionExisitente =objectMapper.readValue(Files.newBufferedReader(rutaArchivo), Observacion.class);
-
-        observacionExisitente.setCorreccion(correccion);
-
-        objectMapper.writeValue(rutaArchivo.toFile(),observacionExisitente);
-
-        return observacionExisitente;
-    }
-
-    public List<String> obtenerContenidoObservacion(String nombreArchivo) throws IOException{
+    private List<String> obtenerContenidoObservacion(String nombreArchivo) throws IOException{
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
         return Files.readAllLines(rutaArchivo);
     }
 
-    public ByteArrayInputStream exportarExcel() throws IOException{
-
-        String[] columns = {"FECHA","ITEM","DESCRIPCION","CXB","STOCK","PRECIO","PRECIO TOTAL","RESPONSABLE RECLAMO","OBSERVACION","RESPONSABLE SOLUCION","DETALLE", "FECHA SOLUCION"};
-
+    public ByteArrayInputStream exportarExcel(List<Observacion> observaciones, String[] columns ,ExcelFiller excelFiller)throws IOException{
         Workbook workbook = new XSSFWorkbook();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-        Sheet sheet= workbook.createSheet("Observaciones");
-        Row row= sheet.createRow(0);
+        Sheet sheet = workbook.createSheet("Observaciones");
+        Row row = sheet.createRow(0);
 
-        for (int i =0; i< columns.length; i++){
+        for (int i = 0 ; i< columns.length; i++) {
             Cell cell = row.createCell(i);
             cell.setCellValue(columns[i]);
         }
 
-        List<Observacion> observaciones=listarObservaciones();
-        int initRow = 1; // Empieza en la fila 1 para dejar la fila 0 para los encabezados
-        for (Observacion observacion:observaciones){
-            row= sheet.createRow(initRow);
-            row.createCell(0).setCellValue(observacion.getFecha());
-            row.createCell(1).setCellValue(observacion.getItem());
-            row.createCell(2).setCellValue(observacion.getDescripcion());
-            row.createCell(3).setCellValue(observacion.getCxb());
-            row.createCell(4).setCellValue(observacion.getStock());
-            row.createCell(5).setCellValue(observacion.getPrecio());
-            row.createCell(6).setCellValue(observacion.getPrecioTotal());
-            row.createCell(7).setCellValue(observacion.getUsuario());
-            row.createCell(8).setCellValue(observacion.getDetalle());
-            if (observacion.getCorreccion() != null) {
-                row.createCell(9).setCellValue(observacion.getCorreccion().getUsuario());
-                row.createCell(10).setCellValue(observacion.getCorreccion().getDetalle());
-                row.createCell(11).setCellValue(observacion.getCorreccion().getFecha());
-            }
-
+        int initRow = 1;
+        for (Observacion observacion : observaciones){
+            row = sheet.createRow(initRow);
+            excelFiller.fillRow(row, observacion);
             initRow++;
         }
-
         workbook.write(stream);
         workbook.close();
         return new ByteArrayInputStream(stream.toByteArray());

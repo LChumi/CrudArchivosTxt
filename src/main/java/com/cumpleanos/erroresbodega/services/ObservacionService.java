@@ -7,156 +7,66 @@
 
 package com.cumpleanos.erroresbodega.services;
 
+import com.cumpleanos.erroresbodega.config.RutasConfig;
 import com.cumpleanos.erroresbodega.models.storage.Correccion;
 import com.cumpleanos.erroresbodega.models.storage.Observacion;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Value;
+import com.cumpleanos.erroresbodega.utils.ExcelFiller;
+import com.cumpleanos.erroresbodega.utils.ObservacionesUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.nio.file.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class ObservacionService {
 
-    @Value("${file.storage.path.zhucay}")
-    private String ruta;
+    private ObservacionesUtils observacionNarancay;
+    private ObservacionesUtils observacionZhucay;
+    private ObservacionesUtils observacionBodDañados;
 
-    public Observacion guardarObservacion(Observacion observacion) throws IOException {
-        String fechaFormateada = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        String nombreArchivo = String.format("observacion_%s_%s_%s.txt",fechaFormateada,observacion.getUsuario(),observacion.getItem());
-        Path rutaArchivo = Paths.get(ruta,nombreArchivo);
-        observacion.setFecha(fechaFormateada);
-        observacion.calcularPrecioTotal();
-
-        ObjectMapper objectMapper=new ObjectMapper();
-        String jsonObservacion= objectMapper.writeValueAsString(observacion);
-
-        List<String> lineas = Collections.singletonList(jsonObservacion);
-        Files.write(rutaArchivo,lineas);
-        return observacion;
-    }
-    public Observacion editarObservacion(Observacion observacion, Correccion correccion) throws IOException{
-        String fechaFormateada = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        correccion.setFecha(fechaFormateada);
-        String nombreArchivo=String.format("observacion_%s_%s_%s.txt",observacion.getFecha(),observacion.getUsuario(),observacion.getItem());
-        Path rutaArchivo = Paths.get(ruta, nombreArchivo);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        Observacion observacionExisitente =objectMapper.readValue(Files.newBufferedReader(rutaArchivo), Observacion.class);
-
-        observacionExisitente.setCorreccion(correccion);
-
-        objectMapper.writeValue(rutaArchivo.toFile(),observacionExisitente);
-
-        return observacionExisitente;
+    @Autowired
+    public ObservacionService(RutasConfig rutas){
+        observacionNarancay = new ObservacionesUtils(rutas.getRutaNarancay());
+        observacionZhucay = new ObservacionesUtils(rutas.getRutaZhucay());
+        observacionBodDañados = new ObservacionesUtils(rutas.getRutaBodDañados());
     }
 
-    public List<String> getObservacionByUsuario(String fecha,String idUsuario,String idProducto)throws IOException {
-        String nombreArchivo = String.format("observacion_%s_%s_%s.txt",fecha,idUsuario,idProducto);
-        Path rutaArchivo = Paths.get(ruta,nombreArchivo);
-        return Files.readAllLines(rutaArchivo);
+    public Observacion guardarObservacionNarancay(Observacion observacion) throws IOException{
+        return observacionNarancay.guardarObservacion(observacion);
+    }
+    public Observacion guardarObservacionZhucay(Observacion observacion) throws IOException{
+        return observacionZhucay.guardarObservacion(observacion);
+    }
+    public Observacion guardarObservacionBodDañados(Observacion observacion) throws IOException{
+        return observacionBodDañados.guardarObservacion(observacion);
     }
 
-    public List<String> getByProducto(String idProducto) throws IOException {
-        try (Stream<Path> stream = Files.walk(Paths.get(ruta))) {
-            return stream
-                    .filter(Files::isRegularFile)
-                    .filter(path -> path.getFileName().toString().contains(idProducto + ".txt"))
-                    .flatMap(path -> {
-                        try {
-                            return Files.readAllLines(path).stream();
-                        } catch (IOException e) {
-                            throw new UncheckedIOException(e);
-                        }
-                    })
-                    .collect(Collectors.toList());
-        }
+    public List<Observacion> listarNarancay() throws IOException {
+        return observacionNarancay.listarObservaciones();
+    }
+    public List<Observacion> listarZhucay() throws IOException {
+        return observacionZhucay.listarObservaciones();
+    }
+    public List<Observacion> listarBodDañados() throws IOException {
+        return observacionBodDañados.listarObservaciones();
     }
 
-    public List<Observacion> guardarObservaciones(List<Observacion> observaciones) throws IOException {
-
-        String usuario=observaciones.get(1).getUsuario();
-        String fechaFormateada = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-
-        String nombreArchivo= String.format("observacion_%s_%s.txt",fechaFormateada,usuario);
-        Path rutaArchivo =Paths.get(ruta,nombreArchivo);
-
-        List<String> lineas= new ArrayList<>();
-        for(Observacion observacion:observaciones){
-            lineas.add(observacion.toString());
-        }
-
-        Files.write(rutaArchivo,lineas, StandardOpenOption.CREATE,StandardOpenOption.APPEND);
-
-        return observaciones;
+    public Observacion editarObservacionNarancay(Observacion observacion, Correccion correccion) throws IOException{
+        return observacionNarancay.editarObservacion(observacion, correccion);
+    }
+    public Observacion editarObservacionZhucay(Observacion observacion, Correccion correccion) throws IOException{
+        return observacionZhucay.editarObservacion(observacion, correccion);
     }
 
-    public List<Observacion> listarObservaciones() throws IOException {
-        List<Observacion> listaObservaciones = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        try (Stream<Path> stream = Files.list(Paths.get(ruta))) {
-            stream.filter(Files::isRegularFile)
-                    .filter(path -> path.getFileName().toString().startsWith("observacion_"))
-                    .forEach(path -> {
-                        try {
-                            List<String> contenidoArchivo = obtenerContenidoObservacion(path.getFileName().toString());
-                            contenidoArchivo.forEach(linea -> {
-                                try {
-                                    Observacion observacion = objectMapper.readValue(linea, Observacion.class);
-                                    listaObservaciones.add(observacion);
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            });
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-        }
-
-        Collections.sort(listaObservaciones);
-        return listaObservaciones;
-    }
-
-    public List<String> obtenerContenidoObservacion(String nombreArchivo) throws IOException{
-        Path rutaArchivo = Paths.get(ruta,nombreArchivo);
-        return Files.readAllLines(rutaArchivo);
-    }
-
-    public ByteArrayInputStream exportarExcel() throws IOException{
+    public ByteArrayInputStream exportarExcelZhucay() throws IOException{
 
         String[] columns = {"FECHA", "RESPONSABLE" , "ITEM" , "STOCK", "FISICO" , "DIFERENCIA" , "RESOPONSABLE SOLUCION" , "DETALLE" , "FECHA SOLUCION" , "UBICACION BULTO" , "UBICACION UNIDADES"};
 
-        Workbook workbook = new XSSFWorkbook();
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        List<Observacion> observacionesZhucay = listarZhucay();
 
-        Sheet sheet= workbook.createSheet("Observaciones");
-        Row row= sheet.createRow(0);
-
-        for (int i =0; i< columns.length; i++){
-            Cell cell = row.createCell(i);
-            cell.setCellValue(columns[i]);
-        }
-
-        List<Observacion> observaciones=listarObservaciones();
-        int initRow = 1; // Empieza en la fila 1 para dejar la fila 0 para los encabezados
-        for (Observacion observacion:observaciones){
-            row= sheet.createRow(initRow);
+        ExcelFiller excelFiller = (row,observacion ) -> {
             row.createCell(0).setCellValue(observacion.getFecha());
             row.createCell(1).setCellValue(observacion.getUsuario());
             row.createCell(2).setCellValue(observacion.getItem());
@@ -173,14 +83,33 @@ public class ObservacionService {
             }
             row.createCell(10).setCellValue(observacion.getBulto());
             row.createCell(11).setCellValue(observacion.getUnidad());
+        };
 
+        return observacionZhucay.exportarExcel(observacionesZhucay,columns,excelFiller);
+    }
 
-            initRow++;
-        }
+    public ByteArrayInputStream exportarExcelNarancay() throws IOException{
+        String[] columns = {"FECHA","ITEM","DESCRIPCION","CXB","STOCK","PRECIO","PRECIO TOTAL","RESPONSABLE RECLAMO","OBSERVACION","RESPONSABLE SOLUCION","DETALLE", "FECHA SOLUCION"};
 
-        workbook.write(stream);
-        workbook.close();
-        return new ByteArrayInputStream(stream.toByteArray());
+        List<Observacion> observacionesNarancay = listarNarancay();
+
+        ExcelFiller excelFiller = (row,observacion) ->{
+            row.createCell(0).setCellValue(observacion.getFecha());
+            row.createCell(1).setCellValue(observacion.getItem());
+            row.createCell(2).setCellValue(observacion.getDescripcion());
+            row.createCell(3).setCellValue(observacion.getCxb());
+            row.createCell(4).setCellValue(observacion.getStock());
+            row.createCell(5).setCellValue(observacion.getPrecio());
+            row.createCell(6).setCellValue(observacion.getPrecioTotal());
+            row.createCell(7).setCellValue(observacion.getUsuario());
+            row.createCell(8).setCellValue(observacion.getDetalle());
+            if (observacion.getCorreccion() != null) {
+                row.createCell(9).setCellValue(observacion.getCorreccion().getUsuario());
+                row.createCell(10).setCellValue(observacion.getCorreccion().getDetalle());
+                row.createCell(11).setCellValue(observacion.getCorreccion().getFecha());
+            }
+        };
+        return observacionNarancay.exportarExcel(observacionesNarancay,columns,excelFiller);
     }
 
 }

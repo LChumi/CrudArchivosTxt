@@ -7,9 +7,8 @@
 
 package com.cumpleanos.erroresbodega.models.storage;
 
-import com.cumpleanos.erroresbodega.models.CalificacionEnum;
+import com.cumpleanos.erroresbodega.models.enums.CalificacionEnum;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
