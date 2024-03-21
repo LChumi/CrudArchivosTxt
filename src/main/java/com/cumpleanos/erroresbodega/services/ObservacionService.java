@@ -24,13 +24,13 @@ public class ObservacionService {
 
     private ObservacionesUtils observacionNarancay;
     private ObservacionesUtils observacionZhucay;
-    private ObservacionesUtils observacionBodDañados;
+    private ObservacionesUtils observacionBodDanados;
 
     @Autowired
     public ObservacionService(RutasConfig rutas){
         observacionNarancay = new ObservacionesUtils(rutas.getRutaNarancay());
         observacionZhucay = new ObservacionesUtils(rutas.getRutaZhucay());
-        observacionBodDañados = new ObservacionesUtils(rutas.getRutaBodDañados());
+        observacionBodDanados = new ObservacionesUtils(rutas.getRutaBodDanados());
     }
 
     public Observacion guardarObservacionNarancay(Observacion observacion) throws IOException{
@@ -39,8 +39,8 @@ public class ObservacionService {
     public Observacion guardarObservacionZhucay(Observacion observacion) throws IOException{
         return observacionZhucay.guardarObservacion(observacion);
     }
-    public Observacion guardarObservacionBodDañados(Observacion observacion) throws IOException{
-        return observacionBodDañados.guardarObservacion(observacion);
+    public Observacion guardarobservacionBodDanados(Observacion observacion) throws IOException{
+        return observacionBodDanados.guardarObservacion(observacion);
     }
 
     public List<Observacion> listarNarancay() throws IOException {
@@ -50,7 +50,7 @@ public class ObservacionService {
         return observacionZhucay.listarObservaciones();
     }
     public List<Observacion> listarBodDañados() throws IOException {
-        return observacionBodDañados.listarObservaciones();
+        return observacionBodDanados.listarObservaciones();
     }
 
     public Observacion editarObservacionNarancay(Observacion observacion, Correccion correccion) throws IOException{
@@ -58,6 +58,9 @@ public class ObservacionService {
     }
     public Observacion editarObservacionZhucay(Observacion observacion, Correccion correccion) throws IOException{
         return observacionZhucay.editarObservacion(observacion, correccion);
+    }
+    public Observacion editarObservacionBodDa(Observacion observacion, Correccion correccion) throws IOException{
+        return observacionBodDanados.editarObservacion(observacion, correccion);
     }
 
     public ByteArrayInputStream exportarExcelZhucay() throws IOException{
@@ -87,7 +90,6 @@ public class ObservacionService {
 
         return observacionZhucay.exportarExcel(observacionesZhucay,columns,excelFiller);
     }
-
     public ByteArrayInputStream exportarExcelNarancay() throws IOException{
         String[] columns = {"FECHA","ITEM","DESCRIPCION","CXB","STOCK","PRECIO","PRECIO TOTAL","RESPONSABLE RECLAMO","OBSERVACION","RESPONSABLE SOLUCION","DETALLE", "FECHA SOLUCION"};
 
@@ -110,6 +112,26 @@ public class ObservacionService {
             }
         };
         return observacionNarancay.exportarExcel(observacionesNarancay,columns,excelFiller);
+    }
+    public ByteArrayInputStream exportarExcelBodDa() throws IOException{
+        String[] columns = {"FECHA","ITEM","DESCRIPCION","CANTIDAD DAÑADOS","OBSERVACION","RESPONSABLE","RESPONSABLE SOLUCION","DETALLE", "FECHA SOLUCION"};
+
+        List<Observacion> observacionesNarancay = listarBodDañados();
+
+        ExcelFiller excelFiller = (row,observacion) ->{
+            row.createCell(0).setCellValue(observacion.getFecha());
+            row.createCell(1).setCellValue(observacion.getItem());
+            row.createCell(2).setCellValue(observacion.getDescripcion());
+            row.createCell(3).setCellValue(observacion.getDiferencia());
+            row.createCell(4).setCellValue(observacion.getDetalle());
+            row.createCell(5).setCellValue(observacion.getUsuario());
+            if (observacion.getCorreccion() != null) {
+                row.createCell(6).setCellValue(observacion.getCorreccion().getUsuario());
+                row.createCell(7).setCellValue(observacion.getCorreccion().getDetalle());
+                row.createCell(8).setCellValue(observacion.getCorreccion().getFecha());
+            }
+        };
+        return observacionBodDanados.exportarExcel(observacionesNarancay,columns,excelFiller);
     }
 
 }

@@ -121,7 +121,7 @@ public class ObservacionController {
     @PostMapping("/guardar/bodDañados")
     public ResponseEntity<Observacion> guardarDañados(@RequestBody Observacion observacion){
         try {
-            Observacion observacion1 = observacionService.guardarObservacionBodDañados(observacion);
+            Observacion observacion1 = observacionService.guardarobservacionBodDanados(observacion);
             return ResponseEntity.ok(observacion1);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -139,14 +139,14 @@ public class ObservacionController {
     @PutMapping("/agregarCorrecionBodDañados/")
     public Observacion agregarCorrecionDañados(@RequestBody ObservacionCorrecion obj){
         try{
-            return observacionService.editarObservacionZhucay(obj.getObservacion(), obj.getCorreccion());
+            return observacionService.editarObservacionBodDa(obj.getObservacion(), obj.getCorreccion());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
     @GetMapping("/excel/bodDañados/")
     public ResponseEntity<InputStreamResource> exportarBodDañados() throws Exception {
-        ByteArrayInputStream stream = observacionService.exportarExcelZhucay();
+        ByteArrayInputStream stream = observacionService.exportarExcelBodDa();
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=observaciones.xlsx");

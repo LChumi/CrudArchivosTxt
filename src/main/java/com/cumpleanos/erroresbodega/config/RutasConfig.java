@@ -23,7 +23,7 @@ public class RutasConfig {
     private String rutaNarancay;
 
     @Value("${file.storage.path.danados}")
-    private String rutaBodDañados;
+    private String rutaBodDanados;
 
     @Value("${file.storage.path.calificaciones}")
     private String rutaCalificaciones;
