@@ -37,8 +37,8 @@ public class Calificacion implements Serializable,Comparable<Calificacion> {
 
     @Override
     public int compareTo(Calificacion calificacion) {
-        LocalDate fechaActual = LocalDate.parse(this.fecha, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        LocalDate fechaCalifi = LocalDate.parse(calificacion.getFecha(),DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        LocalDate fechaActual = LocalDate.parse(this.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate fechaCalifi = LocalDate.parse(calificacion.getFecha(),DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
         return fechaCalifi.compareTo(fechaActual);
     }
