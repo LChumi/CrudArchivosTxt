@@ -41,14 +41,25 @@ public class MovimientosProductosDTO implements Serializable, Comparable<Movimie
     }
 
     public void agregarProducto(ProductoDTO productoNuevo){
-        for (ProductoDTO producto: productos){
+        // Verificar si el producto ya existe en la lista
+        for (ProductoDTO producto : productos){
             if(producto.getBarra().equals(productoNuevo.getBarra())){
-                producto.setCantidad(producto.getCantidad()+1);
+                // Si la cantidad no se especifica, simplemente aumentar en 1
+                if ( productoNuevo.getCantidad() <= 0) {
+                    producto.setCantidad(producto.getCantidad() + 1);
+                } else {
+                    // Si se especifica una cantidad, sumarla a la cantidad existente
+                    producto.setCantidad(producto.getCantidad() + productoNuevo.getCantidad());
+                }
                 return;
             }
         }
+        // Si el producto no existe en la lista, agregarlo con la cantidad especificada o 1 por defecto
+        if ( productoNuevo.getCantidad() <= 0) {
+            productoNuevo.setCantidad(1); // Establecer la cantidad predeterminada como 1 si no se especifica
+        }
         productoNuevo.generarNuevoId();
-        productoNuevo.setCantidad(1);
         productos.add(productoNuevo);
     }
+
 }
