@@ -9,7 +9,6 @@ package com.cumpleanos.erroresbodega.controller;
 
 import com.cumpleanos.erroresbodega.models.storage.AgregarProductoRequest;
 import com.cumpleanos.erroresbodega.models.storage.MovimientosProductosDTO;
-import com.cumpleanos.erroresbodega.models.storage.ProductoDTO;
 import com.cumpleanos.erroresbodega.services.MovimientosProductosDTOService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;

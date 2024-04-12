@@ -22,7 +22,7 @@ public class ProductoDtoController {
     @Autowired
     ProductoDTOService dtoService;
 
-    @GetMapping("consulta")
+    @GetMapping("/consulta")
     public List<ProductoSugeridoDTO> get(@RequestParam String barra){
         try {
             List<ProductoSugeridoDTO> objects= dtoService.obtenerDatosBarra(barra);

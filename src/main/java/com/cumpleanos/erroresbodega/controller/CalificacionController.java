@@ -10,7 +10,6 @@ package com.cumpleanos.erroresbodega.controller;
 import com.cumpleanos.erroresbodega.models.storage.Calificacion;
 import com.cumpleanos.erroresbodega.services.CalificacionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("calificacion")
+@RequestMapping("/calificacion")
 @RequiredArgsConstructor
 @CrossOrigin("*")
 public class CalificacionController {
