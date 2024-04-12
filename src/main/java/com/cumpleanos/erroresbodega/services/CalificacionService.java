@@ -80,7 +80,7 @@ public class CalificacionService {
     }
 
 
-    public List<String> obtenerContenidoCalificacion(String nombreArchivo) throws  IOException{
+    private List<String> obtenerContenidoCalificacion(String nombreArchivo) throws  IOException{
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
         return Files.readAllLines(rutaArchivo);
     }
