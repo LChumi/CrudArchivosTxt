@@ -48,7 +48,7 @@ public class CalificacionController {
         }
     }
 
-    @GetMapping("exportar/excel")
+    @GetMapping("/exportar/excel")
     public ResponseEntity<InputStreamResource> exportAllData() throws Exception {
         ByteArrayInputStream stream = calificacionService.exportarExcel();
 

@@ -18,6 +18,7 @@ public interface MovimientosProductosDTOService {
 
     List<MovimientosProductosDTO> listar() throws IOException;
     MovimientosProductosDTO guardar(MovimientosProductosDTO movimientosProductosDTO) throws IOException;
-    ByteArrayInputStream exportarExcel() throws IOException;
+    ByteArrayInputStream exportarExcelAll() throws IOException;
+    ByteArrayInputStream exportarExcel(MovimientosProductosDTO movimientosProductosDTO) throws IOException;
     MovimientosProductosDTO editarMovimiento(MovimientosProductosDTO movimientosProductosDTO,ProductoDTO productoDTO) throws IOException;
 }
