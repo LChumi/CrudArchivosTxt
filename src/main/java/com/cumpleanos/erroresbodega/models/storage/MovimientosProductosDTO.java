@@ -26,7 +26,7 @@ public class MovimientosProductosDTO implements Serializable, Comparable<Movimie
     @Setter(AccessLevel.NONE)
     private Long id;
     private String fecha;
-    private String nombre;
+    private String detalle;
     private String usuario;
     private List<ProductoDTO> productos;
 

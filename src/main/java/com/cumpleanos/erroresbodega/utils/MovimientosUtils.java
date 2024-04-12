@@ -68,7 +68,7 @@ public class MovimientosUtils {
         movimientosProductosDTO.setFecha(fechaFormateada);
         movimientosProductosDTO.setProductos(new ArrayList<>());
         movimientosProductosDTO.generarNuevoId();
-        String nombreArchivo= String.format("movimiento_%s_%s.txt",movimientosProductosDTO.getId(),movimientosProductosDTO.getNombre());
+        String nombreArchivo= String.format("movimiento_%s_%s.txt",movimientosProductosDTO.getId(),movimientosProductosDTO.getDetalle());
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -79,8 +79,8 @@ public class MovimientosUtils {
         return movimientosProductosDTO;
     }
 
-    public MovimientosProductosDTO editarMovimiento(MovimientosProductosDTO movimientosProductosDTO, ProductoDTO productoDTO) throws IOException {
-        String nombreArchivo = String.format("movimiento_%s_%s.txt",movimientosProductosDTO.getId(),movimientosProductosDTO.getNombre());
+    public MovimientosProductosDTO editarMovimiento(Long id,String detalle, ProductoDTO productoDTO) throws IOException {
+        String nombreArchivo = String.format("movimiento_%s_%s.txt",id,detalle);
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -118,7 +118,7 @@ public class MovimientosUtils {
         for (MovimientosProductosDTO movimineto : movimientosProductosDTOS){
             row= sheet.createRow(initRow);
             row.createCell(0).setCellValue(movimineto.getId());
-            row.createCell(1).setCellValue(movimineto.getNombre());
+            row.createCell(1).setCellValue(movimineto.getDetalle());
             initRow++;
         }
 
@@ -139,14 +139,14 @@ public class MovimientosUtils {
         // Crear una fila para los encabezados personalizados (nombre y ID)
         Row headerRow = sheet.createRow(0);
         Cell nombreCell = headerRow.createCell(1);
-        nombreCell.setCellValue("Nombre");
+        nombreCell.setCellValue("Detalle");
         Cell idCell = headerRow.createCell(2);
         idCell.setCellValue("Fecha");
         Cell usuarioCell = headerRow.createCell(3);
         usuarioCell.setCellValue("Usuario");
 
         // Obtener el nombre y el ID del movimiento especificado
-        String nombreMovimiento = movimiento.getNombre();
+        String nombreMovimiento = movimiento.getDetalle();
         String fecha = movimiento.getFecha();
         String usuario = movimiento.getUsuario();
 

@@ -8,8 +8,8 @@
 package com.cumpleanos.erroresbodega.services;
 
 import com.cumpleanos.erroresbodega.config.RutasConfig;
-import com.cumpleanos.erroresbodega.models.storage.AgregarProductoRequest;
 import com.cumpleanos.erroresbodega.models.storage.MovimientosProductosDTO;
+import com.cumpleanos.erroresbodega.models.storage.ProductoDTO;
 import com.cumpleanos.erroresbodega.utils.MovimientosUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,11 +44,11 @@ public class MovimientosProductosDTOServiceImpl{
         return movimientosZhucay.guardar(dto);
     }
 
-    public MovimientosProductosDTO agregarProductoNarancay(AgregarProductoRequest request) throws IOException{
-        return movimientosNarancay.editarMovimiento(request.getMovimientosProductosDTO(), request.getProductoDTO());
+    public MovimientosProductosDTO agregarProductoNarancay(Long id, String detalle, ProductoDTO productoDTO) throws IOException{
+        return movimientosNarancay.editarMovimiento(id, detalle, productoDTO);
     }
-    public MovimientosProductosDTO agregarProductoZhucay(AgregarProductoRequest request) throws IOException{
-        return movimientosZhucay.editarMovimiento(request.getMovimientosProductosDTO(), request.getProductoDTO());
+    public MovimientosProductosDTO agregarProductoZhucay(Long id, String detalle, ProductoDTO productoDTO) throws IOException{
+        return movimientosZhucay.editarMovimiento(id, detalle, productoDTO);
     }
 
     public ByteArrayInputStream exportarExcelNarancay(MovimientosProductosDTO movimiento) throws IOException{

@@ -7,8 +7,8 @@
 
 package com.cumpleanos.erroresbodega.controller;
 
-import com.cumpleanos.erroresbodega.models.storage.AgregarProductoRequest;
 import com.cumpleanos.erroresbodega.models.storage.MovimientosProductosDTO;
+import com.cumpleanos.erroresbodega.models.storage.ProductoDTO;
 import com.cumpleanos.erroresbodega.services.MovimientosProductosDTOServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -48,10 +48,12 @@ public class MovimientoProductoDTOController {
         }
     }
 
-    @PutMapping("agregarProducto/narancay")
-    public ResponseEntity<MovimientosProductosDTO> agregarProductoNarancay(@RequestBody AgregarProductoRequest request){
+    @PutMapping("agregarProducto/narancay/{id}/{detalle}")
+    public ResponseEntity<MovimientosProductosDTO> agregarProductoNarancay(@PathVariable Long id,
+                                                                           @PathVariable String detalle,
+                                                                           @RequestBody ProductoDTO dto){
         try {
-            MovimientosProductosDTO movimiento= service.agregarProductoNarancay(request);
+            MovimientosProductosDTO movimiento= service.agregarProductoNarancay(id, detalle, dto);
             return ResponseEntity.ok(movimiento);
         }catch (IOException e){
             throw new RuntimeException(e);
@@ -62,7 +64,7 @@ public class MovimientoProductoDTOController {
     public ResponseEntity<InputStreamResource> exportarExcelNarancay(@RequestBody MovimientosProductosDTO movimiento) throws IOException{
         ByteArrayInputStream stream = service.exportarExcelNarancay(movimiento);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename="+movimiento.getNombre()+".xlsx");
+        headers.add("Content-Disposition", "attachment; filename="+movimiento.getDetalle()+".xlsx");
         headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // Tipo de contenido correcto
 
         return ResponseEntity.ok()
@@ -70,7 +72,7 @@ public class MovimientoProductoDTOController {
                 .body(new InputStreamResource(stream));
     }
 
-    @PostMapping("guardar/Zhucay")
+    @PostMapping("guardar/zhucay")
     public ResponseEntity<MovimientosProductosDTO> guardarZhucay(@RequestBody MovimientosProductosDTO movimientosProductosDTO){
         try {
             MovimientosProductosDTO movimientoNuevo = service.guardarZhucay(movimientosProductosDTO);
@@ -90,10 +92,12 @@ public class MovimientoProductoDTOController {
         }
     }
 
-    @PutMapping("agregarProducto/zhucay")
-    public ResponseEntity<MovimientosProductosDTO> agregarProductoZhucay(@RequestBody AgregarProductoRequest request){
+    @PutMapping("agregarProducto/zhucay/{id}/{detalle}")
+    public ResponseEntity<MovimientosProductosDTO> agregarProductoZhucay(@PathVariable Long id,
+                                                                         @PathVariable String detalle,
+                                                                         @RequestBody ProductoDTO dto){
         try {
-            MovimientosProductosDTO movimiento= service.agregarProductoZhucay(request);
+            MovimientosProductosDTO movimiento= service.agregarProductoZhucay(id, detalle, dto);
             return ResponseEntity.ok(movimiento);
         }catch (IOException e){
             throw new RuntimeException(e);
@@ -104,7 +108,7 @@ public class MovimientoProductoDTOController {
     public ResponseEntity<InputStreamResource> exportarExcelZhucay(@RequestBody MovimientosProductosDTO movimiento) throws IOException{
         ByteArrayInputStream stream = service.exportarExcelZhucay(movimiento);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename="+movimiento.getNombre()+".xlsx");
+        headers.add("Content-Disposition", "attachment; filename="+movimiento.getDetalle()+".xlsx");
         headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // Tipo de contenido correcto
 
         return ResponseEntity.ok()
