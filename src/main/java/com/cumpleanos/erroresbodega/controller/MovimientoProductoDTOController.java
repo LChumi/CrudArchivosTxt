@@ -9,7 +9,7 @@ package com.cumpleanos.erroresbodega.controller;
 
 import com.cumpleanos.erroresbodega.models.storage.AgregarProductoRequest;
 import com.cumpleanos.erroresbodega.models.storage.MovimientosProductosDTO;
-import com.cumpleanos.erroresbodega.services.MovimientosProductosDTOService;
+import com.cumpleanos.erroresbodega.services.MovimientosProductosDTOServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -26,43 +26,43 @@ import java.util.List;
 public class MovimientoProductoDTOController {
 
     @Autowired
-    private MovimientosProductosDTOService movimientosService;
+    private MovimientosProductosDTOServiceImpl service;
 
-    @PostMapping("guardar")
-    public ResponseEntity<MovimientosProductosDTO> guardar(@RequestBody MovimientosProductosDTO movimientosProductosDTO){
+    @PostMapping("guardar/narancay")
+    public ResponseEntity<MovimientosProductosDTO> guardarNarancay(@RequestBody MovimientosProductosDTO movimientosProductosDTO){
         try {
-            MovimientosProductosDTO movimientoNuevo = movimientosService.guardar(movimientosProductosDTO);
+            MovimientosProductosDTO movimientoNuevo = service.guardarNarancay(movimientosProductosDTO);
             return ResponseEntity.ok(movimientoNuevo);
         }catch (IOException e){
             throw new RuntimeException(e);
         }
     }
 
-    @GetMapping("listar")
-    public ResponseEntity<List<MovimientosProductosDTO>> listar(){
+    @GetMapping("listar/narancay")
+    public ResponseEntity<List<MovimientosProductosDTO>> listarNarancay(){
         try {
-            List<MovimientosProductosDTO> movimientos = movimientosService.listar();
+            List<MovimientosProductosDTO> movimientos = service.listarNarancay();
             return ResponseEntity.ok(movimientos);
         }catch (IOException e){
             throw new RuntimeException(e);
         }
     }
 
-    @PutMapping("agregarProducto")
-    public ResponseEntity<MovimientosProductosDTO> agregarProducto(@RequestBody AgregarProductoRequest request){
+    @PutMapping("agregarProducto/narancay")
+    public ResponseEntity<MovimientosProductosDTO> agregarProductoNarancay(@RequestBody AgregarProductoRequest request){
         try {
-            MovimientosProductosDTO movimiento= movimientosService.editarMovimiento(request.getMovimientosProductosDTO(), request.getProductoDTO());
+            MovimientosProductosDTO movimiento= service.agregarProductoNarancay(request);
             return ResponseEntity.ok(movimiento);
         }catch (IOException e){
             throw new RuntimeException(e);
         }
     }
 
-    @GetMapping("exportarAll/excel")
-    public ResponseEntity<InputStreamResource> exportarExcelAll() throws IOException{
-        ByteArrayInputStream stream = movimientosService.exportarExcelAll();
+    @PostMapping("exportar/excel/narancay")
+    public ResponseEntity<InputStreamResource> exportarExcelNarancay(@RequestBody MovimientosProductosDTO movimiento) throws IOException{
+        ByteArrayInputStream stream = service.exportarExcelNarancay(movimiento);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "attachment; filename=movimientos.xlsx");
+        headers.add("Content-Disposition", "attachment; filename="+movimiento.getNombre()+".xlsx");
         headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // Tipo de contenido correcto
 
         return ResponseEntity.ok()
@@ -70,9 +70,39 @@ public class MovimientoProductoDTOController {
                 .body(new InputStreamResource(stream));
     }
 
-    @PostMapping("exportar/excel")
-    public ResponseEntity<InputStreamResource> exportarExcel(@RequestBody MovimientosProductosDTO movimiento) throws IOException{
-        ByteArrayInputStream stream = movimientosService.exportarExcel(movimiento);
+    @PostMapping("guardar/Zhucay")
+    public ResponseEntity<MovimientosProductosDTO> guardarZhucay(@RequestBody MovimientosProductosDTO movimientosProductosDTO){
+        try {
+            MovimientosProductosDTO movimientoNuevo = service.guardarZhucay(movimientosProductosDTO);
+            return ResponseEntity.ok(movimientoNuevo);
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("listar/zhucay")
+    public ResponseEntity<List<MovimientosProductosDTO>> listarZhucay(){
+        try {
+            List<MovimientosProductosDTO> movimientos = service.listarZhucay();
+            return ResponseEntity.ok(movimientos);
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PutMapping("agregarProducto/zhucay")
+    public ResponseEntity<MovimientosProductosDTO> agregarProductoZhucay(@RequestBody AgregarProductoRequest request){
+        try {
+            MovimientosProductosDTO movimiento= service.agregarProductoZhucay(request);
+            return ResponseEntity.ok(movimiento);
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @PostMapping("exportar/excel/zhucay")
+    public ResponseEntity<InputStreamResource> exportarExcelZhucay(@RequestBody MovimientosProductosDTO movimiento) throws IOException{
+        ByteArrayInputStream stream = service.exportarExcelZhucay(movimiento);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename="+movimiento.getNombre()+".xlsx");
         headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // Tipo de contenido correcto

@@ -30,4 +30,10 @@ public class RutasConfig {
 
     @Value("${file.storage.path.imagenes}")
     private String rutaImagenes;
+
+    @Value("${file.storafe.path.movimientos.narancay}")
+    private String rutaMovimientosNarancay;
+
+    @Value("${file.storafe.path.movimientos.zhucay}")
+    private String rutaMovimientosZhucay;
 }

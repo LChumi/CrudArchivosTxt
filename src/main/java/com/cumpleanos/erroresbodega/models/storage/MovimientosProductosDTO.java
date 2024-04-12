@@ -27,6 +27,7 @@ public class MovimientosProductosDTO implements Serializable, Comparable<Movimie
     private Long id;
     private String fecha;
     private String nombre;
+    private String usuario;
     private List<ProductoDTO> productos;
 
     public Long generarNuevoId(){

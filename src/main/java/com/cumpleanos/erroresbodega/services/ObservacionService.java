@@ -22,9 +22,9 @@ import java.util.*;
 @Service
 public class ObservacionService {
 
-    private ObservacionesUtils observacionNarancay;
-    private ObservacionesUtils observacionZhucay;
-    private ObservacionesUtils observacionBodDanados;
+    private final ObservacionesUtils observacionNarancay;
+    private final ObservacionesUtils observacionZhucay;
+    private final ObservacionesUtils observacionBodDanados;
 
     @Autowired
     public ObservacionService(RutasConfig rutas){
