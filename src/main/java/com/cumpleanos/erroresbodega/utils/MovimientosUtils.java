@@ -94,6 +94,15 @@ public class MovimientosUtils {
         return movimientoExistente;
     }
 
+    public MovimientosProductosDTO getMovimiento(Long id,String detalle) throws IOException {
+        String nombreArchivo = String.format("movimiento_%s_%s.txt",id,detalle);
+        Path rutaArchivo = Paths.get(ruta,nombreArchivo);
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        MovimientosProductosDTO movimientoExistente = objectMapper.readValue(Files.newBufferedReader(rutaArchivo), MovimientosProductosDTO.class);
+        return movimientoExistente;
+    }
+
     private List<String> obtenerContenidoMoviminetos(String nombreArchivo) throws IOException {
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
         return Files.readAllLines(rutaArchivo);

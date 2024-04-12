@@ -37,6 +37,13 @@ public class MovimientosProductosDTOServiceImpl{
         return movimientosZhucay.listar();
     }
 
+    public MovimientosProductosDTO buscarMovimientosNarancay(Long id, String detalle ) throws Exception{
+        return movimientosNarancay.getMovimiento(id, detalle);
+    }
+    public MovimientosProductosDTO buscarMovimientosZhucay(Long id, String detalle ) throws Exception{
+        return movimientosZhucay.getMovimiento(id, detalle);
+    }
+
     public MovimientosProductosDTO guardarNarancay(MovimientosProductosDTO dto) throws IOException{
         return movimientosNarancay.guardar(dto);
     }

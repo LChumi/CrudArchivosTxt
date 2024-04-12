@@ -38,6 +38,16 @@ public class MovimientoProductoDTOController {
         }
     }
 
+    @GetMapping("buscar/narancay/{id}/{detalle}")
+    public ResponseEntity<MovimientosProductosDTO> buscarNarancay(@PathVariable Long id, @PathVariable String detalle){
+        try {
+            MovimientosProductosDTO movimientoEcontrado = service.buscarMovimientosNarancay(id, detalle);
+            return ResponseEntity.ok(movimientoEcontrado);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @GetMapping("listar/narancay")
     public ResponseEntity<List<MovimientosProductosDTO>> listarNarancay(){
         try {
@@ -78,6 +88,16 @@ public class MovimientoProductoDTOController {
             MovimientosProductosDTO movimientoNuevo = service.guardarZhucay(movimientosProductosDTO);
             return ResponseEntity.ok(movimientoNuevo);
         }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GetMapping("buscar/zhucay/{id}/{detalle}")
+    public ResponseEntity<MovimientosProductosDTO> buscarZhucay(@PathVariable Long id, @PathVariable String detalle){
+        try {
+            MovimientosProductosDTO movimientoEcontrado = service.buscarMovimientosZhucay(id, detalle);
+            return ResponseEntity.ok(movimientoEcontrado);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
