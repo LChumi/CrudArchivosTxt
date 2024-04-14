@@ -147,11 +147,11 @@ public class MovimientosUtils {
 
         // Crear una fila para los encabezados personalizados (nombre y ID)
         Row headerRow = sheet.createRow(0);
-        Cell nombreCell = headerRow.createCell(1);
+        Cell nombreCell = headerRow.createCell(0);
         nombreCell.setCellValue("Detalle");
-        Cell idCell = headerRow.createCell(2);
+        Cell idCell = headerRow.createCell(1);
         idCell.setCellValue("Fecha");
-        Cell usuarioCell = headerRow.createCell(3);
+        Cell usuarioCell = headerRow.createCell(2);
         usuarioCell.setCellValue("Usuario");
 
         // Obtener el nombre y el ID del movimiento especificado
@@ -160,12 +160,12 @@ public class MovimientosUtils {
         String usuario = movimiento.getUsuario();
 
         Row movimientoRow = sheet.createRow(1);
-        movimientoRow.createCell(1).setCellValue(nombreMovimiento);
-        movimientoRow.createCell(2).setCellValue(fecha);
-        movimientoRow.createCell(3).setCellValue(usuario);
+        movimientoRow.createCell(0).setCellValue(nombreMovimiento);
+        movimientoRow.createCell(1).setCellValue(fecha);
+        movimientoRow.createCell(2).setCellValue(usuario);
 
         // Crear una fila para los encabezados de los productos
-        Row productosHeaderRow = sheet.createRow(2);
+        Row productosHeaderRow = sheet.createRow(3);
         productosHeaderRow.createCell(0).setCellValue("Barra");
         productosHeaderRow.createCell(1).setCellValue("Item");
         productosHeaderRow.createCell(2).setCellValue("Detalle");
@@ -175,7 +175,7 @@ public class MovimientosUtils {
         List<ProductoDTO> productos = movimiento.getProductos();
 
         // Iterar sobre cada producto y escribir sus datos en el archivo Excel
-        int rowNum = 3; // Empezamos en la fila 3 después de los encabezados
+        int rowNum = 4; // Empezamos en la fila 3 después de los encabezados
         for (ProductoDTO producto : productos) {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(producto.getBarra());
