@@ -38,7 +38,7 @@ public class MovimientoProductoDTOController {
         }
     }
 
-    @GetMapping("buscar/narancay/{id}/{detalle}")
+    @GetMapping("buscar/narancay/{id}/")
     public ResponseEntity<MovimientosProductosDTO> buscarNarancay(@PathVariable Long id, @RequestParam String detalle){
         try {
             MovimientosProductosDTO movimientoEcontrado = service.buscarMovimientosNarancay(id, detalle);
@@ -58,7 +58,7 @@ public class MovimientoProductoDTOController {
         }
     }
 
-    @PutMapping("agregarProducto/narancay/{id}/{detalle}")
+    @PutMapping("agregarProducto/narancay/{id}/")
     public ResponseEntity<MovimientosProductosDTO> agregarProductoNarancay(@PathVariable Long id,
                                                                            @RequestParam String detalle,
                                                                            @RequestBody ProductoDTO dto){
@@ -92,7 +92,7 @@ public class MovimientoProductoDTOController {
         }
     }
 
-    @GetMapping("buscar/zhucay/{id}/{detalle}")
+    @GetMapping("buscar/zhucay/{id}/")
     public ResponseEntity<MovimientosProductosDTO> buscarZhucay(@PathVariable Long id, @RequestParam String detalle){
         try {
             MovimientosProductosDTO movimientoEcontrado = service.buscarMovimientosZhucay(id, detalle);
@@ -112,7 +112,7 @@ public class MovimientoProductoDTOController {
         }
     }
 
-    @PutMapping("agregarProducto/zhucay/{id}/{detalle}")
+    @PutMapping("agregarProducto/zhucay/{id}/")
     public ResponseEntity<MovimientosProductosDTO> agregarProductoZhucay(@PathVariable Long id,
                                                                          @RequestParam String detalle,
                                                                          @RequestBody ProductoDTO dto){
