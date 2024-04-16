@@ -39,7 +39,7 @@ public class MovimientoProductoDTOController {
     }
 
     @GetMapping("buscar/narancay/{id}/{detalle}")
-    public ResponseEntity<MovimientosProductosDTO> buscarNarancay(@PathVariable Long id, @PathVariable String detalle){
+    public ResponseEntity<MovimientosProductosDTO> buscarNarancay(@PathVariable Long id, @RequestParam String detalle){
         try {
             MovimientosProductosDTO movimientoEcontrado = service.buscarMovimientosNarancay(id, detalle);
             return ResponseEntity.ok(movimientoEcontrado);
@@ -60,7 +60,7 @@ public class MovimientoProductoDTOController {
 
     @PutMapping("agregarProducto/narancay/{id}/{detalle}")
     public ResponseEntity<MovimientosProductosDTO> agregarProductoNarancay(@PathVariable Long id,
-                                                                           @PathVariable String detalle,
+                                                                           @RequestParam String detalle,
                                                                            @RequestBody ProductoDTO dto){
         try {
             MovimientosProductosDTO movimiento= service.agregarProductoNarancay(id, detalle, dto);
@@ -93,7 +93,7 @@ public class MovimientoProductoDTOController {
     }
 
     @GetMapping("buscar/zhucay/{id}/{detalle}")
-    public ResponseEntity<MovimientosProductosDTO> buscarZhucay(@PathVariable Long id, @PathVariable String detalle){
+    public ResponseEntity<MovimientosProductosDTO> buscarZhucay(@PathVariable Long id, @RequestParam String detalle){
         try {
             MovimientosProductosDTO movimientoEcontrado = service.buscarMovimientosZhucay(id, detalle);
             return ResponseEntity.ok(movimientoEcontrado);
@@ -114,7 +114,7 @@ public class MovimientoProductoDTOController {
 
     @PutMapping("agregarProducto/zhucay/{id}/{detalle}")
     public ResponseEntity<MovimientosProductosDTO> agregarProductoZhucay(@PathVariable Long id,
-                                                                         @PathVariable String detalle,
+                                                                         @RequestParam String detalle,
                                                                          @RequestBody ProductoDTO dto){
         try {
             MovimientosProductosDTO movimiento= service.agregarProductoZhucay(id, detalle, dto);
