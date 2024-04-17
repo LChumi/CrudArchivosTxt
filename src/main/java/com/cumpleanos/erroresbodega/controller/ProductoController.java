@@ -33,8 +33,6 @@ public class ProductoController{
         this.functionService = service;
     }
 
-    private static final Logger console= LoggerFactory.getLogger(ProductoController.class);
-
     @GetMapping("/BuscarProducto")
     public ResponseEntity<ProductoView> bucarProducto(@RequestParam String data){
 
@@ -45,7 +43,7 @@ public class ProductoController{
             }
             return new ResponseEntity<>(productoView,HttpStatus.OK);
         }catch (Exception e){
-            console.error(e.getMessage(),"\n Ocurrio un error en el servicio");
+            log.error(e.getMessage(),"\n Ocurrio un error en el servicio");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -60,7 +58,7 @@ public class ProductoController{
             }
             return new ResponseEntity<>(producto,HttpStatus.OK);
         }catch (Exception e){
-            console.error(e.getMessage());
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -67,7 +67,7 @@ public class MovimientosUtils {
         movimientosProductosDTO.setFecha(fechaFormateada);
         movimientosProductosDTO.setProductos(new ArrayList<>());
         movimientosProductosDTO.generarNuevoId();
-        String nombreArchivo= String.format("movimiento_%s_%s.txt",movimientosProductosDTO.getId(),movimientosProductosDTO.getDetalle());
+        String nombreArchivo= String.format("movimiento_%s_%s.json",movimientosProductosDTO.getId(),movimientosProductosDTO.getDetalle());
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -79,7 +79,7 @@ public class MovimientosUtils {
     }
 
     public MovimientosProductosDTO editarMovimiento(Long id,String detalle, ProductoDTO productoDTO) throws IOException {
-        String nombreArchivo = String.format("movimiento_%s_%s.txt",id,detalle);
+        String nombreArchivo = String.format("movimiento_%s_%s.json",id,detalle);
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -94,7 +94,7 @@ public class MovimientosUtils {
     }
 
     public MovimientosProductosDTO getMovimiento(Long id,String detalle) throws IOException {
-        String nombreArchivo = String.format("movimiento_%s_%s.txt",id,detalle);
+        String nombreArchivo = String.format("movimiento_%s_%s.json",id,detalle);
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
         ObjectMapper objectMapper = new ObjectMapper();
 
