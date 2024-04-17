@@ -25,12 +25,16 @@ public class ObservacionService {
     private final ObservacionesUtils observacionNarancay;
     private final ObservacionesUtils observacionZhucay;
     private final ObservacionesUtils observacionBodDanados;
+    private final ObservacionesUtils observacionGColombia;
+    private final ObservacionesUtils observacionesVergel;
 
     @Autowired
     public ObservacionService(RutasConfig rutas){
         observacionNarancay = new ObservacionesUtils(rutas.getRutaNarancay());
         observacionZhucay = new ObservacionesUtils(rutas.getRutaZhucay());
         observacionBodDanados = new ObservacionesUtils(rutas.getRutaBodDanados());
+        observacionGColombia = new ObservacionesUtils(rutas.getRutaGcolombia());
+        observacionesVergel = new ObservacionesUtils(rutas.getRutaVergel());
     }
 
     public Observacion guardarObservacionNarancay(Observacion observacion) throws IOException{
@@ -42,6 +46,12 @@ public class ObservacionService {
     public Observacion guardarobservacionBodDanados(Observacion observacion) throws IOException{
         return observacionBodDanados.guardarObservacion(observacion);
     }
+    public Observacion guardarObservacionGColombia(Observacion observacion) throws IOException{
+        return observacionGColombia.guardarObservacion(observacion);
+    }
+    public Observacion guardarObservacionVergel(Observacion observacion) throws IOException{
+        return observacionesVergel.guardarObservacion(observacion);
+    }
 
     public List<Observacion> listarNarancay() throws IOException {
         return observacionNarancay.listarObservaciones();
@@ -52,6 +62,12 @@ public class ObservacionService {
     public List<Observacion> listarBodDañados() throws IOException {
         return observacionBodDanados.listarObservaciones();
     }
+    public List<Observacion> listarGColombia() throws IOException {
+        return observacionGColombia.listarObservaciones();
+    }
+    public List<Observacion> listarVergel() throws IOException {
+        return observacionesVergel.listarObservaciones();
+    }
 
     public Observacion editarObservacionNarancay(Observacion observacion, Correccion correccion) throws IOException{
         return observacionNarancay.editarObservacion(observacion, correccion);
@@ -61,6 +77,12 @@ public class ObservacionService {
     }
     public Observacion editarObservacionBodDa(Observacion observacion, Correccion correccion) throws IOException{
         return observacionBodDanados.editarObservacion(observacion, correccion);
+    }
+    public Observacion editarObservacionGColombia(Observacion observacion, Correccion correccion) throws IOException {
+        return observacionGColombia.editarObservacion(observacion, correccion);
+    }
+    public Observacion editarObservacionVergel(Observacion observacion, Correccion correccion) throws IOException {
+        return observacionesVergel.editarObservacion(observacion,correccion);
     }
 
     public ByteArrayInputStream exportarExcelZhucay() throws IOException{
@@ -113,12 +135,24 @@ public class ObservacionService {
         };
         return observacionNarancay.exportarExcel(observacionesNarancay,columns,excelFiller);
     }
-    public ByteArrayInputStream exportarExcelBodDa() throws IOException{
-        String[] columns = {"FECHA","ITEM","DESCRIPCION","CANTIDAD DAÑADOS","OBSERVACION","RESPONSABLE","RESPONSABLE SOLUCION","DETALLE", "FECHA SOLUCION"};
-
+    public ByteArrayInputStream exportarExcelBodDa() throws IOException {
         List<Observacion> observacionesNarancay = listarBodDañados();
+        return exportarExcel(observacionesNarancay, observacionBodDanados);
+    }
+    public ByteArrayInputStream exportarExcelGColombia() throws IOException {
+        List<Observacion> observacionesNarancay = listarGColombia();
+        return exportarExcel(observacionesNarancay, observacionGColombia);
+    }
+    public ByteArrayInputStream exportarExcelVergel() throws IOException {
+        List<Observacion> observacionesNarancay = listarVergel();
+        return exportarExcel(observacionesNarancay, observacionesVergel);
+    }
 
-        ExcelFiller excelFiller = (row,observacion) ->{
+
+    private ByteArrayInputStream exportarExcel(List<Observacion> observaciones, ObservacionesUtils observacionExporter) throws IOException {
+        String[] columns = {"FECHA", "ITEM", "DESCRIPCION", "CANTIDAD DAÑADOS", "OBSERVACION", "RESPONSABLE", "RESPONSABLE SOLUCION", "DETALLE", "FECHA SOLUCION"};
+
+        ExcelFiller excelFiller = (row, observacion) -> {
             row.createCell(0).setCellValue(observacion.getFecha());
             row.createCell(1).setCellValue(observacion.getItem());
             row.createCell(2).setCellValue(observacion.getDescripcion());
@@ -131,7 +165,7 @@ public class ObservacionService {
                 row.createCell(8).setCellValue(observacion.getCorreccion().getFecha());
             }
         };
-        return observacionBodDanados.exportarExcel(observacionesNarancay,columns,excelFiller);
+        return observacionExporter.exportarExcel(observaciones, columns, excelFiller);
     }
 
 }

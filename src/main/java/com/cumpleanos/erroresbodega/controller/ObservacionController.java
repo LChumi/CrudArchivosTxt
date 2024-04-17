@@ -156,4 +156,88 @@ public class ObservacionController {
                 .headers(headers)
                 .body(new InputStreamResource(stream));
     }
+
+    /**
+     * Crud para la bodega Gran Colombia
+     */
+    @PostMapping("/guardar/gColombia")
+    public ResponseEntity<Observacion> guardarGColombia(@RequestBody Observacion observacion){
+        try {
+            Observacion observacion1 = observacionService.guardarObservacionGColombia(observacion);
+            return ResponseEntity.ok(observacion1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/listarGColombia")
+    public ResponseEntity<List<Observacion>> ListarGColombia() {
+        try {
+            List<Observacion> listaObservaciones = observacionService.listarGColombia();
+            return ResponseEntity.ok(listaObservaciones);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @PutMapping("/agregarCorrecionGColombia/")
+    public Observacion agregarCorrecionGColombia(@RequestBody ObservacionCorrecion obj){
+        try{
+            return observacionService.editarObservacionGColombia(obj.getObservacion(), obj.getCorreccion());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/excel/gColombia/")
+    public ResponseEntity<InputStreamResource> exportarGColombia() throws Exception {
+        ByteArrayInputStream stream = observacionService.exportarExcelGColombia();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=observaciones.xlsx");
+        headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // Tipo de contenido correcto
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(new InputStreamResource(stream));
+    }
+
+    /**
+     * Crud para la bodega Vergel
+     */
+    @PostMapping("/guardar/vergel")
+    public ResponseEntity<Observacion> guardarVergel(@RequestBody Observacion observacion){
+        try {
+            Observacion observacion1 = observacionService.guardarObservacionVergel(observacion);
+            return ResponseEntity.ok(observacion1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/listarVergel")
+    public ResponseEntity<List<Observacion>> ListarVergel() {
+        try {
+            List<Observacion> listaObservaciones = observacionService.listarVergel();
+            return ResponseEntity.ok(listaObservaciones);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @PutMapping("/agregarCorrecionVergel/")
+    public Observacion agregarCorrecionVergel(@RequestBody ObservacionCorrecion obj){
+        try{
+            return observacionService.editarObservacionVergel(obj.getObservacion(), obj.getCorreccion());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/excel/vergel/")
+    public ResponseEntity<InputStreamResource> exportarVergel() throws Exception {
+        ByteArrayInputStream stream = observacionService.exportarExcelVergel();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=observaciones.xlsx");
+        headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // Tipo de contenido correcto
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(new InputStreamResource(stream));
+    }
 }
