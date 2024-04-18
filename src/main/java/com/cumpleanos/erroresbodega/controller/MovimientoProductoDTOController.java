@@ -70,6 +70,18 @@ public class MovimientoProductoDTOController {
         }
     }
 
+    @DeleteMapping("eliminarProducto/narancay/{id}/")
+    public ResponseEntity<MovimientosProductosDTO> eliminarProductoNarancay(@PathVariable Long id,
+                                                                           @RequestParam String detalle,
+                                                                           @RequestBody ProductoDTO dto){
+        try {
+            MovimientosProductosDTO movimiento= service.elimiarProductoNarancay(id, detalle, dto);
+            return ResponseEntity.ok(movimiento);
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
     @PostMapping("exportar/excel/narancay")
     public ResponseEntity<InputStreamResource> exportarExcelNarancay(@RequestBody MovimientosProductosDTO movimiento) throws IOException{
         ByteArrayInputStream stream = service.exportarExcelNarancay(movimiento);
@@ -118,6 +130,18 @@ public class MovimientoProductoDTOController {
                                                                          @RequestBody ProductoDTO dto){
         try {
             MovimientosProductosDTO movimiento= service.agregarProductoZhucay(id, detalle, dto);
+            return ResponseEntity.ok(movimiento);
+        }catch (IOException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    @DeleteMapping("eliminarProducto/zhucay/{id}/")
+    public ResponseEntity<MovimientosProductosDTO> eliminarProductoZhucay(@PathVariable Long id,
+                                                                         @RequestParam String detalle,
+                                                                         @RequestBody ProductoDTO dto){
+        try {
+            MovimientosProductosDTO movimiento= service.eliminarProductoZhucay(id, detalle, dto);
             return ResponseEntity.ok(movimiento);
         }catch (IOException e){
             throw new RuntimeException(e);

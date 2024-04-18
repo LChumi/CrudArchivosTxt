@@ -65,4 +65,11 @@ public class MovimientosProductosDTOServiceImpl{
         return movimientosZhucay.exportarExcel(movimiento);
     }
 
+    public MovimientosProductosDTO elimiarProductoNarancay(Long id, String detalle, ProductoDTO productoDTO) throws IOException{
+        return movimientosNarancay.editarMovimientoEliminar(id, detalle, productoDTO);
+    }
+    public MovimientosProductosDTO eliminarProductoZhucay(Long id, String detalle, ProductoDTO productoDTO) throws IOException{
+        return movimientosZhucay.editarMovimientoEliminar(id, detalle, productoDTO);
+    }
+
 }

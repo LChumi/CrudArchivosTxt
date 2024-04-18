@@ -63,4 +63,8 @@ public class MovimientosProductosDTO implements Serializable, Comparable<Movimie
         productos.add(productoNuevo);
     }
 
+    public void eliminarProducto(ProductoDTO productoEliminar){
+        productos.removeIf(producto -> producto.getBarra().equals(productoEliminar.getBarra()));
+    }
+
 }

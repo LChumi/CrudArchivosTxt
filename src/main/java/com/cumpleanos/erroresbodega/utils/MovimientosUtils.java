@@ -31,7 +31,7 @@ import java.util.stream.Stream;
 
 public class MovimientosUtils {
 
-    private String ruta;
+    private final String ruta;
 
     public MovimientosUtils(String ruta) {this.ruta = ruta;}
 
@@ -93,13 +93,27 @@ public class MovimientosUtils {
         return movimientoExistente;
     }
 
+    public MovimientosProductosDTO editarMovimientoEliminar(Long id,String detalle, ProductoDTO productoDTO) throws IOException {
+        String nombreArchivo = String.format("movimiento_%s_%s.json",id,detalle);
+        Path rutaArchivo = Paths.get(ruta,nombreArchivo);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        MovimientosProductosDTO movimientoExistente = objectMapper.readValue(Files.newBufferedReader(rutaArchivo), MovimientosProductosDTO.class);
+
+        movimientoExistente.eliminarProducto(productoDTO);
+
+        objectMapper.writeValue(rutaArchivo.toFile(),movimientoExistente);
+
+        return movimientoExistente;
+    }
+
     public MovimientosProductosDTO getMovimiento(Long id,String detalle) throws IOException {
         String nombreArchivo = String.format("movimiento_%s_%s.json",id,detalle);
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
         ObjectMapper objectMapper = new ObjectMapper();
 
-        MovimientosProductosDTO movimientoExistente = objectMapper.readValue(Files.newBufferedReader(rutaArchivo), MovimientosProductosDTO.class);
-        return movimientoExistente;
+        return objectMapper.readValue(Files.newBufferedReader(rutaArchivo), MovimientosProductosDTO.class);
     }
 
     private List<String> obtenerContenidoMoviminetos(String nombreArchivo) throws IOException {
