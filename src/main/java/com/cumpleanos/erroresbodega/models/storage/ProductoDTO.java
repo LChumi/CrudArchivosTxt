@@ -25,6 +25,7 @@ public class ProductoDTO {
     private String detalle;
     private String item;
     private int cantidad;
+    private String observacion;
 
     public Long generarNuevoId(){
         return this.id=ID_GENERATOR.incrementAndGet();
