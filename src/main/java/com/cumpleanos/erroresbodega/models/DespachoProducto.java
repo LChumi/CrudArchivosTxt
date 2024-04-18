@@ -8,6 +8,7 @@
 
 package com.cumpleanos.erroresbodega.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -32,6 +33,7 @@ public class DespachoProducto {
     private Long empresa;
 
     @Column(name = "DPR_CCO_CODIGO")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private BigInteger ccoCodigo;
 
     @Column(name = "DPR_TIPODOC")
