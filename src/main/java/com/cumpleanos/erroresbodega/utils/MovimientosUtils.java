@@ -184,6 +184,7 @@ public class MovimientosUtils {
         productosHeaderRow.createCell(1).setCellValue("Item");
         productosHeaderRow.createCell(2).setCellValue("Detalle");
         productosHeaderRow.createCell(3).setCellValue("Cantidad");
+        productosHeaderRow.createCell(4).setCellValue("Observacion");
 
         // Obtener los productos del movimiento especificado
         List<ProductoDTO> productos = movimiento.getProductos();
@@ -196,6 +197,7 @@ public class MovimientosUtils {
             row.createCell(1).setCellValue(producto.getItem());
             row.createCell(2).setCellValue(producto.getDetalle());
             row.createCell(3).setCellValue(producto.getCantidad());
+            row.createCell(4).setCellValue(producto.getObservacion());
         }
 
         // Escribir el libro de trabajo Excel en el flujo de salida
