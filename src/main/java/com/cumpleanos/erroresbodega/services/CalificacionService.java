@@ -87,7 +87,7 @@ public class CalificacionService {
     }
 
     public ByteArrayInputStream exportarExcel() throws IOException{
-        String[] columns = {"FECHA", "EMPLEADO", "CALIFICACION" ,"CLIENTE", "OBSERVACION", "ACEPTA POLITICAS"};
+        String[] columns = {"FECHA","HORA", "EMPLEADO", "CALIFICACION" ,"CLIENTE", "OBSERVACION", "ACEPTA POLITICAS"};
 
         Workbook workbook = new XSSFWorkbook();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -105,11 +105,12 @@ public class CalificacionService {
         for(Calificacion calificacion:calificaciones){
             row= sheet.createRow(initRow);
             row.createCell(0).setCellValue(calificacion.getFecha());
-            row.createCell(1).setCellValue(calificacion.getEmpleado());
-            row.createCell(2).setCellValue(calificacion.getCalificacionEnum().toString());
-            row.createCell(3).setCellValue(calificacion.getCliente());
-            row.createCell(4).setCellValue(calificacion.getObservacion());
-            row.createCell(5).setCellValue(calificacion.isAceptaPoliticas());
+            row.createCell(1).setCellValue(calificacion.getFecha());
+            row.createCell(2).setCellValue(calificacion.getEmpleado());
+            row.createCell(3).setCellValue(calificacion.getCalificacionEnum().toString());
+            row.createCell(4).setCellValue(calificacion.getCliente());
+            row.createCell(5).setCellValue(calificacion.getObservacion());
+            row.createCell(6).setCellValue(calificacion.isAceptaPoliticas());
 
             initRow++;
         }

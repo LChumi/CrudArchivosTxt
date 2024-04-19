@@ -29,6 +29,7 @@ public class Calificacion implements Serializable,Comparable<Calificacion> {
     @Setter(AccessLevel.NONE)
     private Long id;
     private String fecha;
+    private String hora;
     private String cliente;
     private String empleado;
     private String observacion;
