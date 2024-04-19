@@ -36,9 +36,9 @@ public class MovimientosProductosDTO implements Serializable, Comparable<Movimie
     }
 
     @Override
-    public int compareTo(MovimientosProductosDTO o) {
+    public int compareTo(MovimientosProductosDTO movimiento) {
         LocalDate fechaActual = LocalDate.parse(this.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        LocalDate fechaMovimiento = LocalDate.parse(this.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate fechaMovimiento = LocalDate.parse(movimiento.getFecha(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         return fechaMovimiento.compareTo(fechaActual);
     }
 
