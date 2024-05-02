@@ -14,11 +14,15 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Getter
 @Setter
 public class Observacion implements Serializable, Comparable<Observacion> {
 
+    private static final AtomicLong idGenerator = new AtomicLong(0);
+
+    private Long id;
     private String fecha;
     private String item;
     private String descripcion;
@@ -43,5 +47,9 @@ public class Observacion implements Serializable, Comparable<Observacion> {
         LocalDate fechaOb=LocalDate.parse(observacion.getFecha(), DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
         return fechaOb.compareTo(fechaActual);
+    }
+
+    public Long generarNuevoId(){
+        return this.id=idGenerator.incrementAndGet();
     }
 }

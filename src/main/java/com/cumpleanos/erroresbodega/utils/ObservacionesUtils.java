@@ -40,7 +40,7 @@ public class ObservacionesUtils {
 
     public Observacion guardarObservacion(Observacion observacion) throws IOException {
         String fechaFormateada = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        String nombreArchivo = String.format("observacion_%s_%s_%s.txt",fechaFormateada,observacion.getUsuario(),observacion.getItem());
+        String nombreArchivo = String.format("observacion_%s_%s_%s.txt",fechaFormateada,observacion.getUsuario(),observacion.getId());
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
         observacion.setFecha(fechaFormateada);
         observacion.calcularPrecioTotal();
@@ -56,7 +56,7 @@ public class ObservacionesUtils {
     public Observacion editarObservacion(Observacion observacion, Correccion correccion) throws IOException{
         String fechaFormateada = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
         correccion.setFecha(fechaFormateada);
-        String nombreArchivo=String.format("observacion_%s_%s_%s.txt",observacion.getFecha(),observacion.getUsuario(),observacion.getItem());
+        String nombreArchivo=String.format("observacion_%s_%s_%s.txt",observacion.getFecha(),observacion.getUsuario(),observacion.getId());
         Path rutaArchivo = Paths.get(ruta, nombreArchivo);
 
         ObjectMapper objectMapper = new ObjectMapper();

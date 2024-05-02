@@ -105,7 +105,7 @@ public class CalificacionService {
         for(Calificacion calificacion:calificaciones){
             row= sheet.createRow(initRow);
             row.createCell(0).setCellValue(calificacion.getFecha());
-            row.createCell(1).setCellValue(calificacion.getFecha());
+            row.createCell(1).setCellValue(calificacion.getHora());
             row.createCell(2).setCellValue(calificacion.getEmpleado());
             row.createCell(3).setCellValue(calificacion.getCalificacionEnum().toString());
             row.createCell(4).setCellValue(calificacion.getCliente());
