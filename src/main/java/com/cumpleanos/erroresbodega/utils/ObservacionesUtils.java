@@ -19,6 +19,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,6 +45,7 @@ public class ObservacionesUtils {
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
         observacion.setFecha(fechaFormateada);
         observacion.calcularPrecioTotal();
+        observacion.generarNuevoId();
 
         ObjectMapper objectMapper=new ObjectMapper();
         String jsonObservacion= objectMapper.writeValueAsString(observacion);
@@ -54,20 +56,31 @@ public class ObservacionesUtils {
     }
 
     public Observacion editarObservacion(Observacion observacion, Correccion correccion) throws IOException{
-        String fechaFormateada = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        correccion.setFecha(fechaFormateada);
-        String nombreArchivo=String.format("observacion_%s_%s_%s.txt",observacion.getFecha(),observacion.getUsuario(),observacion.getId());
-        Path rutaArchivo = Paths.get(ruta, nombreArchivo);
+            String fechaFormateada = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+            correccion.setFecha(fechaFormateada);
+            ObjectMapper objectMapper = new ObjectMapper();
 
-        ObjectMapper objectMapper = new ObjectMapper();
+            String nombreArchivoId=String.format("observacion_%s_%s_%s.txt",observacion.getFecha(),observacion.getUsuario(),observacion.getId());
+            Path rutaArchivoId = Paths.get(ruta, nombreArchivoId);
 
-        Observacion observacionExisitente =objectMapper.readValue(Files.newBufferedReader(rutaArchivo), Observacion.class);
-
-        observacionExisitente.setCorreccion(correccion);
-
-        objectMapper.writeValue(rutaArchivo.toFile(),observacionExisitente);
-
-        return observacionExisitente;
+            if (Files.exists(rutaArchivoId)) {
+                Observacion observacionExisitente =objectMapper.readValue(Files.newBufferedReader(rutaArchivoId), Observacion.class);
+                observacionExisitente.setCorreccion(correccion);
+                objectMapper.writeValue(rutaArchivoId.toFile(),observacionExisitente);
+                return observacionExisitente;
+            }else {
+                String nombreArchivoItem = String.format("observacion_%s_%s_%s.txt", observacion.getFecha(), observacion.getUsuario(), observacion.getItem());
+                Path rutaArchivoItem = Paths.get(ruta, nombreArchivoItem);
+                if (Files.exists(rutaArchivoItem)) {
+                    Observacion observacionExistente = objectMapper.readValue(Files.newBufferedReader(rutaArchivoItem), Observacion.class);
+                    observacionExistente.setCorreccion(correccion);
+                    objectMapper.writeValue(rutaArchivoItem.toFile(), observacionExistente);
+                    return observacionExistente;
+                } else {
+                    // Si el archivo con el nombre generado por 'item' tampoco se encuentra, puedes manejar esta situación según tus necesidades
+                    throw new FileNotFoundException("No se encontró el archivo de observación para la observación especificada.");
+                }
+            }
     }
 
     public List<Observacion> listarObservaciones() throws IOException {
