@@ -41,11 +41,11 @@ public class ObservacionesUtils {
 
     public Observacion guardarObservacion(Observacion observacion) throws IOException {
         String fechaFormateada = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        observacion.generarNuevoId();
         String nombreArchivo = String.format("observacion_%s_%s_%s.txt",fechaFormateada,observacion.getUsuario(),observacion.getId());
         Path rutaArchivo = Paths.get(ruta,nombreArchivo);
         observacion.setFecha(fechaFormateada);
         observacion.calcularPrecioTotal();
-        observacion.generarNuevoId();
 
         ObjectMapper objectMapper=new ObjectMapper();
         String jsonObservacion= objectMapper.writeValueAsString(observacion);
