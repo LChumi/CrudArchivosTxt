@@ -31,8 +31,8 @@ public class MovimientosProductosDTO implements Serializable, Comparable<Movimie
     private String usuario;
     private List<ProductoDTO> productos;
 
-    public Long generarNuevoId(){
-        return this.id=idGenerator.incrementAndGet();
+    public void generarNuevoId(){
+        this.id = idGenerator.incrementAndGet();
     }
 
     @Override

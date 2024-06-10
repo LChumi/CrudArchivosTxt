@@ -8,7 +8,6 @@
 
 package com.cumpleanos.erroresbodega.models.storage;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,15 +15,17 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Setter
 @Getter
-public class ProductoDTO {
+public class ProductoShowroom {
 
     private static final AtomicLong ID_GENERATOR = new AtomicLong(0);
 
-    @Setter(AccessLevel.NONE)
     private Long id;
     private String barra;
-    private String detalle;
     private String item;
+    private String descripcion;
+    private String stockNc;
+    private String stockZh;
+    private String stockSh;
     private int cantidad;
     private String observacion;
 
