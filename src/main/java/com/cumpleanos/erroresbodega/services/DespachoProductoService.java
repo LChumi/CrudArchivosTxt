@@ -16,4 +16,5 @@ import java.util.List;
 public interface DespachoProductoService {
 
     List<DespachoProducto> listarProductos(BigInteger cco_codigo);
+    DespachoProducto producto(BigInteger codigo,String pro_id);
 }

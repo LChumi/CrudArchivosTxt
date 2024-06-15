@@ -26,4 +26,9 @@ public class DespachoProductoServiceImpl implements DespachoProductoService {
     public List<DespachoProducto> listarProductos(BigInteger cco_codigo) {
         return productoRepository.findByCcoCodigo(cco_codigo);
     }
+
+    @Override
+    public DespachoProducto producto(BigInteger codigo, String pro_id) {
+        return productoRepository.findByCcoCodigoAndProId(codigo, pro_id);
+    }
 }

@@ -20,4 +20,7 @@ public interface DespachoProductoRepository extends JpaRepository<DespachoProduc
     @Query("SELECT P FROM DespachoProducto P WHERE P.ccoCodigo =:ccoCodigo")
     List<DespachoProducto> findByCcoCodigo(BigInteger ccoCodigo);
 
+    @Query("SELECT P FROM DespachoProducto P WHERE P.ccoCodigo =:ccoCodigo AND (P.proId LIKE %:data% OR P.proId1 LIKE %:data%)")
+    DespachoProducto findByCcoCodigoAndProId(BigInteger ccoCodigo, String data);
+
 }

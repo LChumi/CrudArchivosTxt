@@ -25,8 +25,10 @@ public class ProductoDTO {
     private String barra;
     private String detalle;
     private String item;
-    private int cantidad;
-    private String observacion;
+    private int cantidadPedido;
+    private String observacionPedido;
+    private int cantidadDigitada;
+    private String novedad;
 
     public void generarNuevoId(){
         this.id = ID_GENERATOR.incrementAndGet();

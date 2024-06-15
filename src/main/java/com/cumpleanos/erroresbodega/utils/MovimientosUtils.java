@@ -11,28 +11,37 @@ package com.cumpleanos.erroresbodega.utils;
 import com.cumpleanos.erroresbodega.models.storage.MovimientosProductosDTO;
 import com.cumpleanos.erroresbodega.models.storage.ProductoDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.rmi.RemoteException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
+@Slf4j
 public class MovimientosUtils {
 
     private final String ruta;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public MovimientosUtils(String ruta) {this.ruta = ruta;}
 
@@ -79,19 +88,28 @@ public class MovimientosUtils {
         return movimientosProductosDTO;
     }
 
-    public MovimientosProductosDTO editarMovimiento(Long id,String detalle, ProductoDTO productoDTO) throws IOException {
-        String nombreArchivo = String.format("movimiento_%s_%s.json",id,detalle);
-        Path rutaArchivo = Paths.get(ruta,nombreArchivo);
+    public Future<MovimientosProductosDTO> editarMovimiento(Long id, String detalle, ProductoDTO productoDTO) {
+        return executor.submit(() -> {
+            try {
+                String nombreArchivo = String.format("movimiento_%s_%s.json", id, detalle);
+                Path rutaArchivo = Paths.get(ruta, nombreArchivo);
 
-        ObjectMapper objectMapper = new ObjectMapper();
+                ObjectMapper objectMapper = new ObjectMapper();
 
-        MovimientosProductosDTO movimientoExistente = objectMapper.readValue(Files.newBufferedReader(rutaArchivo), MovimientosProductosDTO.class);
-
-        movimientoExistente.agregarProducto(productoDTO);
-
-        objectMapper.writeValue(rutaArchivo.toFile(),movimientoExistente);
-
-        return movimientoExistente;
+                if (Files.exists(rutaArchivo) && Files.size(rutaArchivo) > 0) {
+                    try (BufferedReader reader = Files.newBufferedReader(rutaArchivo, StandardCharsets.UTF_8)) {
+                        MovimientosProductosDTO movimientoExistente = objectMapper.readValue(reader, MovimientosProductosDTO.class);
+                        movimientoExistente.agregarProducto(productoDTO);
+                        objectMapper.writeValue(rutaArchivo.toFile(), movimientoExistente);
+                        return movimientoExistente;
+                    }
+                } else {
+                    throw new RuntimeException("El archivo no existe o está vacío");
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Error al leer el archivo JSON", e);
+            }
+        });
     }
 
     public MovimientosProductosDTO editarMovimientoEliminar(Long id,String detalle, ProductoDTO productoDTO) throws IOException {
@@ -183,8 +201,10 @@ public class MovimientosUtils {
         productosHeaderRow.createCell(0).setCellValue("Barra");
         productosHeaderRow.createCell(1).setCellValue("Item");
         productosHeaderRow.createCell(2).setCellValue("Detalle");
-        productosHeaderRow.createCell(3).setCellValue("Cantidad");
-        productosHeaderRow.createCell(4).setCellValue("Observacion");
+        productosHeaderRow.createCell(3).setCellValue("CantidadPedido");
+        productosHeaderRow.createCell(4).setCellValue("ObservacionPedido");
+        productosHeaderRow.createCell(5).setCellValue("CantidadDigitada");
+        productosHeaderRow.createCell(6).setCellValue("Novedad");
 
         // Obtener los productos del movimiento especificado
         List<ProductoDTO> productos = movimiento.getProductos();
@@ -196,8 +216,10 @@ public class MovimientosUtils {
             row.createCell(0).setCellValue(producto.getBarra());
             row.createCell(1).setCellValue(producto.getItem());
             row.createCell(2).setCellValue(producto.getDetalle());
-            row.createCell(3).setCellValue(producto.getCantidad());
-            row.createCell(4).setCellValue(producto.getObservacion());
+            row.createCell(3).setCellValue(producto.getCantidadPedido());
+            row.createCell(4).setCellValue(producto.getObservacionPedido());
+            row.createCell(5).setCellValue(producto.getCantidadDigitada());
+            row.createCell(6).setCellValue(producto.getNovedad());
         }
 
         // Escribir el libro de trabajo Excel en el flujo de salida

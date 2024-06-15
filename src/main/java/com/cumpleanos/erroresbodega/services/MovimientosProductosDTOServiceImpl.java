@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 @Service
 public class MovimientosProductosDTOServiceImpl{
@@ -52,11 +54,27 @@ public class MovimientosProductosDTOServiceImpl{
         return movimientosZhucay.guardar(dto);
     }
 
-    public MovimientosProductosDTO agregarProductoNarancay(Long id, String detalle, ProductoDTO productoDTO) throws IOException{
-        return movimientosNarancay.editarMovimiento(id, detalle, productoDTO);
+    public MovimientosProductosDTO agregarProductoNarancay(Long id, String detalle, ProductoDTO productoDTO) throws IOException {
+        try {
+            Future<MovimientosProductosDTO> future = movimientosNarancay.editarMovimiento(id, detalle, productoDTO);
+            return future.get(); // Espera hasta que el Future esté completado y devuelve el resultado
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // Restores the interrupted status
+            throw new IOException("El hilo fue interrumpido", e);
+        } catch (ExecutionException e) {
+            throw new IOException("Error al agregar el producto", e.getCause());
+        }
     }
     public MovimientosProductosDTO agregarProductoZhucay(Long id, String detalle, ProductoDTO productoDTO) throws IOException{
-        return movimientosZhucay.editarMovimiento(id, detalle, productoDTO);
+        try {
+            Future<MovimientosProductosDTO> future = movimientosZhucay.editarMovimiento(id, detalle, productoDTO);
+            return future.get();
+        }catch (InterruptedException e){
+            Thread.currentThread().interrupt(); // Restores the interrupted status
+            throw new IOException("El hilo fue interrumpido", e);
+        }catch (ExecutionException e){
+            throw new IOException("Error al agregar el producto", e.getCause());
+        }
     }
 
     public ByteArrayInputStream exportarExcelNarancay(MovimientosProductosDTO movimiento) throws IOException{
