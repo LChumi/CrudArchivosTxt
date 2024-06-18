@@ -55,11 +55,14 @@ public class MovimientosProductosDTO implements Serializable, Comparable<Movimie
                 }
                 if (productoNuevo.getNovedad()!=null){
                     producto.setNovedad(productoNuevo.getNovedad());
+                } else {
+                    producto.setNovedad(producto.getNovedad());
                 }
                 return;
             }
         }
         productoNuevo.generarNuevoId();
+        productoNuevo.setCantidadDigitada(0);
         productos.add(productoNuevo);
     }
 
