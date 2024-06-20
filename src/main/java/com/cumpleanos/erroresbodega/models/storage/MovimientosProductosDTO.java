@@ -53,10 +53,8 @@ public class MovimientosProductosDTO implements Serializable, Comparable<Movimie
                     // Si se especifica una cantidad, sumarla a la cantidad existente
                     producto.setCantidadDigitada(producto.getCantidadDigitada() + productoNuevo.getCantidadDigitada());
                 }
-                if (productoNuevo.getNovedad()!=null){
+                if (productoNuevo.getNovedad() !=null && !productoNuevo.getNovedad().isEmpty()){
                     producto.setNovedad(productoNuevo.getNovedad());
-                } else {
-                    producto.setNovedad(producto.getNovedad());
                 }
                 return;
             }
