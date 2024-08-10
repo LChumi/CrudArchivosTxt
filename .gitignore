@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### cert
+src/main/resources/keystore.p12
