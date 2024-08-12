@@ -10,8 +10,6 @@ package com.cumpleanos.erroresbodega.services;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
-import net.sf.jasperreports.export.ExporterInput;
-import net.sf.jasperreports.export.OutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.sql.DataSource;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -36,50 +35,58 @@ public class ResportsService {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("P_EMPRESA", empresa);
         parameters.put("P_CODIGO", cco);
-
-        System.out.println("Parámetros enviados: P_EMPRESA=" + empresa + ", P_CODIGO=" + cco);
-
-        return generateReport(parameters, format);
+        return generateReport("reports/pedidos.jrxml",parameters, format);
     }
 
-    private byte[] generateReport(Map<String, Object> parameters, String format) throws Exception {
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("reports/pedidos.jrxml");
-        if (inputStream == null) {
-            throw new FileNotFoundException("El archivo 'pedidos.jrxml' no se encontró en el classpath.");
-        }
+    public byte[] getReportClientePedido(String pedido, String format) throws Exception {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("P_CPEDIDO", pedido);
+        return generateReport("reports/pedidosCli.jrxml",parameters,format);
+    }
 
-        JasperReport report = JasperCompileManager.compileReport(inputStream);
+    private byte[] generateReport(String reportPath,Map<String, Object> parameters, String format) throws Exception {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(reportPath);
+        Connection connection = dataSource.getConnection()) {
 
-        try (Connection connection = dataSource.getConnection()) {
-            System.out.println("Conexión a la base de datos exitosa");
+            if (inputStream == null) {
+                throw new FileNotFoundException("No se encontro el classpath: " + reportPath);
+            }
 
+            JasperReport report = JasperCompileManager.compileReport(inputStream);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, connection);
-            if (jasperPrint.getPages().isEmpty()) {
-                System.out.println("El reporte está vacío");
+
+            if (jasperPrint.getPages().isEmpty()){
+                System.out.println("El reporte esta vacio");
             } else {
-                System.out.println("El reporte contiene " + jasperPrint.getPages().size() + " página(s)");
+                System.out.println("El reporte contiene " + jasperPrint.getPages().size() + " pagina(s)");
             }
 
-            if ("pdf".equalsIgnoreCase(format)) {
-                return JasperExportManager.exportReportToPdf(jasperPrint);
-            } else if ("excel".equalsIgnoreCase(format)) {
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                JRXlsxExporter exporter = new JRXlsxExporter();
-                ExporterInput exporterInput = new SimpleExporterInput(jasperPrint);
-                OutputStreamExporterOutput exporterOutput = new SimpleOutputStreamExporterOutput(outputStream);
-                exporter.setExporterInput(exporterInput);
-                exporter.setExporterOutput(exporterOutput);
-                exporter.exportReport();
-                return outputStream.toByteArray();
-            } else {
-                throw new IllegalArgumentException("Formato no soportado: " + format);
+            switch (format.toLowerCase()){
+                case "pdf":
+                    return JasperExportManager.exportReportToPdf(jasperPrint);
+                case "excel":
+                    return exportToExcel(jasperPrint);
+                default:
+                    throw new IllegalArgumentException("Formato no soportado" + format);
+
             }
-        } catch (JRException e) {
-            throw new Exception("Error en JasperReports: " + e.getMessage(), e);
-        } catch (SQLException e) {
-            throw new Exception("Error en la conexión a la base de datos: " + e.getMessage(), e);
+        } catch (JRException e){
+            throw new JRRuntimeException("Error al generar el reporte "+e.getMessage(), e);
+        } catch (SQLException e){
+            throw new Exception("Error en la conexion a la base de datos "+e.getMessage(), e);
         }
     }
 
+    private byte[] exportToExcel(JasperPrint jasperPrint) throws JRException {
+        try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()){
+            JRXlsxExporter exporter = new JRXlsxExporter();
+            exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+            exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));
+            exporter.exportReport();
+            return outputStream.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

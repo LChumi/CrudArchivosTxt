@@ -51,5 +51,34 @@ public class ReportsController {
         }
     }
 
+    @GetMapping("/report/pedido/pdf")
+    public void getReportCli(@RequestParam String pedido, HttpServletResponse response) throws Exception {
+        try {
+            byte[] pdfBytes = reportsService.getReportClientePedido(pedido,"pdf");
+
+            response.setContentType("application/pdf");
+            response.setContentLength(pdfBytes.length);
+            response.getOutputStream().write(pdfBytes);
+            response.getOutputStream().flush();
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al generar el reporte: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/report/pedido/excel")
+    public void getExcelReportCli(@RequestParam String pedido, HttpServletResponse response) throws Exception {
+        try {
+            byte[] excelBytes = reportsService.getReportClientePedido(pedido, "excel");
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=report.xlsx");
+            response.setContentLength(excelBytes.length);
+            response.getOutputStream().write(excelBytes);
+            response.getOutputStream().flush();
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error al generar el reporte en Excel: " + e.getMessage());
+        }
+    }
+
 
 }

@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PedidoCli" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="55ebc631-815d-49bd-86b3-d9d2b6351648">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="EMP1">
+		<conditionalStyle>
+			<style/>
+		</conditionalStyle>
+	</style>
+	<parameter name="P_CPEDIDO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT --D.DPD_CPEDIDO,
+       E.EMG_NOMBRE,
+       E.EMG_RUTA_IMAGEN,
+       C.CPD_CLI_NOMBRE,
+       C.CPD_CLI_RUCCED,
+       CL.CLIW_CIUDAD,
+       CL.CLIW_TELEFONO,
+       CL.CLIW_DIRECCION,
+       C.CPD_AGE_NOMBRE,
+       C.CPD_EMPRESA_GRUPO,
+       C.CPD_FECHA,
+       C.CPD_CODIGO,
+       D.DPD_PRO_ID,
+       D.DPD_PRO_ID1,
+       D.DPD_PRO_NOMBRE,
+       P.PRO_SALDO_DIS,
+       P.PRO_CXB,
+       P.PRO_UMD_CAJ,
+       PRG_USR.AST_WEB.DEVUELVE_OBSERVACIONES(C.CPD_CLI_RUCCED,
+                                              D.DPD_PRO_ID) DPD_OBSERVACION,
+       --(select pr.pro_precio1 from producto pr where pr.pro_empresa = 2 and pr.pro_id = d.dpd_pro_id) dpd_precio,
+       P.PRO_ANCHO, P.PRO_LARGO, P.PRO_ALTO, P.PRO_CAPACIDAD,
+       D.DPD_PRECIO,
+       SUM(D.DPD_CANTIDAD) DPD_CANTIDAD,
+       AVG(NVL(D.DPD_PORC_DESC,0)) DPD_PORC_DESC,
+       SUM(D.DPD_VAL_DESC) DPD_VAL_DESC,
+       SUM(D.DPD_TOTAL) DPD_TOTAL
+  FROM DPEDIDO D, CPEDIDO C, CLIENTE_WEB CL, PRODUCTO_WEB P, EMPRESA_GRUPO E
+ WHERE D.DPD_CPEDIDO IN ($P{P_CPEDIDO})
+   AND C.CPD_CODIGO = D.DPD_CPEDIDO
+   AND CL.CLIW_CODIGO = C.CPD_CLIENTE_WEB
+   AND P.PRO_ID = D.DPD_PRO_ID
+   AND E.EMG_CODIGO(+) = C.CPD_EMPRESA_GRUPO
+ GROUP BY --D.DPD_CPEDIDO,
+          E.EMG_NOMBRE,
+          C.CPD_CLI_RUCCED,
+          D.DPD_PRECIO,
+          D.DPD_PRO_ID,
+          D.DPD_PRO_ID1,
+          D.DPD_PRO_NOMBRE,
+          D.DPD_OBSERVACION,
+          C.CPD_CLI_NOMBRE,
+          C.CPD_CLI_RUCCED,
+	C.CPD_EMPRESA_GRUPO,
+          CL.CLIW_CIUDAD,
+          CL.CLIW_TELEFONO,
+          CL.CLIW_DIRECCION,
+          C.CPD_FECHA,
+          P.PRO_SALDO_DIS,
+          C.CPD_AGE_NOMBRE,
+	C.CPD_CODIGO,
+          P.PRO_CXB,
+	E.EMG_RUTA_IMAGEN,
+	P.PRO_ANCHO,
+	P.PRO_LARGO,
+	P.PRO_ALTO,
+	P.PRO_CAPACIDAD,
+	P.PRO_UMD_CAJ
+ORDER BY D.DPD_PRO_NOMBRE]]>
+	</queryString>
+	<field name="EMG_NOMBRE" class="java.lang.String"/>
+	<field name="EMG_RUTA_IMAGEN" class="java.lang.String"/>
+	<field name="CPD_CLI_NOMBRE" class="java.lang.String"/>
+	<field name="CPD_CLI_RUCCED" class="java.lang.String"/>
+	<field name="CLIW_CIUDAD" class="java.lang.String"/>
+	<field name="CLIW_TELEFONO" class="java.lang.String"/>
+	<field name="CLIW_DIRECCION" class="java.lang.String"/>
+	<field name="CPD_AGE_NOMBRE" class="java.lang.String"/>
+	<field name="CPD_EMPRESA_GRUPO" class="java.math.BigDecimal"/>
+	<field name="CPD_FECHA" class="java.sql.Timestamp"/>
+	<field name="CPD_CODIGO" class="java.math.BigDecimal"/>
+	<field name="DPD_PRO_ID" class="java.lang.String"/>
+	<field name="DPD_PRO_ID1" class="java.lang.String"/>
+	<field name="DPD_PRO_NOMBRE" class="java.lang.String"/>
+	<field name="PRO_SALDO_DIS" class="java.math.BigDecimal"/>
+	<field name="PRO_CXB" class="java.math.BigDecimal"/>
+	<field name="PRO_UMD_CAJ" class="java.math.BigDecimal"/>
+	<field name="DPD_OBSERVACION" class="java.lang.String"/>
+	<field name="PRO_ANCHO" class="java.lang.String"/>
+	<field name="PRO_LARGO" class="java.lang.String"/>
+	<field name="PRO_ALTO" class="java.lang.String"/>
+	<field name="PRO_CAPACIDAD" class="java.lang.String"/>
+	<field name="DPD_PRECIO" class="java.math.BigDecimal"/>
+	<field name="DPD_CANTIDAD" class="java.math.BigDecimal"/>
+	<field name="DPD_PORC_DESC" class="java.math.BigDecimal"/>
+	<field name="DPD_VAL_DESC" class="java.math.BigDecimal"/>
+	<field name="DPD_TOTAL" class="java.math.BigDecimal"/>
+	<variable name="total" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{DPD_PRECIO}*$F{DPD_CANTIDAD}]]></variableExpression>
+	</variable>
+	<variable name="SUBTOTAL" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$V{total}]]></variableExpression>
+	</variable>
+	<variable name="V_SISNOMBRE" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="88" splitType="Stretch">
+			<staticText>
+				<reportElement x="9" y="35" width="64" height="13" uuid="79714b3b-e656-4c52-bb06-e99992302118"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pedido No:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="73" y="48" width="214" height="11" uuid="c4a3925f-d109-42d2-9301-3616aeba6fe8"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CPD_CLI_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="73" y="60" width="214" height="11" uuid="6ab3b9ed-ca71-4646-b272-c306a0c85484"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CPD_CLI_RUCCED}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="9" y="60" width="64" height="11" uuid="b54a3f6f-4a86-4d17-b752-b8ac666679fc"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ruc/Ced:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="48" width="64" height="11" uuid="72892ca9-986e-4801-90c7-2f35091552e1"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="71" width="64" height="11" uuid="87f68eba-5872-44c2-95a6-72db2cbb62e0"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Direccion:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="73" y="71" width="214" height="11" uuid="1d1cbc15-3917-4e7c-9dd1-b39ff07de6d1"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CLIW_DIRECCION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="397" y="48" width="141" height="11" uuid="9b32ce63-a974-4755-b0ac-cad698141db7"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CLIW_TELEFONO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="397" y="60" width="141" height="11" uuid="0bd55d27-91c3-46d0-8402-5b26c106f03a"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CLIW_CIUDAD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="397" y="71" width="141" height="11" uuid="530ebbd1-8abf-4f8e-a552-26e02ea51d04"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CPD_AGE_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="397" y="35" width="141" height="13" uuid="04425f5f-de5b-4317-8d76-7c1ded2dbd2a"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CPD_FECHA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="333" y="35" width="64" height="13" uuid="29f1b44f-c6f5-479b-b72b-07f28519bd73"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="48" width="64" height="11" uuid="65cab487-430b-441d-8a52-2c1b815c22f4"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Telfono:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="60" width="64" height="11" uuid="4333bd91-71d2-4411-9a03-26e488c54809"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ciudad:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="333" y="71" width="64" height="11" uuid="4228779f-b4fb-4801-93f9-2bc74f32f8f6"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Agente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="18" width="555" height="15" uuid="04f41e00-380d-456a-9898-f7abd6c2c4e6"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pedido de Clientes]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="2" y="0" width="553" height="18" uuid="496c2920-b228-4b3d-9acf-ad2d30a79253"/>
+				<textElement textAlignment="Center">
+					<font fontName="Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EMG_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="73" y="35" width="100" height="13" forecolor="#000000" backcolor="#FFFFFF" uuid="733bc20a-9a60-469b-9bd2-d125fe19d05a"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Times New Roman" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CPD_CODIGO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25"/>
+	</columnHeader>
+	<detail>
+		<band height="108" splitType="Stretch">
+			<textField>
+				<reportElement x="178" y="22" width="100" height="12" uuid="b6ef91c5-453f-4251-9016-aedfd439287a"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DPD_PRO_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="178" y="8" width="377" height="12" uuid="655bd326-e5f8-458d-b259-69497a1343a2"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DPD_PRO_NOMBRE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="178" y="36" width="155" height="12" uuid="29b2d0e3-bfb4-47d1-838f-a198acca8752"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DPD_OBSERVACION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="474" y="22" width="64" height="12" uuid="28853afa-eec6-428f-bbcc-23090a072551"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DPD_PRECIO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="474" y="36" width="64" height="12" uuid="66ba86ba-f54d-41a9-837e-7c6251839ed2"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DPD_CANTIDAD}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="110" y="8" width="64" height="12" uuid="deec7f27-457e-4d99-8059-ab5ffcc8ad76"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="22" width="64" height="12" uuid="8ef6ad3f-9974-4371-8195-e94f4c71af1b"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="36" width="64" height="12" uuid="37716a9a-552a-499d-b7a5-d9c5fbe795aa"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBSERVACION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="406" y="22" width="64" height="12" uuid="4e481d4c-0627-4e66-8750-d4f3410f4c0d"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PRECIO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="406" y="36" width="64" height="12" uuid="31cea127-e6a2-4572-8d88-f228979651ea"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD:]]></text>
+			</staticText>
+			<image scaleImage="FillFrame" onErrorType="Icon">
+				<reportElement mode="Transparent" x="2" y="6" width="104" height="91" uuid="e8dcc62d-2c17-4f72-bf8d-3f3f47bfba02"/>
+				<imageExpression><![CDATA[(($F{EMG_RUTA_IMAGEN}+$F{DPD_PRO_ID}+".jpg").equals("null") ?
+  "C:\\Imagenes\\Logo.jpg" :
+  $F{EMG_RUTA_IMAGEN}+$F{DPD_PRO_ID}+".jpg")]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="406" y="79" width="64" height="12" uuid="f6577718-ff6a-4f73-b506-7f1637253307"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL:]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="178" y="78" width="45" height="12" forecolor="#000000" uuid="4c54050d-c4d4-4175-a51b-a4a1b1742f4e"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CPD_EMPRESA_GRUPO}==1?"":$F{PRO_UMD_CAJ}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="178" y="64" width="45" height="12" uuid="f1dae290-7031-4ec5-abc2-0e01ebdb4d70"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PRO_CXB}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="64" width="64" height="12" uuid="a53d8b9d-9105-44bc-9d9a-615a0204dc1f"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CPD_EMPRESA_GRUPO}== 1 ?"CXB:":"CAJ. GRD:"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="78" width="64" height="12" uuid="c6b19a21-c2ff-4989-b959-6fc5ac69d192"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CPD_EMPRESA_GRUPO}== 1 ?"":"CAJ. PEQ:"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="110" y="50" width="64" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="aecee4fd-c5ad-430a-9658-1160e8aaf1d4"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<text><![CDATA[MEDIDAS:]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="178" y="50" width="219" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="5ebdf7fe-7ab8-45a6-94ff-58ae19e0a9b2"/>
+				<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="Cambria" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{PRO_ALTO}!=null?"ALTO: "+$F{PRO_ALTO}:"")+
+($F{PRO_LARGO}!=null?" LARGO: "+$F{PRO_LARGO}:"")+
+($F{PRO_ANCHO}!=null? " ANCHO: "+$F{PRO_ANCHO}:"")+
+($F{PRO_CAPACIDAD}!=null?" CAP: "+$F{PRO_CAPACIDAD}:"")]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement mode="Transparent" x="474" y="79" width="64" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="124e1497-05c3-4acb-814d-d8ea0a93b0ed"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DPD_TOTAL}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="474" y="50" width="64" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="c70f12e4-30f9-4986-b45a-c6674a423c73"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DPD_PORC_DESC}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="406" y="50" width="64" height="12" uuid="d6005fa3-5ac3-47bc-88ce-d21911b56c79"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[%DESC:]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="474" y="64" width="64" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="fbaa09dd-77a4-4b2e-993c-3a88d3975980"/>
+				<textElement textAlignment="Right" verticalAlignment="Top" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DPD_VAL_DESC}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="406" y="64" width="64" height="12" uuid="35b73f57-b131-4c07-b3f2-6e34eab27f6d"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VAL DESC:]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="381" y="0" width="134" height="16" uuid="4bb00f13-c82a-4475-ab2e-54b3ec087b4b"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="0" width="40" height="16" uuid="2f1be441-23f2-47dc-a58e-eb8b43aabd4d"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="0" width="100" height="12" uuid="27e13770-5d83-4ca2-9b04-fe1ba030eefa"/>
+				<textElement>
+					<font fontName="Calibri" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PedidoCli]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="24">
+			<textField pattern="#,##0.00">
+				<reportElement x="455" y="0" width="100" height="14" uuid="63d855b1-7763-49af-85ee-8c0e0daa5bb7"/>
+				<textElement>
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SUBTOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="381" y="0" width="69" height="14" uuid="41e73639-4011-45ef-bbed-327508b49f2c"/>
+				<textElement textAlignment="Right">
+					<font fontName="Times New Roman" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SUBTOTAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="301" height="16" uuid="fb877810-d6d8-436d-ae29-83b3bc638159"/>
+				<textElement>
+					<font fontName="Times New Roman" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Nota: Los totales pueden variar en las facturas, este valor es  referencial]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>
