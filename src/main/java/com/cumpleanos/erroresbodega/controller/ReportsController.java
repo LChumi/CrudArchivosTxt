@@ -16,16 +16,16 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("reports")
-@CrossOrigin
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class ReportsController {
 
     private final ResportsService reportsService;
 
     @GetMapping("/report/pdf")
-    public void getReport(@RequestParam String empresa, @RequestParam String codigo, HttpServletResponse response) throws Exception {
+    public void getReport(@RequestParam String codigo, HttpServletResponse response) throws Exception {
         try {
-            byte[] pdfBytes = reportsService.getReport(empresa, codigo,"pdf");
+            byte[] pdfBytes = reportsService.getReport(codigo,"pdf");
 
             response.setContentType("application/pdf");
             response.setContentLength(pdfBytes.length);
@@ -37,9 +37,9 @@ public class ReportsController {
     }
 
     @GetMapping("/report/excel")
-    public void getExcelReport(@RequestParam String empresa, @RequestParam String codigo, HttpServletResponse response) throws Exception {
+    public void getExcelReport(@RequestParam String codigo, HttpServletResponse response) throws Exception {
         try {
-            byte[] excelBytes = reportsService.getReport(empresa, codigo, "excel");
+            byte[] excelBytes = reportsService.getReport(codigo, "excel");
 
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-Disposition", "attachment; filename=report.xlsx");

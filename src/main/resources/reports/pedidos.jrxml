@@ -5,9 +5,6 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
-	<parameter name="P_EMPRESA" class="java.lang.String">
-		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
-	</parameter>
 	<parameter name="P_CODIGO" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -66,9 +63,11 @@
        DATA_USR.CCOMFAC   CF,
        DATA_USR.UBICACION U,
        DATA_USR.TOTAL     T,
-       DATA_USR.SISTEMA   S
- WHERE (DATA_USR.CCOMPROBA.CCO_EMPRESA = $P{P_EMPRESA} AND
-       DATA_USR.CCOMPROBA.CCO_CODIGO = $P{P_CODIGO})
+       DATA_USR.SISTEMA   S,
+       CPEDIDO   C
+ WHERE C.CPD_CODIGO = $P{P_CODIGO}
+   AND C.CPD_EMPRESA = CF.CFAC_EMP_REFERENCIA(+)
+   AND C.CPD_CCO_COMPROBA = CF.CFAC_CCO_REFEREMP(+)
    AND S.SIS_CODIGO = CCOMPROBA.CCO_EMPRESA
    AND ((DATA_USR.CCOMPROBA.CCO_EMPRESA = DATA_USR.CLIENTE.CLI_EMPRESA AND
        DATA_USR.CCOMPROBA.CCO_CODCLIPRO = DATA_USR.CLIENTE.CLI_CODIGO) AND

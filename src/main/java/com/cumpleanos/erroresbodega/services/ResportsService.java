@@ -31,9 +31,8 @@ public class ResportsService {
     @Autowired
     private DataSource dataSource;
 
-    public byte[] getReport(String empresa, String cco, String format) throws Exception {
+    public byte[] getReport(String cco, String format) throws Exception {
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("P_EMPRESA", empresa);
         parameters.put("P_CODIGO", cco);
         return generateReport("reports/pedidos.jrxml",parameters, format);
     }
