@@ -53,6 +53,9 @@ public class ProductoView {
     @Column(name ="STOCK_REAL")
     private Integer stock_real;
 
+    @Column(name = "STOCK_DISP")
+    private Integer stock_disponible;
+
     @Column(name = "BOD_CODIGO")
     private Long bod_codigo;
 
