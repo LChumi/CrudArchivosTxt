@@ -29,6 +29,9 @@ public class ConsumoSriController {
         String response = "";
         try{
             response = service.getNombreByCedula(ced);
+            if (response.contains("Error")) {
+                response = service.getCedulaRuc(ced, ident);
+            }
             return response;
         } catch (Exception e) {
             return "";
@@ -48,7 +51,7 @@ public class ConsumoSriController {
                 if (response.isEmpty()) {
                     Cliente c = clienteService.buscarPorCedula(ced);
                     if (c == null) {
-                        return ced;
+                        return "";
                     } else {
                         return c.getCliNombre();
                     }
