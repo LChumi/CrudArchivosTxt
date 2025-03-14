@@ -50,7 +50,7 @@ public class ConsumoCedRucSriService {
                 if (response.getStatusCode().is2xxSuccessful()){
                     PersonaSri persona =  response.getBody();
                     assert persona != null;
-                    return persona.getNombreCompleto() + "|"+ persona.getIdentificacion();
+                    return persona.getNombreCompleto();
                 } else {
                     log.error("Error en la consulta del Sri: {}", response.getBody());
                     return "";
@@ -86,7 +86,7 @@ public class ConsumoCedRucSriService {
                 if (response.getStatusCode().is3xxRedirection()) {
                     log.warn("Redirección detectada. El servidor está posiblemente en mantenimiento.");
                 }
-                return "Servicio no disponible. Intenta más tarde.";
+                return "Error Servicio no disponible. Intenta más tarde.";
             }
         } catch (HttpClientErrorException e) {
             // Manejo específico del error 406

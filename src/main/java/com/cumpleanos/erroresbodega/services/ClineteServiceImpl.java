@@ -23,7 +23,6 @@ public class ClineteServiceImpl implements ClienteService {
 
     @Override
     public Cliente buscarPorCedula(String cedula) {
-        System.out.println("llega"+cedula);
         List<Cliente> clientes=clienteRepository.findByCliCedula(cedula);
         return clientes.isEmpty() ? null : clientes.get(0);
     }

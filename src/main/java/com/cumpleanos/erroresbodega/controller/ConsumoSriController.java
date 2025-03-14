@@ -8,17 +8,21 @@
 
 package com.cumpleanos.erroresbodega.controller;
 
+import com.cumpleanos.erroresbodega.models.Cliente;
+import com.cumpleanos.erroresbodega.services.ClienteService;
 import com.cumpleanos.erroresbodega.services.ConsumoCedRucSriService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sri")
 @CrossOrigin("*")
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ConsumoSriController {
 
-    @Autowired
-    private ConsumoCedRucSriService service;
+    private final ConsumoCedRucSriService service;
+    private final ClienteService  clienteService;
 
     @GetMapping(value = "/ced-ruc/{ced}/{ident}")
     public String getCedRuc(@PathVariable String ced, @PathVariable String ident) {
@@ -28,6 +32,34 @@ public class ConsumoSriController {
             return response;
         } catch (Exception e) {
             return "";
+        }
+    }
+
+    @GetMapping(value = "/cliente/{ced}/{ident}")
+    public String getNombres(@PathVariable String ced, @PathVariable String ident) {
+        String response = "";
+        try {
+            response = service.getNombreByCedula(ced);
+
+            // Verifica si la respuesta contiene la palabra "Error"
+            if (response.contains("Error")) {
+                response = service.getCedulaRuc(ced, ident);
+
+                if (response.isEmpty()) {
+                    Cliente c = clienteService.buscarPorCedula(ced);
+                    if (c == null) {
+                        return ced;
+                    } else {
+                        return c.getCliNombre();
+                    }
+                }
+            }
+
+            // Retorna la respuesta normal si no contiene "Error"
+            return response;
+        } catch (Exception e) {
+            // Manejo de excepciones en caso de fallo
+            return "Error inesperado: " + e.getMessage();
         }
     }
 }
