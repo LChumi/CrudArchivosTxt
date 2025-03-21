@@ -12,12 +12,14 @@ import com.cumpleanos.erroresbodega.models.Cliente;
 import com.cumpleanos.erroresbodega.services.ClienteService;
 import com.cumpleanos.erroresbodega.services.ConsumoCedRucSriService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/sri")
 @CrossOrigin("*")
+@Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ConsumoSriController {
 
@@ -40,29 +42,23 @@ public class ConsumoSriController {
 
     @GetMapping(value = "/cliente/{ced}/{ident}")
     public String getNombres(@PathVariable String ced, @PathVariable String ident) {
-        String response = "";
         try {
-            response = service.getNombreByCedula(ced);
+            String response = service.getNombreByCedula(ced);
 
-            // Verifica si la respuesta contiene la palabra "Error"
             if (response.contains("Error")) {
                 response = service.getCedulaRuc(ced, ident);
 
                 if (response.isEmpty()) {
-                    Cliente c = clienteService.buscarPorCedula(ced);
-                    if (c == null) {
-                        return "";
-                    } else {
-                        return c.getCliNombre();
-                    }
+                    Cliente cliente = clienteService.buscarPorCedula(ced);
+                    return (cliente == null) ? "" : cliente.getCliNombre();
                 }
             }
-
-            // Retorna la respuesta normal si no contiene "Error"
             return response;
         } catch (Exception e) {
-            // Manejo de excepciones en caso de fallo
-            return "Error inesperado: " + e.getMessage();
+            // Log del error para facilitar su rastreo
+            log.error("Error inesperado: ", e);
+            return "Error inesperado";
         }
     }
+
 }
