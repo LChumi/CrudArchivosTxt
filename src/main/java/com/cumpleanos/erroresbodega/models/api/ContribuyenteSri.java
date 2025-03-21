@@ -10,10 +10,12 @@ package com.cumpleanos.erroresbodega.models.api;
 
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 public class ContribuyenteSri {
     private Contribuyente contribuyente;
-    private String deuda;
-    private String impugnacion;
-    private String remision;
+    private Map<String, Object> deuda;
+    private Map<String, Object> impugnacion;
+    private Map<String, Object> remision;
 }

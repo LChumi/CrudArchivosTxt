@@ -9,8 +9,11 @@
 package com.cumpleanos.erroresbodega.controller;
 
 import com.cumpleanos.erroresbodega.models.Cliente;
+import com.cumpleanos.erroresbodega.models.api.ContribuyenteSri;
+import com.cumpleanos.erroresbodega.models.api.PersonaSri;
 import com.cumpleanos.erroresbodega.services.ClienteService;
-import com.cumpleanos.erroresbodega.services.ConsumoCedRucSriService;
+import com.cumpleanos.erroresbodega.services.http.SriClientV1Impl;
+import com.cumpleanos.erroresbodega.services.http.SriClientV2Impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,37 +26,47 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ConsumoSriController {
 
-    private final ConsumoCedRucSriService service;
+    private final SriClientV1Impl service1;
+    private final SriClientV2Impl service2;
     private final ClienteService  clienteService;
 
     @GetMapping(value = "/ced-ruc/{ced}/{ident}")
     public String getCedRuc(@PathVariable String ced, @PathVariable String ident) {
-        String response = "";
-        try{
-            response = service.getNombreByCedula(ced);
-            if (response.contains("Error")) {
-                response = service.getCedulaRuc(ced, ident);
+        try {
+            PersonaSri p = service2.getClient(ced, ident);
+
+            if (p == null || p.getNombreCompleto() == null || p.getNombreCompleto().isEmpty()) {
+                ContribuyenteSri c = service1.getClient(ced);
+                if (c == null || c.getContribuyente() == null || c.getContribuyente().getNombreComercial() == null) {
+                    return "";
+                }
+                return c.getContribuyente().getNombreComercial();
+            } else {
+                return p.getNombreCompleto();
             }
-            return response;
+        } catch (NullPointerException e) {
+            return "Error: Valores nulos inesperados.";
         } catch (Exception e) {
-            return "";
+            return "Error inesperado: " + e.getMessage();
         }
     }
+
 
     @GetMapping(value = "/cliente/{ced}/{ident}")
     public String getNombres(@PathVariable String ced, @PathVariable String ident) {
         try {
-            String response = service.getNombreByCedula(ced);
+            PersonaSri p = service2.getClient(ced, ident);
 
-            if (response.contains("Error")) {
-                response = service.getCedulaRuc(ced, ident);
-
-                if (response.isEmpty()) {
+            if (p == null || p.getNombreCompleto() == null || p.getNombreCompleto().isEmpty()) {
+                ContribuyenteSri c = service1.getClient(ced);
+                if (c == null || c.getContribuyente() == null || c.getContribuyente().getNombreComercial() == null) {
                     Cliente cliente = clienteService.buscarPorCedula(ced);
                     return (cliente == null) ? "" : cliente.getCliNombre();
                 }
+                return c.getContribuyente().getNombreComercial();
+            } else {
+                return p.getNombreCompleto();
             }
-            return response;
         } catch (Exception e) {
             // Log del error para facilitar su rastreo
             log.error("Error inesperado: ", e);

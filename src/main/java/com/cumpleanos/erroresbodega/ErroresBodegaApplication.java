@@ -9,11 +9,14 @@
 package com.cumpleanos.erroresbodega;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@OpenAPIDefinition
+@EnableFeignClients
+@OpenAPIDefinition(info = @Info( title = "Crud txt", description = "Documentación de crud que se registran en archivos en un servidor API V1"))
 public class ErroresBodegaApplication {
 
 	public static void main(String[] args) {
