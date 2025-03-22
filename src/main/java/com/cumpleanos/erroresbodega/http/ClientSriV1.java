@@ -18,5 +18,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ClientSriV1 {
 
     @GetMapping(value = "/deudas/porIdentificacion/{id}")
-    public ResponseEntity<ContribuyenteSri> consultar(@PathVariable String id);
+    ResponseEntity<ContribuyenteSri> consultar(@PathVariable String id);
 }

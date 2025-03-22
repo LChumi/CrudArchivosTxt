@@ -17,6 +17,7 @@ import com.cumpleanos.erroresbodega.services.http.SriClientV2Impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -55,7 +56,7 @@ public class ConsumoSriController {
 
 
     @GetMapping(value = "/cliente/{ced}/{ident}")
-    public String getNombres(@PathVariable String ced, @PathVariable String ident) {
+    public ResponseEntity<String> getNombres(@PathVariable String ced, @PathVariable String ident) {
         ced = ced.trim();
         ident = ident.trim().toUpperCase();
         try {
@@ -65,16 +66,16 @@ public class ConsumoSriController {
                 ContribuyenteSri c = service1.getClient(ced);
                 if (c == null || c.getContribuyente() == null || c.getContribuyente().getNombreComercial() == null) {
                     Cliente cliente = clienteService.buscarPorCedula(ced);
-                    return (cliente == null) ? "" : cliente.getCliNombre();
+                    return ResponseEntity.ok((cliente == null) ? "" : cliente.getCliNombre());
                 }
-                return c.getContribuyente().getNombreComercial();
+                return ResponseEntity.ok(c.getContribuyente().getNombreComercial());
             } else {
-                return p.getNombreCompleto();
+                return ResponseEntity.ok(p.getNombreCompleto());
             }
         } catch (Exception e) {
             // Log del error para facilitar su rastreo
             log.error("Error inesperado: ", e);
-            return "Error inesperado";
+            return ResponseEntity.badRequest().body("Error inesperado");
         }
     }
 
