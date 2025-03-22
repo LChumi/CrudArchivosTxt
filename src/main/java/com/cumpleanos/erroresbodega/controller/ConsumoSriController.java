@@ -32,6 +32,8 @@ public class ConsumoSriController {
 
     @GetMapping(value = "/ced-ruc/{ced}/{ident}")
     public String getCedRuc(@PathVariable String ced, @PathVariable String ident) {
+        ced = ced.trim();
+        ident = ident.trim().toUpperCase();
         try {
             PersonaSri p = service2.getClient(ced, ident);
 
@@ -54,6 +56,8 @@ public class ConsumoSriController {
 
     @GetMapping(value = "/cliente/{ced}/{ident}")
     public String getNombres(@PathVariable String ced, @PathVariable String ident) {
+        ced = ced.trim();
+        ident = ident.trim().toUpperCase();
         try {
             PersonaSri p = service2.getClient(ced, ident);
 
