@@ -22,7 +22,6 @@ public class ImagenService {
 
     public Resource getImage(String nombre){
         String imagePath=ruta + nombre;
-        Resource resource = new FileSystemResource(imagePath);
-        return resource;
+        return new FileSystemResource(imagePath);
     }
 }

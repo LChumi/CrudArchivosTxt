@@ -17,10 +17,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.cumpleanos</groupId>
-	<artifactId>errores-bodega</artifactId>
+	<artifactId>observaciones</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>errores-bodega</name>
-	<description>BackEnd erorres ubicacion zhucay </description>
+	<name>observaciones</name>
+	<description>BackEnd Observaciones</description>
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2021.0.8</spring-cloud.version>
