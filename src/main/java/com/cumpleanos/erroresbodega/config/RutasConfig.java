@@ -40,6 +40,9 @@ public class RutasConfig {
     @Value("${file.storage.path.gcolombia}")
     private String rutaGcolombia;
 
+    @Value("${file.storage.path.gcolombia2}")
+    private String rutaGcolombia2;
+
     @Value("${file.storage.path.vergel}")
     private String rutaVergel;
 }

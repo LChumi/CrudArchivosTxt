@@ -27,6 +27,7 @@ public class ObservacionService {
     private final ObservacionesUtils observacionZhucay;
     private final ObservacionesUtils observacionBodDanados;
     private final ObservacionesUtils observacionGColombia;
+    private final ObservacionesUtils observacionGColombia2;
     private final ObservacionesUtils observacionesVergel;
 
     @Autowired
@@ -35,6 +36,7 @@ public class ObservacionService {
         observacionZhucay = new ObservacionesUtils(rutas.getRutaZhucay());
         observacionBodDanados = new ObservacionesUtils(rutas.getRutaBodDanados());
         observacionGColombia = new ObservacionesUtils(rutas.getRutaGcolombia());
+        observacionGColombia2 = new ObservacionesUtils(rutas.getRutaGcolombia2());
         observacionesVergel = new ObservacionesUtils(rutas.getRutaVergel());
     }
 
@@ -49,6 +51,9 @@ public class ObservacionService {
     }
     public Observacion guardarObservacionGColombia(Observacion observacion) throws IOException{
         return observacionGColombia.guardarObservacion(observacion);
+    }
+    public Observacion guardarObservacionGColombia2(Observacion observacion) throws IOException{
+        return observacionGColombia2.guardarObservacion(observacion);
     }
     public Observacion guardarObservacionVergel(Observacion observacion) throws IOException{
         return observacionesVergel.guardarObservacion(observacion);
@@ -66,6 +71,9 @@ public class ObservacionService {
     public List<Observacion> listarGColombia() throws IOException {
         return observacionGColombia.listarObservaciones();
     }
+    public List<Observacion> listarGColombia2() throws IOException {
+        return observacionGColombia2.listarObservaciones();
+    }
     public List<Observacion> listarVergel() throws IOException {
         return observacionesVergel.listarObservaciones();
     }
@@ -81,6 +89,9 @@ public class ObservacionService {
     }
     public Observacion editarObservacionGColombia(Observacion observacion, Correccion correccion) throws IOException {
         return observacionGColombia.editarObservacion(observacion, correccion);
+    }
+    public Observacion editarObservacionGColombia2(Observacion observacion, Correccion correccion) throws IOException {
+        return observacionGColombia2.editarObservacion(observacion, correccion);
     }
     public Observacion editarObservacionVergel(Observacion observacion, Correccion correccion) throws IOException {
         return observacionesVergel.editarObservacion(observacion,correccion);
@@ -142,6 +153,10 @@ public class ObservacionService {
     }
     public ByteArrayInputStream exportarExcelGColombia() throws IOException {
         List<Observacion> observacionesNarancay = listarGColombia();
+        return exportarExcel(observacionesNarancay, observacionGColombia);
+    }
+    public ByteArrayInputStream exportarExcelGColombia2() throws IOException {
+        List<Observacion> observacionesNarancay = listarGColombia2();
         return exportarExcel(observacionesNarancay, observacionGColombia);
     }
     public ByteArrayInputStream exportarExcelVergel() throws IOException {

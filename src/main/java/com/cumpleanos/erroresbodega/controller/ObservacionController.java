@@ -159,7 +159,7 @@ public class ObservacionController {
     }
 
     /**
-     * Crud para la bodega Gran Colombia
+     * Crud para la bodega Gran Colombia P1
      */
     @PostMapping("/guardar/gColombia")
     public ResponseEntity<Observacion> guardarGColombia(@RequestBody Observacion observacion){
@@ -190,6 +190,48 @@ public class ObservacionController {
     @GetMapping("/excel/gColombia/")
     public ResponseEntity<InputStreamResource> exportarGColombia() throws Exception {
         ByteArrayInputStream stream = observacionService.exportarExcelGColombia();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=observaciones.xlsx");
+        headers.add("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // Tipo de contenido correcto
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(new InputStreamResource(stream));
+    }
+
+    /**
+     * Crud para la bodega Gran Colombia P2
+     */
+    @PostMapping("/guardar/gColombia2")
+    public ResponseEntity<Observacion> guardarGColombia2(@RequestBody Observacion observacion){
+        try {
+            Observacion observacion1 = observacionService.guardarObservacionGColombia2(observacion);
+            return ResponseEntity.ok(observacion1);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/listarGColombia2")
+    public ResponseEntity<List<Observacion>> ListarGColombia2() {
+        try {
+            List<Observacion> listaObservaciones = observacionService.listarGColombia2();
+            return ResponseEntity.ok(listaObservaciones);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @PutMapping("/agregarCorrecionGColombia2/")
+    public Observacion agregarCorrecionGColombia2(@RequestBody ObservacionCorrecion obj){
+        try{
+            return observacionService.editarObservacionGColombia(obj.getObservacion(), obj.getCorreccion());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @GetMapping("/excel/gColombia2/")
+    public ResponseEntity<InputStreamResource> exportarGColombia2() throws Exception {
+        ByteArrayInputStream stream = observacionService.exportarExcelGColombia2();
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment; filename=observaciones.xlsx");
