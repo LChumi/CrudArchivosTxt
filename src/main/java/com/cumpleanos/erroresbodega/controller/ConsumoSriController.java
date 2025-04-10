@@ -43,9 +43,9 @@ public class ConsumoSriController {
                 if (c == null || c.getContribuyente() == null || c.getContribuyente().getNombreComercial() == null) {
                     return "";
                 }
-                return c.getContribuyente().getNombreComercial();
+                return c.getContribuyente().getNombreComercial()+"|"+c.getContribuyente().getIdentificacion();
             } else {
-                return p.getNombreCompleto();
+                return p.getNombreCompleto()+"|"+p.getIdentificacion();
             }
         } catch (NullPointerException e) {
             return "Error: Valores nulos inesperados.";
