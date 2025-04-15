@@ -8,6 +8,7 @@
 
 package com.cumpleanos.erroresbodega.services;
 
+import com.cumpleanos.erroresbodega.models.Items;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
@@ -22,8 +23,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ResportsService {
@@ -35,6 +39,13 @@ public class ResportsService {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("P_CODIGO", cco);
         return generateReport("reports/pedidos.jrxml",parameters, format);
+    }
+
+    public byte[] getReportByImages(Items items, String format) throws Exception {
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("P_PRODUCTOS", items.ids());
+
+        return generateReport("reports/productosImages.jrxml", parameters, format);
     }
 
     public byte[] getReportClientePedido(String pedido, String format) throws Exception {
