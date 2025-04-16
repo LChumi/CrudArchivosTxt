@@ -40,17 +40,20 @@ public class ImageProductService {
     }
 
     private Resource searchWithExtensions(String basename) throws MalformedURLException {
-        String nameWithoutExtension = basename.replaceAll("\\.[^.]+$", ""); //Remover extension si tiene
+        String nameWithoutExtension = basename.replaceAll("\\.[^.]+$", ""); // Remover extensión si tiene
         for (String extension : EXTENSIONS) {
-            Resource resource = getReadbleReosurce(image_directory, nameWithoutExtension + extension);
-            if (resource != null){
+            Resource resource = getReadableResource(image_directory, nameWithoutExtension + extension);
+            if (resource != null) {
                 return resource;
             }
         }
-        return null;
+
+        log.info("No se encontró ningún recurso, retornando imagen predeterminada");
+        return getReadableResource(image_directory, "default.jpg");
     }
 
-    private Resource getReadbleReosurce(String directory, String fileName) throws MalformedURLException {
+
+    private Resource getReadableResource(String directory, String fileName) throws MalformedURLException {
         Path path = Paths.get(directory).resolve(fileName);
         Resource resource = new UrlResource(path.toUri());
         return (resource.exists() && resource.isReadable()) ? resource : null;
