@@ -224,7 +224,7 @@ public class ObservacionController {
     @PutMapping("/agregarCorrecionGColombia2/")
     public Observacion agregarCorrecionGColombia2(@RequestBody ObservacionCorrecion obj){
         try{
-            return observacionService.editarObservacionGColombia(obj.getObservacion(), obj.getCorreccion());
+            return observacionService.editarObservacionGColombia2(obj.getObservacion(), obj.getCorreccion());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
