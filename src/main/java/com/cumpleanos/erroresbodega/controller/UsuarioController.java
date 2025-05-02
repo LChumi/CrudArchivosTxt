@@ -10,16 +10,16 @@ package com.cumpleanos.erroresbodega.controller;
 
 import com.cumpleanos.erroresbodega.models.Usuario;
 import com.cumpleanos.erroresbodega.models.auth.LoginRequest;
-import com.cumpleanos.erroresbodega.services.ImagenService;
 import com.cumpleanos.erroresbodega.services.UsuarioService;
+import com.cumpleanos.erroresbodega.services.images.GenericImageService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @CrossOrigin("*")
 @RestController
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
-    private final  ImagenService imagenService;
+    private final GenericImageService imagenService;
 
     private static final Logger console = LoggerFactory.getLogger(UsuarioController.class);
 
@@ -67,15 +67,4 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
-    @GetMapping(value = "/imagen/{nombre}", produces = "image/jpeg")
-    public ResponseEntity<Resource> getImage(@PathVariable String nombre){
-        Resource resource = imagenService.getImage(nombre);
-        if (resource.exists()){
-            return ResponseEntity.ok(resource);
-        }else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
 }
