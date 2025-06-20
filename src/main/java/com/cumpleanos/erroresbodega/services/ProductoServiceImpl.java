@@ -23,13 +23,19 @@ public class ProductoServiceImpl implements ProductoService{
     @Override
     public ProductoView getByProIdOrProId1(String data) {
         Long bodegaDefecto= 10000580L;
-        List<ProductoView> productoViews =productoRepository.getByPro_idOrPro_id1(bodegaDefecto,data);
+        List<ProductoView> productoViews =productoRepository.getByProIdOrPro_id1(bodegaDefecto,data);
         return productoViews.isEmpty() ? null: productoViews.get(0);
     }
 
     @Override
     public ProductoView porBarraOItem(Long bodega, String data) {
-        List<ProductoView> producto=productoRepository.findByPro_idAndBod_codigo(bodega, data);
+        List<ProductoView> producto=productoRepository.findByProIdAndBodCodigo(bodega, data);
+        return producto.isEmpty() ? null : producto.get(0);
+    }
+
+    @Override
+    public ProductoView porBarraEItem(Long bodega, String data, String item) {
+        List<ProductoView> producto=productoRepository.findByProIdAndProId1AndBodCodigo(data, item, bodega);
         return producto.isEmpty() ? null : producto.get(0);
     }
 }

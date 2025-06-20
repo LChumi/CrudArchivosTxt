@@ -64,10 +64,25 @@ public class ProductoController{
         }
     }
 
+    @GetMapping("/BuscarProductoItem/{bodega}")
+    public ResponseEntity<ProductoView> buscarProdIdAndId1(@PathVariable long bodega,@RequestParam String data,@RequestParam String item){
+        try{
+            ProductoView producto = productoService.porBarraEItem(bodega , data ,item );
+
+            if (producto ==null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(producto,HttpStatus.OK);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/verCosto/")
     public double verCosto(@RequestBody ProductoView v){
         try{
-            return functionService.obtenerCostoTotalComprasEmpresas(v.getPro_empresa(), v.getPro_codigo());
+            return functionService.obtenerCostoTotalComprasEmpresas(v.getProEmpresa(), v.getProCodigo());
         }catch (Exception e){
             log.error(e.getMessage());
             return 0;

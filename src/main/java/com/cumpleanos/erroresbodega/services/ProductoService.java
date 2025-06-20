@@ -14,4 +14,6 @@ public interface ProductoService {
     ProductoView getByProIdOrProId1(String data);
 
     ProductoView porBarraOItem(Long bodega, String data);
+
+    ProductoView porBarraEItem(Long bodega, String data, String item);
 }

@@ -27,19 +27,19 @@ public class ProductoView {
     private String secuencia;
 
     @Column(name = "PRO_ID")
-    private String pro_id;
+    private String proId;
 
     @Column(name = "PRO_ID1")
-    private String pro_id1;
+    private String proId1;
 
     @Column(name = "CXB")
     private Integer cxb;
 
     @Column(name = "PRO_NOMBRE")
-    private String pro_nombre;
+    private String nombre;
 
     @Column(name = "BOD_NOMBRE")
-    private String bod_nombre;
+    private String bodega;
 
     @Column(name = "PVP")
     private Double pvp;
@@ -51,18 +51,18 @@ public class ProductoView {
     private String bulto;
 
     @Column(name ="STOCK_REAL")
-    private Integer stock_real;
+    private Integer stockReal;
 
     @Column(name = "STOCK_DISP")
-    private Integer stock_disponible;
+    private Integer stockDisponible;
 
     @Column(name = "BOD_CODIGO")
-    private Long bod_codigo;
+    private Long bodCodigo;
 
     @Column(name = "PRO_EMPRESA")
-    private Long pro_empresa;
+    private Long proEmpresa;
 
     @Column(name = "PRO_CODIGO")
-    private Long pro_codigo;
+    private Long proCodigo;
 }
 
