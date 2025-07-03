@@ -16,4 +16,6 @@ public interface ProductoService {
     ProductoView porBarraOItem(Long bodega, String data);
 
     ProductoView porBarraEItem(Long bodega, String data, String item);
+
+    String getMatches(Long bodega, String data, String item);
 }

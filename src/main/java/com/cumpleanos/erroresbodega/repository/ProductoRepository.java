@@ -10,12 +10,13 @@ package com.cumpleanos.erroresbodega.repository;
 
 import com.cumpleanos.erroresbodega.models.ProductoView;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ProductoRepository extends JpaRepository<ProductoView,String> {
+public interface ProductoRepository extends JpaRepository<ProductoView,String>, JpaSpecificationExecutor<ProductoView> {
 
     @Query("SELECT p FROM ProductoView p WHERE p.bodCodigo = :bod_codigo AND (p.proId LIKE %:data% OR p.proId1 LIKE %:data%)")
     List<ProductoView> getByProIdOrPro_id1(@Param("bod_codigo")Long bod_codigo, @Param("data") String data);

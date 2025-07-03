@@ -88,4 +88,19 @@ public class ProductoController{
             return 0;
         }
     }
+
+    @GetMapping("/get/matches/{bodega}")
+    public ResponseEntity<String> getMatches(@PathVariable long bodega,@RequestParam String data, @RequestParam String item){
+        try{
+            String novedad = productoService.getMatches(bodega , data , item);
+
+            if (novedad ==null || novedad.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.ok(novedad);
+        } catch (Exception e){
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
