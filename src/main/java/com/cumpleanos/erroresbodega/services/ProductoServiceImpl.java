@@ -76,7 +76,7 @@ public class ProductoServiceImpl implements ProductoService{
         } else if (itemExisteConPrefijoDiferente) {
             novedad = "PRODUCTO CAMBIA DE ITEM EP A IC";
         } else {
-            novedad = "PRODUCTO NUEVO";
+            novedad = "NUEVO";
         }
 
         return novedad;
