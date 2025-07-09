@@ -67,14 +67,14 @@ public class ProductoServiceImpl implements ProductoService{
 
         if (barraExiste && itemExiste) {
             novedad = "REPOSICION";
-        } else if (barraExiste && !itemExiste) {
-            String nombreProducto = productoBarra.map(ProductoView::getNombre).orElse("NOMBRE NO DISPONIBLE");
-            novedad = "LA BARRA SE ENCUENTRA REGISTRADA EN OTRO ITEM: " + nombreProducto;
+        } else if (itemExisteConPrefijoDiferente) {
+            novedad = "ITEM CAMBIA DE PREFIJO (EP/IP) (REPOSICION)";
         } else if (!barraExiste && itemExiste) {
             String nombreProducto = productoItem.map(ProductoView::getNombre).orElse("NOMBRE NO DISPONIBLE");
             novedad = "ITEM EXISTE CON OTRA BARRA: " + nombreProducto;
-        } else if (itemExisteConPrefijoDiferente) {
-            novedad = "PRODUCTO CAMBIA DE ITEM EP A IC";
+        } else if (barraExiste && !itemExiste) {
+            String nombreProducto = productoBarra.map(ProductoView::getNombre).orElse("NOMBRE NO DISPONIBLE");
+            novedad = "LA BARRA SE ENCUENTRA REGISTRADA EN OTRO ITEM: " + nombreProducto;
         } else {
             novedad = "NUEVO";
         }
