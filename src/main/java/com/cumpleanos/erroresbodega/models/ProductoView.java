@@ -9,8 +9,6 @@
 package com.cumpleanos.erroresbodega.models;
 
 import lombok.Data;
-import org.hibernate.annotations.Immutable;
-import org.hibernate.annotations.Subselect;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

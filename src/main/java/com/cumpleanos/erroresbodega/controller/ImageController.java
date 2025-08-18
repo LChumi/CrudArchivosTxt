@@ -57,6 +57,12 @@ public class ImageController {
         }
     }
 
+    @GetMapping("/producto/exist/{imageName}")
+    public ResponseEntity<Short> getImageProductExist(@PathVariable String imageName){
+            short exist = service.imageExist(productsPath, imageName);
+            return ResponseEntity.ok().body(exist);
+    }
+
     @GetMapping("/usuario/{usrid}")
     public ResponseEntity<Resource> getImageUser(@PathVariable String usrid){
         try {

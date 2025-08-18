@@ -15,6 +15,7 @@ import org.springframework.http.MediaTypeFactory;
 import org.springframework.stereotype.Service;
 
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -38,6 +39,17 @@ public class GenericImageService {
         }
 
         return null;
+    }
+
+    public Short imageExist(String directory, String imageName){
+        String nameWithoutExtension = imageName.replaceAll("\\.[^.]+$", "");
+        for (String extension : EXTENSIONS) {
+            Path path = Paths.get(directory).resolve(nameWithoutExtension + extension);
+            if (Files.exists(path) && Files.isReadable(path) && Files.isRegularFile(path)) {
+                return 1;
+            }
+        }
+        return 0;
     }
 
     private Resource getDefaultImage(String directory, String fileName) throws MalformedURLException {
