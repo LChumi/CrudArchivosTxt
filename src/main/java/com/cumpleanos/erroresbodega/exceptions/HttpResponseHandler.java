@@ -20,10 +20,21 @@ public class HttpResponseHandler {
     public static <T> T handle(Supplier<ResponseEntity<T>> supplier, String errorMessage){
         try{
             return supplier.get().getBody();
-        }catch(FeignException e){
-            log.error("Error de Feign: {} - {} ",e.status(), e.getMessage());
+        }catch (FeignException e) {
+            if (e.status() == 503) {
+                log.error("Error: Servicio del SRI no disponible (503).");
+                return null;
+            } else if (e.status() == 500) {
+                log.error("Error: Fallo interno en el SRI (500).");
+                return null;
+            } else if (e.status() == -1) {
+                log.error("Error: Timeout al conectar con el SRI.");
+                return null;
+            }
+            log.error("Error Feign: {}", e.getMessage());
             return null;
-        }catch(Exception e){
+        }
+        catch(Exception e){
             log.error(errorMessage, e);
             return null;
         }
