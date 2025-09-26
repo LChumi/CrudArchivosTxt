@@ -13,13 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
+import java.util.concurrent.TimeUnit;
 
 @CrossOrigin("*")
 @RestController
@@ -43,15 +41,7 @@ public class ImageController {
         try {
             Resource resource = service.getImageFrom(productsPath, imageName, "default.jpg");
 
-            if(resource == null){
-                return ResponseEntity.notFound().build();
-            }
-
-            String contentType = service.getContentType(resource);
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
+            return getResourceResponseEntity(resource);
         } catch (MalformedURLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -68,14 +58,7 @@ public class ImageController {
         try {
             Resource resource = service.getImageFrom(empleadosPath, usrid, "IMPC.jpg");
 
-            if(resource == null){
-                return ResponseEntity.notFound().build();
-            }
-            String contentType = service.getContentType(resource);
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
+            return getResourceResponseEntity(resource);
         } catch (MalformedURLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -86,17 +69,22 @@ public class ImageController {
         try {
             Resource resource = service.getImageFrom(logosPath, empresaId, "assist.jpg");
 
-            if (resource == null){
-                return ResponseEntity.notFound().build();
-            }
-
-            String contentType = service.getContentType(resource);
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
+            return getResourceResponseEntity(resource);
         }catch (MalformedURLException e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    private ResponseEntity<Resource> getResourceResponseEntity(Resource resource) {
+        if (resource == null){
+            return ResponseEntity.notFound().build();
+        }
+
+        String contentType = service.getContentType(resource);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                .cacheControl(CacheControl.maxAge(30, TimeUnit.DAYS))
+                .body(resource);
     }
 }
