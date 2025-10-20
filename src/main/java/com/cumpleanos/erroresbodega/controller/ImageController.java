@@ -30,6 +30,9 @@ public class ImageController {
     @Value("${file.images.products}")
     private String productsPath;
 
+    @Value("${file.images.bunna}")
+    private String bunnaPath;
+
     @Value("${file.images.logos}")
     private String logosPath;
 
@@ -40,6 +43,17 @@ public class ImageController {
     public ResponseEntity<Resource> getImageProduct(@PathVariable String imageName){
         try {
             Resource resource = service.getImageFrom(productsPath, imageName, "default.jpg");
+
+            return getResourceResponseEntity(resource);
+        } catch (MalformedURLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/producto/{imageName}/bunna")
+    public ResponseEntity<Resource> getImageProductBunna(@PathVariable String imageName){
+        try {
+            Resource resource = service.getImageFrom(bunnaPath, imageName, "default.jpg");
 
             return getResourceResponseEntity(resource);
         } catch (MalformedURLException e) {
