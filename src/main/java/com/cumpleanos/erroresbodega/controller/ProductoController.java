@@ -103,4 +103,21 @@ public class ProductoController{
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/exist/empresa/{empresa}")
+    public ResponseEntity<String> getMatches(@PathVariable Long empresa,@RequestParam String barra, @RequestParam String item){
+        try{
+            String novedad = productoService.existInEmpresas(empresa, barra, item);
+
+            if (novedad ==null || novedad.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.ok(novedad);
+        } catch (Exception e){
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }

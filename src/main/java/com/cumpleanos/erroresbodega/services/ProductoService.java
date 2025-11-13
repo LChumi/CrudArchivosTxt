@@ -18,4 +18,6 @@ public interface ProductoService {
     ProductoView porBarraEItem(Long bodega, String data, String item);
 
     String getMatches(Long bodega, String data, String item);
+
+    String existInEmpresas(Long empresa, String barra , String item);
 }
