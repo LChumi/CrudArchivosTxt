@@ -105,7 +105,7 @@ public class ProductoController{
     }
 
     @GetMapping("/exist/empresa/{empresa}")
-    public ResponseEntity<String> getMatches(@PathVariable Long empresa,@RequestParam String barra, @RequestParam String item){
+    public ResponseEntity<String> existIntoCompany(@PathVariable Long empresa,@RequestParam String barra, @RequestParam String item){
         try{
             String novedad = productoService.existInEmpresas(empresa, barra, item);
 
