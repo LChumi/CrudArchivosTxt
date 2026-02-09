@@ -14,10 +14,19 @@ import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class GenericImageService {
@@ -39,6 +48,27 @@ public class GenericImageService {
         }
 
         return null;
+    }
+
+    public Map<String, Long> getPhotosByDayInMonth(String directory){
+        File dir = new File(directory);
+        File[] files = dir.listFiles((d, name) -> name.matches(".*\\.(jpg|png|jpeg)"));
+        if (files == null || files.length == 0) return Map.of();
+
+        YearMonth currentMonth = YearMonth.now();
+        ZoneId zone = ZoneId.systemDefault();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE d MMMM", new Locale("es", "ES"));
+
+        return Arrays.stream(files)
+                .map(f -> Instant.ofEpochMilli(f.lastModified())
+                        .atZone(zone)
+                        .toLocalDate())
+                .filter(date -> YearMonth.from(date).equals(currentMonth))
+                .collect(Collectors.groupingBy(
+                        d -> d.format(formatter),
+                        Collectors.counting()
+                ));
     }
 
     public Short imageExist(String directory, String imageName){

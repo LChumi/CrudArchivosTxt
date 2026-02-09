@@ -17,6 +17,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @CrossOrigin("*")
@@ -48,6 +49,12 @@ public class ImageController {
         } catch (MalformedURLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping("/fotos/mes")
+    public ResponseEntity<Map<String, Long>> getPhotosData(){
+        Map<String, Long> info =service.getPhotosByDayInMonth(productsPath);
+        return ResponseEntity.ok(info);
     }
 
     @GetMapping("/producto/{imageName}/bunna")
