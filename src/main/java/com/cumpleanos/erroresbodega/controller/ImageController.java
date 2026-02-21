@@ -54,7 +54,7 @@ public class ImageController {
     @GetMapping(value = "/fotos/mes", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Long>> getPhotosData(){
         Map<String, Long> info =service.getPhotosByDayInMonth(productsPath);
-        return ResponseEntity.ok(info);
+        return ResponseEntity.status(HttpStatus.OK).body(info);
     }
 
     @GetMapping("/producto/{imageName}/bunna")
