@@ -9,6 +9,7 @@
 package com.cumpleanos.erroresbodega.controller;
 
 import com.cumpleanos.erroresbodega.models.ProductoView;
+import com.cumpleanos.erroresbodega.models.dto.ConfiteriaRepor;
 import com.cumpleanos.erroresbodega.services.FunctionOracleService;
 import com.cumpleanos.erroresbodega.services.ProductoService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/producto")
@@ -116,6 +119,17 @@ public class ProductoController{
         } catch (Exception e){
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/producto/confiteria/{nombre}")
+    public ResponseEntity<List<ConfiteriaRepor>> getConfiteria(@PathVariable String nombre){
+        try {
+            List<ConfiteriaRepor> lista = productoService.obtenerReporte(nombre);
+            return ResponseEntity.ok(lista);
+        } catch (Exception e){
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -9,6 +9,9 @@
 package com.cumpleanos.erroresbodega.services;
 
 import com.cumpleanos.erroresbodega.models.ProductoView;
+import com.cumpleanos.erroresbodega.models.dto.ConfiteriaRepor;
+
+import java.util.List;
 
 public interface ProductoService {
     ProductoView getByProIdOrProId1(String data);
@@ -20,4 +23,6 @@ public interface ProductoService {
     String getMatches(Long bodega, String data, String item);
 
     String existInEmpresas(Long empresa, String barra , String item);
+
+    List<ConfiteriaRepor> obtenerReporte(String nombre);
 }

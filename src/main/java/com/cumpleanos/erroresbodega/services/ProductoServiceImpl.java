@@ -10,11 +10,14 @@ package com.cumpleanos.erroresbodega.services;
 
 import com.cumpleanos.erroresbodega.models.Producto;
 import com.cumpleanos.erroresbodega.models.ProductoView;
+import com.cumpleanos.erroresbodega.models.dto.ConfiteriaRepor;
 import com.cumpleanos.erroresbodega.repository.ProductoRepository;
 import com.cumpleanos.erroresbodega.repository.ProductoViewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -138,4 +141,27 @@ public class ProductoServiceImpl implements ProductoService{
         return novedad;
     }
 
+    @Override
+    public List<ConfiteriaRepor> obtenerReporte(String nombre) {
+        List<Object[]> resultado = productoViewRepository.obtenerReporte(nombre);
+
+        return resultado.stream()
+                .map(r -> new ConfiteriaRepor(
+                        r[0] != null ? r[0].toString() : null,
+                        r[1] != null ? r[1].toString() : null,
+                        r[2] != null ? ((Number) r[2]).longValue() : 0L,
+                        r[3] != null ? ((Number) r[3]).longValue() : 0L,
+                        r[4] != null ? ((Number) r[4]).doubleValue() : 0.0,
+                        r[5] != null ? ((Number) r[5]).doubleValue() : 0.0,
+                        r[6] != null ? ((Number) r[6]).longValue() : 0L,
+                        (String) r[7],
+                        (String) r[8],
+                        (String) r[9],
+                        (String) r[10],
+                        r[11] != null ? ((Number) r[11]).longValue() : 0L,
+                        r[11] != null ? ((Number) r[12]).longValue() : 0L,
+                        r[13] != null ? ((Number) r[13]).doubleValue() : 0.0
+                ))
+                .toList();
+    }
 }
