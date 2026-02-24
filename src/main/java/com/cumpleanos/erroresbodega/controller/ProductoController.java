@@ -122,7 +122,7 @@ public class ProductoController{
         }
     }
 
-    @GetMapping("/producto/confiteria/{nombre}")
+    @GetMapping("/confiteria/{nombre}")
     public ResponseEntity<List<ConfiteriaRepor>> getConfiteria(@PathVariable String nombre){
         try {
             List<ConfiteriaRepor> lista = productoService.obtenerReporte(nombre);
