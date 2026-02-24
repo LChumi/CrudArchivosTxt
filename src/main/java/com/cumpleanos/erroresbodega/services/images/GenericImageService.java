@@ -20,12 +20,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Map;
+import java.time.format.TextStyle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,26 +50,46 @@ public class GenericImageService {
         return null;
     }
 
-    public Map<String, Long> getPhotosByDayInMonth(String directory){
+    public Map<String, Object> getPhotosByMonth(String directory) {
         File dir = new File(directory);
         File[] files = dir.listFiles((d, name) -> name.matches(".*\\.(jpg|png|jpeg)"));
         if (files == null || files.length == 0) return Map.of();
 
-        YearMonth currentMonth = YearMonth.now();
         ZoneId zone = ZoneId.systemDefault();
+        DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("EEEE d MMMM", new Locale("es", "ES"));
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE d MMMM", new Locale("es", "ES"));
+        YearMonth currentMonth = YearMonth.now();
 
-        return Arrays.stream(files)
-                .map(f -> Instant.ofEpochMilli(f.lastModified())
-                        .atZone(zone)
-                        .toLocalDate())
-                .filter(date -> YearMonth.from(date).equals(currentMonth))
-                .collect(Collectors.groupingBy(
-                        d -> d.format(formatter),
-                        Collectors.counting()
-                ));
+        // Agrupar por mes
+        Map<YearMonth, List<LocalDate>> grouped = Arrays.stream(files)
+                .map(f -> Instant.ofEpochMilli(f.lastModified()).atZone(zone).toLocalDate())
+                .collect(Collectors.groupingBy(YearMonth::from));
+
+        Map<String, Object> result = new TreeMap<>();
+
+        for (var entry : grouped.entrySet()) {
+            YearMonth ym = entry.getKey();
+            List<LocalDate> dates = entry.getValue();
+
+            if (ym.equals(currentMonth)) {
+                // Para el mes actual: detalle por día
+                Map<String, Long> dias = dates.stream()
+                        .collect(Collectors.groupingBy(
+                                d -> d.format(dayFormatter),
+                                TreeMap::new,
+                                Collectors.counting()
+                        ));
+                result.put(ym.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")), dias);
+            } else {
+                // Para meses anteriores: solo total
+                result.put(ym.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")),
+                        (long) dates.size());
+            }
+        }
+
+        return result;
     }
+
 
     public Short imageExist(String directory, String imageName){
         String nameWithoutExtension = imageName.replaceAll("\\.[^.]+$", "");
