@@ -25,7 +25,7 @@ public class ConsignacionService {
     private final JdbcTemplate jdbcTemplate;
 
     @Transactional
-    public String ejecutarTransferencia(Long empresa , BigDecimal comprobante, Long bodIni, Long bodFin){
+    public String ejecutarTransferencia(Long empresa, BigDecimal comprobante, Long bodIni, Long bodFin) {
 
         return jdbcTemplate.execute((ConnectionCallback<String>) connection -> {
             String sql = """
@@ -36,11 +36,11 @@ public class ConsignacionService {
                                   PN_BOD_FIN   NUMBER;
                     
                                   V_RESULTADO VARCHAR2(250);
-                                  
+                    
                                   PN_TIPODOC  NUMBER := 41;
                                   V_CUENTA   NUMBER := 10031560;
                                   V_CTA_INV  NUMBER := 22;
-                                  
+                    
                                   V_CONCEPTO VARCHAR2(150) := 'EGRESO BODEGA CONSIGNACION';
                                   V_SIGLA    NUMBER;
                                     V_NUMERO   NUMBER;
@@ -123,7 +123,7 @@ public class ConsignacionService {
                                        GROUP BY SUB.PRO_CODIGO, SUB.CUE_CODIGO, SUB.PRO_UNIDAD, SUB.BOD_CODIGO;
                     
                                   BEGIN
-                                  
+                    
                                      PN_EMPRESA  := ?;
                                      PN_COMPROBA := ?;
                                      PN_BOD_INI  := ?;
@@ -183,12 +183,12 @@ public class ConsignacionService {
                                          DBMS_OUTPUT.put_line('Error en producto '||i.producto||' '||i.id);*/
                                       END;
                                     END LOOP;
-                                    
+                    
                                     AST_FAC.ASIENTO_EGRESO_TRANSFERENCIA(PN_EMPRESA,V_CODIGO);
                     
                                     V_RESULTADO := v_codigo||' '||
                                                       ast_gen.numero_comprobante(pn_empresa,v_codigo);
-                                    
+                    
                                     :5 := V_RESULTADO;
                                   EXCEPTION
                                      WHEN OTHERS THEN
@@ -206,7 +206,7 @@ public class ConsignacionService {
 
                 cs.execute();
 
-                return cs.getString(5); // 👈 aquí lo capturas
+                return cs.getString(5); //
 
             }
         });
