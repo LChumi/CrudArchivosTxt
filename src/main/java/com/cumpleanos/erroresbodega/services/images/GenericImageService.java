@@ -57,39 +57,48 @@ public class GenericImageService {
 
         ZoneId zone = ZoneId.systemDefault();
         DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("EEEE d MMMM", new Locale("es", "ES"));
-
         YearMonth currentMonth = YearMonth.now();
 
-        // Agrupar por mes
+        // Agrupar por YearMonth y ordenar
         Map<YearMonth, List<LocalDate>> grouped = Arrays.stream(files)
                 .map(f -> Instant.ofEpochMilli(f.lastModified()).atZone(zone).toLocalDate())
-                .collect(Collectors.groupingBy(YearMonth::from));
+                .collect(Collectors.groupingBy(YearMonth::from, TreeMap::new, Collectors.toList()));
 
-        Map<String, Object> result = new TreeMap<>();
+        Map<String, Object> result = new LinkedHashMap<>();
 
         for (var entry : grouped.entrySet()) {
             YearMonth ym = entry.getKey();
             List<LocalDate> dates = entry.getValue();
 
+            String mesConAnio = ym.getMonth()
+                    .getDisplayName(TextStyle.FULL, new Locale("es", "ES"))
+                    + " " + ym.getYear();
+
             if (ym.equals(currentMonth)) {
-                // Para el mes actual: detalle por día
+                // Para el mes actual: detalle por día ordenado cronológicamente
                 Map<String, Long> dias = dates.stream()
                         .collect(Collectors.groupingBy(
-                                d -> d.format(dayFormatter),
-                                TreeMap::new,
+                                d -> d, // agrupar por LocalDate
+                                TreeMap::new, // orden cronológico
                                 Collectors.counting()
+                        ))
+                        .entrySet().stream()
+                        .collect(Collectors.toMap(
+                                e -> e.getKey().format(dayFormatter), // formatear al texto
+                                Map.Entry::getValue,
+                                (a, b) -> a,
+                                LinkedHashMap::new // mantener el orden
                         ));
-                result.put(ym.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")), dias);
+
+                result.put(mesConAnio, dias);
             } else {
                 // Para meses anteriores: solo total
-                result.put(ym.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")),
-                        (long) dates.size());
+                result.put(mesConAnio, (long) dates.size());
             }
         }
 
         return result;
     }
-
 
     public Short imageExist(String directory, String imageName){
         String nameWithoutExtension = imageName.replaceAll("\\.[^.]+$", "");
