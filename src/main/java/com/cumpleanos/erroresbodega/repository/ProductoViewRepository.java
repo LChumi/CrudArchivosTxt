@@ -45,14 +45,6 @@ public interface ProductoViewRepository extends JpaRepository<ProductoView, Stri
                         PN_FECHA_INI => TRUNC(SYSDATE, 'MM'),
                         PN_FECHA_FIN => TRUNC(SYSDATE),
                         PN_TIPO_ING  => 'c',
-                        PN_TIPO_SAL  => 'c',
-                        PN_PRODUCTO  => V.PRO_CODIGO)) AS totCom,
-            
-                   MAX(PRG_USR.KP_PRODUCTO.TOT_COMPRAS_EMPRESAS(
-                        PN_EMPRESA   => V.PRO_EMPRESA,
-                        PN_FECHA_INI => TRUNC(SYSDATE, 'MM'),
-                        PN_FECHA_FIN => TRUNC(SYSDATE),
-                        PN_TIPO_ING  => 'c',
                         PN_TIPO_SAL  => 'm',
                         PN_PRODUCTO  => V.PRO_CODIGO)) AS ultCantCom,
             

@@ -11,7 +11,6 @@ package com.cumpleanos.erroresbodega.models.dto;
 public record ConfiteriaRepor(
         String ultVenta,
         String ultComp,
-        Long totCom,
         Long ultCantCom,
         Double costoCom,
         Double cantVenta,
