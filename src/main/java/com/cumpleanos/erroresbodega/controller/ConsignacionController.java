@@ -8,11 +8,13 @@
 
 package com.cumpleanos.erroresbodega.controller;
 
+import com.cumpleanos.erroresbodega.models.dto.ConsignacionResponse;
 import com.cumpleanos.erroresbodega.models.dto.TransferenciaRequest;
 import com.cumpleanos.erroresbodega.services.ConsignacionService;
 import groovy.util.logging.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,14 +28,20 @@ public class ConsignacionController {
     private final ConsignacionService consignacionService;
 
     @PostMapping("/generar")
-    public ResponseEntity<String> ejecutarTransferencia(@RequestBody TransferenciaRequest r) {
-
+    public ResponseEntity<ConsignacionResponse> ejecutarTransferencia(@RequestBody TransferenciaRequest r) {
         String resultado = consignacionService.ejecutarTransferencia(
                 r.empresa(),
                 r.comprobante(),
                 r.bodIni(),
                 r.bodFin()
         );
-        return ResponseEntity.ok(resultado);
+
+        if (resultado != null && !resultado.isEmpty()) {
+            return ResponseEntity.ok(new ConsignacionResponse(resultado, true));
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(new ConsignacionResponse("No se pudo generar la transferencia", false));
+        }
     }
 }
