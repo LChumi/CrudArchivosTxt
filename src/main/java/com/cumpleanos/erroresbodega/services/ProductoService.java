@@ -22,7 +22,7 @@ public interface ProductoService {
 
     String getMatches(Long bodega, String data, String item);
 
-    String existInEmpresas(Long empresa, String barra , String item);
+    String existInEmpresas(Long empresa, String barra, String item);
 
     List<ConfiteriaRepor> obtenerReporte(String nombre);
 }

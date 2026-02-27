@@ -29,34 +29,34 @@ import static com.cumpleanos.erroresbodega.models.specification.ProductoViewSpec
 
 @Service
 @RequiredArgsConstructor
-public class ProductoServiceImpl implements ProductoService{
+public class ProductoServiceImpl implements ProductoService {
 
     private final ProductoViewRepository productoViewRepository;
     private final ProductoRepository productoRepository;
 
     @Override
     public ProductoView getByProIdOrProId1(String data) {
-        Long bodegaDefecto= 10000580L;
-        List<ProductoView> productoViews = productoViewRepository.getByProIdOrPro_id1(bodegaDefecto,data);
-        return productoViews.isEmpty() ? null: productoViews.get(0);
+        Long bodegaDefecto = 10000580L;
+        List<ProductoView> productoViews = productoViewRepository.getByProIdOrPro_id1(bodegaDefecto, data);
+        return productoViews.isEmpty() ? null : productoViews.get(0);
     }
 
     @Override
     public ProductoView porBarraOItem(Long bodega, String data) {
-        List<ProductoView> producto= productoViewRepository.findByProIdAndBodCodigo(bodega, data);
+        List<ProductoView> producto = productoViewRepository.findByProIdAndBodCodigo(bodega, data);
         return producto.isEmpty() ? null : producto.get(0);
     }
 
     @Override
     public ProductoView porBarraEItem(Long bodega, String data, String item) {
-        List<ProductoView> producto= productoViewRepository.findByProIdAndProId1AndBodCodigo(data, item, bodega);
+        List<ProductoView> producto = productoViewRepository.findByProIdAndProId1AndBodCodigo(data, item, bodega);
         return producto.isEmpty() ? null : producto.get(0);
     }
 
     @Override
     public String getMatches(Long bodega, String data, String item) {
         String novedad = "";
-        List<ProductoView> coincidencias= productoViewRepository.findAll(
+        List<ProductoView> coincidencias = productoViewRepository.findAll(
                 matchByBodegaAndProIdOrProId1(bodega, data, item)
         );
 
@@ -93,12 +93,12 @@ public class ProductoServiceImpl implements ProductoService{
     }
 
 
-    private String normalizarItems(String item){
+    private String normalizarItems(String item) {
         return item.replaceFirst("^(EP|IC)", "");
     }
 
     @Override
-    public String existInEmpresas(Long empresa, String barra , String item) {
+    public String existInEmpresas(Long empresa, String barra, String item) {
 
         if (empresa == null || barra == null || item == null) {
             throw new IllegalArgumentException("Empresa, barra y item no pueden ser nulos");

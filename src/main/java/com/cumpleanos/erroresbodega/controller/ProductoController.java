@@ -26,108 +26,108 @@ import java.util.List;
 @RequestMapping("/producto")
 @CrossOrigin("*")
 @Slf4j
-public class ProductoController{
+public class ProductoController {
 
     private final ProductoService productoService;
     private final FunctionOracleService functionService;
 
     @Autowired
-    public ProductoController(ProductoService productoService, FunctionOracleService service){
+    public ProductoController(ProductoService productoService, FunctionOracleService service) {
         this.productoService = productoService;
         this.functionService = service;
     }
 
     @GetMapping("/BuscarProducto")
-    public ResponseEntity<ProductoView> bucarProducto(@RequestParam String data){
+    public ResponseEntity<ProductoView> bucarProducto(@RequestParam String data) {
 
-        try{
+        try {
             ProductoView productoView = productoService.getByProIdOrProId1(data);
-            if (productoView ==null){
+            if (productoView == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(productoView,HttpStatus.OK);
-        }catch (Exception e){
-            log.error(e.getMessage(),"\n Ocurrio un error en el servicio");
+            return new ResponseEntity<>(productoView, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error(e.getMessage(), "\n Ocurrio un error en el servicio");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/BuscarProducto/{bodega}")
-    public ResponseEntity<ProductoView> buscarProdBod(@PathVariable long bodega,@RequestParam String data){
-        try{
-            ProductoView producto = productoService.porBarraOItem(bodega , data );
+    public ResponseEntity<ProductoView> buscarProdBod(@PathVariable long bodega, @RequestParam String data) {
+        try {
+            ProductoView producto = productoService.porBarraOItem(bodega, data);
 
-            if (producto ==null){
+            if (producto == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(producto,HttpStatus.OK);
-        }catch (Exception e){
+            return new ResponseEntity<>(producto, HttpStatus.OK);
+        } catch (Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/BuscarProductoItem/{bodega}")
-    public ResponseEntity<ProductoView> buscarProdIdAndId1(@PathVariable long bodega,@RequestParam String data,@RequestParam String item){
-        try{
-            ProductoView producto = productoService.porBarraEItem(bodega , data ,item );
+    public ResponseEntity<ProductoView> buscarProdIdAndId1(@PathVariable long bodega, @RequestParam String data, @RequestParam String item) {
+        try {
+            ProductoView producto = productoService.porBarraEItem(bodega, data, item);
 
-            if (producto ==null){
+            if (producto == null) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(producto,HttpStatus.OK);
-        }catch (Exception e){
+            return new ResponseEntity<>(producto, HttpStatus.OK);
+        } catch (Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/verCosto/")
-    public double verCosto(@RequestBody ProductoView v){
-        try{
+    public double verCosto(@RequestBody ProductoView v) {
+        try {
             return functionService.obtenerCostoTotalComprasEmpresas(v.getProEmpresa(), v.getProCodigo());
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return 0;
         }
     }
 
     @GetMapping("/get/matches/{bodega}")
-    public ResponseEntity<String> getMatches(@PathVariable long bodega,@RequestParam String data, @RequestParam String item){
-        try{
-            String novedad = productoService.getMatches(bodega , data , item);
+    public ResponseEntity<String> getMatches(@PathVariable long bodega, @RequestParam String data, @RequestParam String item) {
+        try {
+            String novedad = productoService.getMatches(bodega, data, item);
 
-            if (novedad ==null || novedad.isEmpty()){
+            if (novedad == null || novedad.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return ResponseEntity.ok(novedad);
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/exist/empresa/{empresa}")
-    public ResponseEntity<String> existIntoCompany(@PathVariable Long empresa,@RequestParam String barra, @RequestParam String item){
-        try{
+    public ResponseEntity<String> existIntoCompany(@PathVariable Long empresa, @RequestParam String barra, @RequestParam String item) {
+        try {
             String novedad = productoService.existInEmpresas(empresa, barra, item);
 
-            if (novedad ==null || novedad.isEmpty()){
+            if (novedad == null || novedad.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return ResponseEntity.ok(novedad);
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/confiteria/{nombre}")
-    public ResponseEntity<List<ConfiteriaRepor>> getConfiteria(@PathVariable String nombre){
+    public ResponseEntity<List<ConfiteriaRepor>> getConfiteria(@PathVariable String nombre) {
         try {
             List<ConfiteriaRepor> lista = productoService.obtenerReporte(nombre);
             return ResponseEntity.ok(lista);
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
