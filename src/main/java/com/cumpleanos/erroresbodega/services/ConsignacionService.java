@@ -38,8 +38,8 @@ public class ConsignacionService {
                                   V_RESULTADO VARCHAR2(250);
                     
                                   PN_TIPODOC  NUMBER := 41;
-                                  V_CUENTA   NUMBER := 10031560;
-                                  V_CTA_INV  NUMBER := 22;
+                                  V_CUENTA   NUMBER;
+                                  V_CTA_INV  NUMBER;
                     
                                   V_CONCEPTO VARCHAR2(150) := 'EGRESO BODEGA CONSIGNACION';
                                   V_SIGLA    NUMBER;
@@ -128,6 +128,17 @@ public class ConsignacionService {
                                      PN_COMPROBA := ?;
                                      PN_BOD_INI  := ?;
                                      PN_BOD_FIN  := ?;
+                                    
+                                    -- CONFIGURACION POR EMPRESA
+                                    IF PN_EMPRESA = 2 THEN
+                                         V_CUENTA  := 10031560;
+                                         V_CTA_INV := 22;
+                                      ELSIF PN_EMPRESA = 3 THEN
+                                         V_CUENTA  := 10031465;
+                                         V_CTA_INV := 34;
+                                      ELSE
+                                         RAISE_APPLICATION_ERROR(-20001, 'Empresa no configurada');
+                                      END IF;
                     
                                     -- INSERTA CABECERA
                                     OPEN C_TIPODOC;
