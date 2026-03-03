@@ -151,15 +151,14 @@ public class ProductoServiceImpl implements ProductoService {
                         r[1] != null ? r[1].toString() : null,
                         r[2] != null ? ((Number) r[2]).longValue() : 0L,
                         r[3] != null ? ((Number) r[3]).doubleValue() : 0.0,
-                        r[4] != null ? ((Number) r[4]).doubleValue() : 0.0,
-                        r[5] != null ? ((Number) r[5]).longValue() : 0L,
+                        r[4] != null ? ((Number) r[4]).longValue() : 0L,
+                        (String) r[5],
                         (String) r[6],
                         (String) r[7],
                         (String) r[8],
-                        (String) r[9],
+                        r[9] != null ? ((Number) r[9]).longValue() : 0L,
                         r[10] != null ? ((Number) r[10]).longValue() : 0L,
-                        r[11] != null ? ((Number) r[11]).longValue() : 0L,
-                        r[11] != null ? ((Number) r[12]).doubleValue() : 0.0
+                        r[11] != null ? ((Number) r[11]).doubleValue() : 0.0
                 ))
                 .toList();
     }

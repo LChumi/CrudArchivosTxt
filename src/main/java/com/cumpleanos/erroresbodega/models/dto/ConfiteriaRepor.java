@@ -12,7 +12,6 @@ public record ConfiteriaRepor(
         String ultVenta,
         String ultComp,
         Long ultCantCom,
-        Double costoCom,
         Double cantVenta,
         Long stockIni,
         String cliNombre,
