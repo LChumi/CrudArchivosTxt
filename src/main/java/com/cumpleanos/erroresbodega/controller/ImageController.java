@@ -74,7 +74,7 @@ public class ImageController {
     @GetMapping("/producto/{imageName}/interiori")
     public ResponseEntity<Resource> getImageProductInteriori(@PathVariable String imageName){
         try {
-            Resource resource = service.getImageFrom(bunnaPath, imageName, "default.jpg");
+            Resource resource = service.getImageFrom(interioriPath, imageName, "default.jpg");
 
             return getResourceResponseEntity(resource);
         } catch (MalformedURLException e) {
