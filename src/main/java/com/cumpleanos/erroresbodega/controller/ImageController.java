@@ -34,6 +34,9 @@ public class ImageController {
     @Value("${file.images.bunna}")
     private String bunnaPath;
 
+    @Value("${file.images.interiori}")
+    private String interioriPath;
+
     @Value("${file.images.logos}")
     private String logosPath;
 
@@ -59,6 +62,17 @@ public class ImageController {
 
     @GetMapping("/producto/{imageName}/bunna")
     public ResponseEntity<Resource> getImageProductBunna(@PathVariable String imageName){
+        try {
+            Resource resource = service.getImageFrom(bunnaPath, imageName, "default.jpg");
+
+            return getResourceResponseEntity(resource);
+        } catch (MalformedURLException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/producto/{imageName}/interiori")
+    public ResponseEntity<Resource> getImageProductInteriori(@PathVariable String imageName){
         try {
             Resource resource = service.getImageFrom(bunnaPath, imageName, "default.jpg");
 
@@ -97,15 +111,35 @@ public class ImageController {
     }
 
     private ResponseEntity<Resource> getResourceResponseEntity(Resource resource) {
-        if (resource == null){
+        if (resource == null) {
             return ResponseEntity.notFound().build();
         }
 
         String contentType = service.getContentType(resource);
+
+        MediaType mediaType = MediaType.APPLICATION_OCTET_STREAM;
+        if (contentType != null) {
+            mediaType = MediaType.parseMediaType(contentType);
+        }
+
+        CacheControl cacheControl;
+
+        if ("default.jpg".equalsIgnoreCase(resource.getFilename())) {
+            // Evita que el navegador guarde la imagen por defecto
+            cacheControl = CacheControl.noStore();
+        } else {
+            // Las imágenes reales sí pueden cachearse
+            cacheControl = CacheControl.maxAge(30, TimeUnit.DAYS)
+                    .cachePublic();
+        }
+
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-                .cacheControl(CacheControl.maxAge(30, TimeUnit.DAYS))
+                .contentType(mediaType)
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "inline; filename=\"" + resource.getFilename() + "\""
+                )
+                .cacheControl(cacheControl)
                 .body(resource);
     }
 }

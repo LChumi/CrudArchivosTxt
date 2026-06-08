@@ -7,7 +7,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<parameter name="P_PRODUCTOS" class="java.util.Collection"/>
 	<parameter name="P_RUTA_IMAGENES" class="java.lang.String">
-		<defaultValueExpression><![CDATA["http://192.168.112.36:7569/images/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["https://apis.cumpleanos.com.ec/assist/images/producto/"]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT
@@ -56,7 +56,7 @@
 		<band height="120" splitType="Stretch">
 			<image scaleImage="FillFrame" onErrorType="Icon">
 				<reportElement x="10" y="10" width="100" height="100" uuid="e8dcc62d-2c17-4f72-bf8d-3f3f47bfba02"/>
-				<imageExpression><![CDATA[$F{PRO_IMAGEN}]]></imageExpression>
+				<imageExpression><![CDATA[new java.net.URL($F{PRO_IMAGEN}).openStream()]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="130" y="20" width="100" height="20" uuid="b6ef91c5-453f-4251-9016-aedfd439287a"/>
