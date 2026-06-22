@@ -25,7 +25,7 @@ public class ProcedureOracleRepository {
     private final EntityManager em;
 
     public ValidarRecepcionResult validarRecepcion(Long empresa, Long creposicion){
-
+        log.info("Validando recepcion de empresa: {} y creposicion: {}", empresa, creposicion);
         try{
             StoredProcedureQuery query = em.createStoredProcedureQuery("PRG_USR.AST_WEB.VALIDAR_RECEPCION");
 
@@ -42,10 +42,10 @@ public class ProcedureOracleRepository {
             // Obtener resultados
             Integer error = (Integer) query.getOutputParameterValue("PN_ERROR");
             String respuesta = (String) query.getOutputParameterValue("PN_RESPUESTA");
+            log.info("Resultado de la validacion: Error: {}, Respuesta: {}", error, respuesta);
             return new ValidarRecepcionResult(error, respuesta);
         } catch (Exception e){
             throw new RuntimeException("Error al ejecutar el procedimiento Validar Recepcion:");
         }
     }
-
 }
