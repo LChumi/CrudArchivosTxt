@@ -8,6 +8,7 @@
 
 package com.cumpleanos.erroresbodega.repository;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,16 +16,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 
-@Repository
 @Slf4j
+@Repository
+@RequiredArgsConstructor
 public class FunctionOracleRespository {
 
     private final JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    public FunctionOracleRespository(JdbcTemplate jdbcTemplate){
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
 
     public double obtenerCostoTotalComprasEmpresas(Long empresa,

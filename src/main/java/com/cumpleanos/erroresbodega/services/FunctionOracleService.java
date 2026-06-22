@@ -8,27 +8,30 @@
 
 package com.cumpleanos.erroresbodega.services;
 
+import com.cumpleanos.erroresbodega.models.dto.ValidarRecepcionResult;
 import com.cumpleanos.erroresbodega.repository.FunctionOracleRespository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cumpleanos.erroresbodega.repository.ProcedureOracleRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
 @Service
+@RequiredArgsConstructor
 public class FunctionOracleService {
 
     private final FunctionOracleRespository respository;
+    private final ProcedureOracleRepository procedureRepository;
     private static final Date FECHA_INICIAL = java.sql.Date.valueOf("2016-09-01");
-
-    @Autowired
-    public FunctionOracleService(FunctionOracleRespository respository){
-        this.respository= respository;
-    }
 
     public double obtenerCostoTotalComprasEmpresas(Long empresa, Long producto) {
         String tipoIng = "c";
         String tipoSal = "u";
         Date fechaFin = new Date();
         return respository.obtenerCostoTotalComprasEmpresas(empresa,FECHA_INICIAL, fechaFin, tipoIng, tipoSal, producto);
+    }
+
+    public ValidarRecepcionResult validarRecepcion(Long empresa, Long creposicion){
+        return procedureRepository.validarRecepcion(empresa,creposicion);
     }
 }
