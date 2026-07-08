@@ -110,7 +110,8 @@ public interface ProductoViewRepository extends JpaRepository<ProductoView, Stri
                        CL.CLI_NOMBRE
             
             ) Q
-              WHERE Q.ultComp >= TRUNC(ADD_MONTHS(SYSDATE, -12), 'YYYY')
+              --WHERE Q.ultComp >= TRUNC(ADD_MONTHS(SYSDATE, -12), 'YYYY')
+              WHERE Q.ultComp >= ADD_MONTHS(SYSDATE, -3)
               AND Q.ultComp IS NOT NULL
             """, nativeQuery = true)
     List<Object[]> obtenerReporte(@Param("nombre") String nombre);
