@@ -27,19 +27,19 @@ public class BodegaController {
     @Autowired
     private BodegaService bodegaService;
 
-    private final static Logger console= LoggerFactory.getLogger(BodegaController.class);
+    private final static Logger console = LoggerFactory.getLogger(BodegaController.class);
 
     @GetMapping("/listaBodegas/{usuario}/{empresa}")
     public ResponseEntity<List<Bodega>> listar(@PathVariable Long usuario,
-                                               @PathVariable Long empresa){
+                                               @PathVariable Long empresa) {
         try {
             List<Bodega> bodegas = bodegaService.listarBodegas(usuario, empresa);
 
-            if(bodegas.isEmpty()){
+            if (bodegas.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(bodegas,HttpStatus.OK);
-        }catch (Exception e){
+            return new ResponseEntity<>(bodegas, HttpStatus.OK);
+        } catch (Exception e) {
             console.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

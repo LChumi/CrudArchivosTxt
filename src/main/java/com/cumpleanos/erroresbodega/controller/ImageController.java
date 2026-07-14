@@ -44,7 +44,7 @@ public class ImageController {
     private String empleadosPath;
 
     @GetMapping("/producto/{imageName}")
-    public ResponseEntity<Resource> getImageProduct(@PathVariable String imageName){
+    public ResponseEntity<Resource> getImageProduct(@PathVariable String imageName) {
         try {
             Resource resource = service.getImageFrom(productsPath, imageName, "default.jpg");
 
@@ -55,13 +55,13 @@ public class ImageController {
     }
 
     @GetMapping(value = "/fotos/mes", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String, Object>> getPhotosData(){
-        Map<String, Object> info =service.getPhotosByMonth(productsPath);
+    public ResponseEntity<Map<String, Object>> getPhotosData() {
+        Map<String, Object> info = service.getPhotosByMonth(productsPath);
         return ResponseEntity.status(HttpStatus.OK).body(info);
     }
 
     @GetMapping("/producto/{imageName}/bunna")
-    public ResponseEntity<Resource> getImageProductBunna(@PathVariable String imageName){
+    public ResponseEntity<Resource> getImageProductBunna(@PathVariable String imageName) {
         try {
             Resource resource = service.getImageFrom(bunnaPath, imageName, "default.jpg");
 
@@ -72,7 +72,7 @@ public class ImageController {
     }
 
     @GetMapping("/producto/{imageName}/interiori")
-    public ResponseEntity<Resource> getImageProductInteriori(@PathVariable String imageName){
+    public ResponseEntity<Resource> getImageProductInteriori(@PathVariable String imageName) {
         try {
             Resource resource = service.getImageFrom(interioriPath, imageName, "default.jpg");
 
@@ -83,13 +83,13 @@ public class ImageController {
     }
 
     @GetMapping("/producto/exist/{imageName}")
-    public ResponseEntity<Short> getImageProductExist(@PathVariable String imageName){
-            short exist = service.imageExist(productsPath, imageName);
-            return ResponseEntity.ok().body(exist);
+    public ResponseEntity<Short> getImageProductExist(@PathVariable String imageName) {
+        short exist = service.imageExist(productsPath, imageName);
+        return ResponseEntity.ok().body(exist);
     }
 
     @GetMapping("/usuario/{usrid}")
-    public ResponseEntity<Resource> getImageUser(@PathVariable String usrid){
+    public ResponseEntity<Resource> getImageUser(@PathVariable String usrid) {
         try {
             Resource resource = service.getImageFrom(empleadosPath, usrid, "IMPC.jpg");
 
@@ -100,12 +100,12 @@ public class ImageController {
     }
 
     @GetMapping("/logo/{empresaId}")
-    public ResponseEntity<Resource> getImageLogo(@PathVariable String empresaId ){
+    public ResponseEntity<Resource> getImageLogo(@PathVariable String empresaId) {
         try {
             Resource resource = service.getImageFrom(logosPath, empresaId, "assist.jpg");
 
             return getResourceResponseEntity(resource);
-        }catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

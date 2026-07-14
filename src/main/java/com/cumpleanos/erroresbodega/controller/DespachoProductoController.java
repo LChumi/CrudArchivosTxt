@@ -30,23 +30,23 @@ public class DespachoProductoController {
     private DespachoProductoService productoService;
 
     @GetMapping("listar/{cco}")
-    public ResponseEntity<List<DespachoProducto>> listar(@PathVariable BigInteger cco){
+    public ResponseEntity<List<DespachoProducto>> listar(@PathVariable BigInteger cco) {
         try {
             List<DespachoProducto> productos = productoService.listarProductos(cco);
             return ResponseEntity.ok(productos);
-        }catch (Exception e){
-            log.error("ERROR en el servicio productos desapcho: {}",e.getMessage(),e);
+        } catch (Exception e) {
+            log.error("ERROR en el servicio productos desapcho: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     @GetMapping("producto/{cco}")
-    public ResponseEntity<DespachoProducto> burcarProducto(@PathVariable BigInteger cco, @RequestParam String data){
+    public ResponseEntity<DespachoProducto> burcarProducto(@PathVariable BigInteger cco, @RequestParam String data) {
         try {
             DespachoProducto producto = productoService.producto(cco, data);
             return ResponseEntity.ok(producto);
-        }catch (Exception e){
-            log.error("Error al buscar el producto: {} ", e.getMessage(),e);
+        } catch (Exception e) {
+            log.error("Error al buscar el producto: {} ", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

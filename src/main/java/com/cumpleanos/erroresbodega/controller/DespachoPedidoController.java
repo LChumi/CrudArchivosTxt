@@ -29,12 +29,12 @@ public class DespachoPedidoController {
     private DespachoPedidosService pedidosService;
 
     @GetMapping("listar/{pedido_interno}")
-    public ResponseEntity<List<DespachoPedido>> listarPedidos(@PathVariable Long pedido_interno){
+    public ResponseEntity<List<DespachoPedido>> listarPedidos(@PathVariable Long pedido_interno) {
         try {
             List<DespachoPedido> pedidos = pedidosService.listarPedidos(pedido_interno);
             return ResponseEntity.ok(pedidos);
-        }catch (Exception e){
-            log.error("ERROR en servicio pedidos: {}",e.getMessage(), e);
+        } catch (Exception e) {
+            log.error("ERROR en servicio pedidos: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

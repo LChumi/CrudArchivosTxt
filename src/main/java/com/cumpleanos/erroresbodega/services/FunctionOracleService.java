@@ -28,10 +28,10 @@ public class FunctionOracleService {
         String tipoIng = "c";
         String tipoSal = "u";
         Date fechaFin = new Date();
-        return respository.obtenerCostoTotalComprasEmpresas(empresa,FECHA_INICIAL, fechaFin, tipoIng, tipoSal, producto);
+        return respository.obtenerCostoTotalComprasEmpresas(empresa, FECHA_INICIAL, fechaFin, tipoIng, tipoSal, producto);
     }
 
-    public ValidarRecepcionResult validarRecepcion(Long empresa, Long creposicion){
-        return procedureRepository.validarRecepcion(empresa,creposicion);
+    public ValidarRecepcionResult validarRecepcion(Long empresa, Long creposicion) {
+        return procedureRepository.validarRecepcion(empresa, creposicion);
     }
 }

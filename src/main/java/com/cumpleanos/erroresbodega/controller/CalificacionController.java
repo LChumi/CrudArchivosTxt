@@ -29,7 +29,7 @@ public class CalificacionController {
     private final CalificacionService calificacionService;
 
     @PostMapping("/guardar")
-    public ResponseEntity<Calificacion> guardar(@RequestBody Calificacion calificacion){
+    public ResponseEntity<Calificacion> guardar(@RequestBody Calificacion calificacion) {
         try {
             Calificacion c = calificacionService.guardarCalificacion(calificacion);
             return ResponseEntity.ok(c);
@@ -39,7 +39,7 @@ public class CalificacionController {
     }
 
     @GetMapping("/listar")
-    public ResponseEntity<List<Calificacion>> listar(){
+    public ResponseEntity<List<Calificacion>> listar() {
         try {
             List<Calificacion> calificaciones = calificacionService.listarCalificaciones();
             return ResponseEntity.ok(calificaciones);

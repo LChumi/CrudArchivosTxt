@@ -36,7 +36,7 @@ public class ObservacionController {
      * Crud para la bodega de Zhucay
      */
     @PostMapping("/guardar/zhucay")
-    public ResponseEntity<Observacion> guardar(@RequestBody Observacion observacion){
+    public ResponseEntity<Observacion> guardar(@RequestBody Observacion observacion) {
         try {
             Observacion observacion1 = observacionService.guardarObservacionZhucay(observacion);
             return ResponseEntity.ok(observacion1);
@@ -44,6 +44,7 @@ public class ObservacionController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/listarZhucay")
     public ResponseEntity<List<Observacion>> Listar() {
         try {
@@ -53,14 +54,16 @@ public class ObservacionController {
             throw new RuntimeException(e);
         }
     }
+
     @PutMapping("/agregarCorrecionZhucay/")
-    public Observacion agregarCorrecion(@RequestBody ObservacionCorrecion obj){
-        try{
+    public Observacion agregarCorrecion(@RequestBody ObservacionCorrecion obj) {
+        try {
             return observacionService.editarObservacionZhucay(obj.getObservacion(), obj.getCorreccion());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/excel/zhucay/")
     public ResponseEntity<InputStreamResource> excelZhucay() throws Exception {
         ByteArrayInputStream stream = observacionService.exportarExcelZhucay();
@@ -78,7 +81,7 @@ public class ObservacionController {
      * Crud para la bodega de Narancay
      */
     @PostMapping("/guardar/narancay")
-    public ResponseEntity<Observacion> guardarNarancay(@RequestBody Observacion observacion){
+    public ResponseEntity<Observacion> guardarNarancay(@RequestBody Observacion observacion) {
         try {
             Observacion observacion1 = observacionService.guardarObservacionNarancay(observacion);
             return ResponseEntity.ok(observacion1);
@@ -86,6 +89,7 @@ public class ObservacionController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/listarNarancay")
     public ResponseEntity<List<Observacion>> ListarNarnacay() {
         try {
@@ -95,14 +99,16 @@ public class ObservacionController {
             throw new RuntimeException(e);
         }
     }
+
     @PutMapping("/agregarCorrecionNarancay/")
-    public Observacion agregarCorrecionNarancay(@RequestBody ObservacionCorrecion obj){
-        try{
+    public Observacion agregarCorrecionNarancay(@RequestBody ObservacionCorrecion obj) {
+        try {
             return observacionService.editarObservacionNarancay(obj.getObservacion(), obj.getCorreccion());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/excel/narancay")
     public ResponseEntity<InputStreamResource> excelNarancay() throws Exception {
         ByteArrayInputStream stream = observacionService.exportarExcelNarancay();
@@ -120,7 +126,7 @@ public class ObservacionController {
      * Crud para la bodega Dañados
      */
     @PostMapping("/guardar/bodDañados")
-    public ResponseEntity<Observacion> guardarDañados(@RequestBody Observacion observacion){
+    public ResponseEntity<Observacion> guardarDañados(@RequestBody Observacion observacion) {
         try {
             Observacion observacion1 = observacionService.guardarobservacionBodDanados(observacion);
             return ResponseEntity.ok(observacion1);
@@ -128,6 +134,7 @@ public class ObservacionController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/listarBodDañados")
     public ResponseEntity<List<Observacion>> ListarDañados() {
         try {
@@ -137,14 +144,16 @@ public class ObservacionController {
             throw new RuntimeException(e);
         }
     }
+
     @PutMapping("/agregarCorrecionBodDañados/")
-    public Observacion agregarCorrecionDañados(@RequestBody ObservacionCorrecion obj){
-        try{
+    public Observacion agregarCorrecionDañados(@RequestBody ObservacionCorrecion obj) {
+        try {
             return observacionService.editarObservacionBodDa(obj.getObservacion(), obj.getCorreccion());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/excel/bodDañados/")
     public ResponseEntity<InputStreamResource> exportarBodDañados() throws Exception {
         ByteArrayInputStream stream = observacionService.exportarExcelBodDa();
@@ -162,7 +171,7 @@ public class ObservacionController {
      * Crud para la bodega Gran Colombia P1
      */
     @PostMapping("/guardar/gColombia")
-    public ResponseEntity<Observacion> guardarGColombia(@RequestBody Observacion observacion){
+    public ResponseEntity<Observacion> guardarGColombia(@RequestBody Observacion observacion) {
         try {
             Observacion observacion1 = observacionService.guardarObservacionGColombia(observacion);
             return ResponseEntity.ok(observacion1);
@@ -170,6 +179,7 @@ public class ObservacionController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/listarGColombia")
     public ResponseEntity<List<Observacion>> ListarGColombia() {
         try {
@@ -179,14 +189,16 @@ public class ObservacionController {
             throw new RuntimeException(e);
         }
     }
+
     @PutMapping("/agregarCorrecionGColombia/")
-    public Observacion agregarCorrecionGColombia(@RequestBody ObservacionCorrecion obj){
-        try{
+    public Observacion agregarCorrecionGColombia(@RequestBody ObservacionCorrecion obj) {
+        try {
             return observacionService.editarObservacionGColombia(obj.getObservacion(), obj.getCorreccion());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/excel/gColombia/")
     public ResponseEntity<InputStreamResource> exportarGColombia() throws Exception {
         ByteArrayInputStream stream = observacionService.exportarExcelGColombia();
@@ -204,7 +216,7 @@ public class ObservacionController {
      * Crud para la bodega Gran Colombia P2
      */
     @PostMapping("/guardar/gColombia2")
-    public ResponseEntity<Observacion> guardarGColombia2(@RequestBody Observacion observacion){
+    public ResponseEntity<Observacion> guardarGColombia2(@RequestBody Observacion observacion) {
         try {
             Observacion observacion1 = observacionService.guardarObservacionGColombia2(observacion);
             return ResponseEntity.ok(observacion1);
@@ -212,6 +224,7 @@ public class ObservacionController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/listarGColombia2")
     public ResponseEntity<List<Observacion>> ListarGColombia2() {
         try {
@@ -221,14 +234,16 @@ public class ObservacionController {
             throw new RuntimeException(e);
         }
     }
+
     @PutMapping("/agregarCorrecionGColombia2/")
-    public Observacion agregarCorrecionGColombia2(@RequestBody ObservacionCorrecion obj){
-        try{
+    public Observacion agregarCorrecionGColombia2(@RequestBody ObservacionCorrecion obj) {
+        try {
             return observacionService.editarObservacionGColombia2(obj.getObservacion(), obj.getCorreccion());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/excel/gColombia2/")
     public ResponseEntity<InputStreamResource> exportarGColombia2() throws Exception {
         ByteArrayInputStream stream = observacionService.exportarExcelGColombia2();
@@ -246,7 +261,7 @@ public class ObservacionController {
      * Crud para la bodega Vergel
      */
     @PostMapping("/guardar/vergel")
-    public ResponseEntity<Observacion> guardarVergel(@RequestBody Observacion observacion){
+    public ResponseEntity<Observacion> guardarVergel(@RequestBody Observacion observacion) {
         try {
             Observacion observacion1 = observacionService.guardarObservacionVergel(observacion);
             return ResponseEntity.ok(observacion1);
@@ -254,6 +269,7 @@ public class ObservacionController {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/listarVergel")
     public ResponseEntity<List<Observacion>> ListarVergel() {
         try {
@@ -263,14 +279,16 @@ public class ObservacionController {
             throw new RuntimeException(e);
         }
     }
+
     @PutMapping("/agregarCorrecionVergel/")
-    public Observacion agregarCorrecionVergel(@RequestBody ObservacionCorrecion obj){
-        try{
+    public Observacion agregarCorrecionVergel(@RequestBody ObservacionCorrecion obj) {
+        try {
             return observacionService.editarObservacionVergel(obj.getObservacion(), obj.getCorreccion());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
     @GetMapping("/excel/vergel/")
     public ResponseEntity<InputStreamResource> exportarVergel() throws Exception {
         ByteArrayInputStream stream = observacionService.exportarExcelVergel();

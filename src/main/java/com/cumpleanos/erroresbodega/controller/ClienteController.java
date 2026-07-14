@@ -23,9 +23,10 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping("/buscar/{cedula}")
-    public ResponseEntity<Cliente> buscar(@PathVariable String cedula){System.out.println(cedula);
+    public ResponseEntity<Cliente> buscar(@PathVariable String cedula) {
+        System.out.println(cedula);
 
-            Cliente cliente= clienteService.buscarPorCedula(cedula);
-            return ResponseEntity.ok(cliente);
+        Cliente cliente = clienteService.buscarPorCedula(cedula);
+        return ResponseEntity.ok(cliente);
     }
 }

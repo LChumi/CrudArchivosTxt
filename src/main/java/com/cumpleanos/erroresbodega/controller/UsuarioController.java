@@ -33,37 +33,37 @@ public class UsuarioController {
     private static final Logger console = LoggerFactory.getLogger(UsuarioController.class);
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request){
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
-            String username= request.getUsername();
-            String password= request.getPassword();
+            String username = request.getUsername();
+            String password = request.getPassword();
 
-            Usuario user = usuarioService.login(username,password);
+            Usuario user = usuarioService.login(username, password);
 
-            if (user !=null ){
+            if (user != null) {
                 console.info("Usuario logueado {}", user.getUsr_nombre());
                 return ResponseEntity.ok(user);
-            }else {
+            } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales invalidas");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             console.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error en el servidor");
         }
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<Usuario> porId(@PathVariable String id){
-        try{
+    public ResponseEntity<Usuario> porId(@PathVariable String id) {
+        try {
             Usuario usuario = usuarioService.buscarPorId(id);
 
-            if (usuario !=null ){
-                console.info("Usuario encontrado por Id {}",usuario.getUsr_nombre());
+            if (usuario != null) {
+                console.info("Usuario encontrado por Id {}", usuario.getUsr_nombre());
                 return ResponseEntity.ok(usuario);
-            }else {
+            } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

@@ -26,14 +26,14 @@ public class SriServiceWrapper {
     private final ClientSriV2 clientSriV2;
 
     @TimeLimiter(name = "sriTimeout", fallbackMethod = "fallbackPersona")
-    public CompletableFuture<PersonaSri> getPersona(String ced, String ident){
+    public CompletableFuture<PersonaSri> getPersona(String ced, String ident) {
         return CompletableFuture.supplyAsync(() ->
                 clientSriV2.consultar(ced, ident).getBody()
         );
     }
 
     @TimeLimiter(name = "sriTimeout", fallbackMethod = "fallbackContribuyente")
-    public CompletableFuture<ContribuyenteSri> getContribuyente(String ced){
+    public CompletableFuture<ContribuyenteSri> getContribuyente(String ced) {
         return CompletableFuture.supplyAsync(() ->
                 clientSriV1.consultar(ced).getBody()
         );

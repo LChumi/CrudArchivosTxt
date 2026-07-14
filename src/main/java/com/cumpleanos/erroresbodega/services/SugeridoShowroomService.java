@@ -38,25 +38,25 @@ public class SugeridoShowroomService {
     @Value("${file.storage.path.sugeridos}")
     private String ruta;
 
-    public List<SugeridoShowroom> listar() throws IOException{
+    public List<SugeridoShowroom> listar() throws IOException {
         List<SugeridoShowroom> listaSugeridos = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
-        
-        try(Stream<Path> stream = Files.list(Paths.get(ruta))) {
+
+        try (Stream<Path> stream = Files.list(Paths.get(ruta))) {
             stream.filter(Files::isRegularFile)
                     .filter(path -> path.getFileName().toString().startsWith("sugerido_"))
                     .forEach(path -> {
                         try {
                             List<String> contenidoArchivo = obtenerContenidoSugeridos(path.getFileName().toString());
-                            contenidoArchivo.forEach(linea ->{
+                            contenidoArchivo.forEach(linea -> {
                                 try {
                                     SugeridoShowroom sugerido = objectMapper.readValue(linea, SugeridoShowroom.class);
                                     listaSugeridos.add(sugerido);
-                                }catch (IOException e){
+                                } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }
                             });
-                        }catch (IOException e){
+                        } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
                     });
@@ -64,67 +64,67 @@ public class SugeridoShowroomService {
         Collections.sort(listaSugeridos);
         return listaSugeridos;
     }
-    
+
     public SugeridoShowroom guardarSugerido(SugeridoShowroom sugerido) throws IOException {
-        String fecha= new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+        String fecha = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
         sugerido.setFecha(fecha);
         sugerido.setProductoShowrooms(new ArrayList<>());
         sugerido.generarNuevoId();
-        
-        String nombreArchivo = String.format("sugerido_%s_%s.json",sugerido.getId(),sugerido.getDetalle());
-        Path rutaArchivo = Paths.get(ruta,nombreArchivo);
+
+        String nombreArchivo = String.format("sugerido_%s_%s.json", sugerido.getId(), sugerido.getDetalle());
+        Path rutaArchivo = Paths.get(ruta, nombreArchivo);
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonSugerido = objectMapper.writeValueAsString(sugerido);
 
         List<String> lineas = Collections.singletonList(jsonSugerido);
-        Files.write(rutaArchivo,lineas);
+        Files.write(rutaArchivo, lineas);
         return sugerido;
     }
-    
-    public SugeridoShowroom editarSugerido(Long id, String detalle , ProductoShowroom producto) throws IOException{
-        String nombreArchivo = String.format("sugerido_%s_%s.json",id,detalle);
-        Path rutaArchivo = Paths.get(ruta,nombreArchivo);
-        
+
+    public SugeridoShowroom editarSugerido(Long id, String detalle, ProductoShowroom producto) throws IOException {
+        String nombreArchivo = String.format("sugerido_%s_%s.json", id, detalle);
+        Path rutaArchivo = Paths.get(ruta, nombreArchivo);
+
         ObjectMapper objectMapper = new ObjectMapper();
-        
+
         SugeridoShowroom sugeridoExistente = objectMapper.readValue(Files.newBufferedReader(rutaArchivo), SugeridoShowroom.class);
-        
+
         sugeridoExistente.agregarProducto(producto);
-        
-        objectMapper.writeValue(rutaArchivo.toFile(),sugeridoExistente);
-        
+
+        objectMapper.writeValue(rutaArchivo.toFile(), sugeridoExistente);
+
         return sugeridoExistente;
     }
-    
-    public SugeridoShowroom editarSUgeridoEliminar(Long id, String detalle, ProductoShowroom producto) throws IOException{
-        String nombreArchivo = String.format("sugerido_%s_%s.json",id,detalle);
-        Path rutaArchivo = Paths.get(ruta,nombreArchivo);
+
+    public SugeridoShowroom editarSUgeridoEliminar(Long id, String detalle, ProductoShowroom producto) throws IOException {
+        String nombreArchivo = String.format("sugerido_%s_%s.json", id, detalle);
+        Path rutaArchivo = Paths.get(ruta, nombreArchivo);
 
         ObjectMapper objectMapper = new ObjectMapper();
         SugeridoShowroom sugeridoExistente = objectMapper.readValue(Files.newBufferedReader(rutaArchivo), SugeridoShowroom.class);
 
         sugeridoExistente.eliminarProducto(producto);
 
-        objectMapper.writeValue(rutaArchivo.toFile(),sugeridoExistente);
+        objectMapper.writeValue(rutaArchivo.toFile(), sugeridoExistente);
 
         return sugeridoExistente;
     }
-    
-    public SugeridoShowroom getSugerido(Long id,String detalle) throws IOException{
-        String nombreArchivo = String.format("sugerido_%s_%s.json",id ,detalle);
-        Path rutaArchivo = Paths.get(ruta,nombreArchivo);
+
+    public SugeridoShowroom getSugerido(Long id, String detalle) throws IOException {
+        String nombreArchivo = String.format("sugerido_%s_%s.json", id, detalle);
+        Path rutaArchivo = Paths.get(ruta, nombreArchivo);
         ObjectMapper objectMapper = new ObjectMapper();
-        
+
         return objectMapper.readValue(Files.newBufferedReader(rutaArchivo), SugeridoShowroom.class);
     }
-    
-    private List<String> obtenerContenidoSugeridos(String nombreArchivo) throws IOException{
-        Path rutaArchivo = Paths.get(ruta,nombreArchivo);
+
+    private List<String> obtenerContenidoSugeridos(String nombreArchivo) throws IOException {
+        Path rutaArchivo = Paths.get(ruta, nombreArchivo);
         return Files.readAllLines(rutaArchivo);
     }
 
-    public ByteArrayInputStream exportarExcel(SugeridoShowroom sugerido) throws  IOException{
+    public ByteArrayInputStream exportarExcel(SugeridoShowroom sugerido) throws IOException {
         Workbook workbook = new XSSFWorkbook();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 

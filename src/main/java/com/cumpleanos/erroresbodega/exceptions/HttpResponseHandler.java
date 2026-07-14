@@ -17,10 +17,10 @@ import java.util.function.Supplier;
 @Slf4j
 public class HttpResponseHandler {
 
-    public static <T> T handle(Supplier<ResponseEntity<T>> supplier, String errorMessage){
-        try{
+    public static <T> T handle(Supplier<ResponseEntity<T>> supplier, String errorMessage) {
+        try {
             return supplier.get().getBody();
-        }catch (FeignException e) {
+        } catch (FeignException e) {
             if (e.status() == 503) {
                 log.error("Error: Servicio del SRI no disponible (503).");
                 return null;
@@ -33,8 +33,7 @@ public class HttpResponseHandler {
             }
             log.error("Error Feign: {}", e.getMessage());
             return null;
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             log.error(errorMessage, e);
             return null;
         }

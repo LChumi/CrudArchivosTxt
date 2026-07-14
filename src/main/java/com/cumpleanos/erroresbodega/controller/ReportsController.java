@@ -27,7 +27,7 @@ public class ReportsController {
     @GetMapping("/report/pdf")
     public void getReport(@RequestParam String codigo, HttpServletResponse response) throws Exception {
         try {
-            byte[] pdfBytes = reportsService.getReport(codigo,"pdf");
+            byte[] pdfBytes = reportsService.getReport(codigo, "pdf");
 
             response.setContentType("application/pdf");
             response.setContentLength(pdfBytes.length);
@@ -41,7 +41,7 @@ public class ReportsController {
     @PostMapping("/products-images/excel")
     public void getReportImages(@RequestBody Items items, HttpServletResponse response) throws Exception {
         try {
-            byte[] excelBytes = reportsService.getReportByImages(items,"excel");
+            byte[] excelBytes = reportsService.getReportByImages(items, "excel");
 
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setHeader("Content-Disposition", "attachment; filename=report.xlsx");
@@ -71,7 +71,7 @@ public class ReportsController {
     @GetMapping("/report/pedido/pdf")
     public void getReportCli(@RequestParam String pedido, HttpServletResponse response) throws Exception {
         try {
-            byte[] pdfBytes = reportsService.getReportClientePedido(pedido,"pdf");
+            byte[] pdfBytes = reportsService.getReportClientePedido(pedido, "pdf");
 
             response.setContentType("application/pdf");
             response.setContentLength(pdfBytes.length);

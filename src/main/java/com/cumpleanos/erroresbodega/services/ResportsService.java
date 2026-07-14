@@ -38,7 +38,7 @@ public class ResportsService {
     public byte[] getReport(String cco, String format) throws Exception {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("P_CODIGO", cco);
-        return generateReport("reports/pedidos.jrxml",parameters, format);
+        return generateReport("reports/pedidos.jrxml", parameters, format);
     }
 
     public byte[] getReportByImages(Items items, String format) throws Exception {
@@ -51,12 +51,12 @@ public class ResportsService {
     public byte[] getReportClientePedido(String pedido, String format) throws Exception {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("P_CPEDIDO", pedido);
-        return generateReport("reports/pedidosCli.jrxml",parameters,format);
+        return generateReport("reports/pedidosCli.jrxml", parameters, format);
     }
 
-    private byte[] generateReport(String reportPath,Map<String, Object> parameters, String format) throws Exception {
+    private byte[] generateReport(String reportPath, Map<String, Object> parameters, String format) throws Exception {
         try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream(reportPath);
-        Connection connection = dataSource.getConnection()) {
+             Connection connection = dataSource.getConnection()) {
 
             if (inputStream == null) {
                 throw new FileNotFoundException("No se encontro el classpath: " + reportPath);
@@ -65,13 +65,13 @@ public class ResportsService {
             JasperReport report = JasperCompileManager.compileReport(inputStream);
             JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, connection);
 
-            if (jasperPrint.getPages().isEmpty()){
+            if (jasperPrint.getPages().isEmpty()) {
                 System.out.println("El reporte esta vacio");
             } else {
                 System.out.println("El reporte contiene " + jasperPrint.getPages().size() + " pagina(s)");
             }
 
-            switch (format.toLowerCase()){
+            switch (format.toLowerCase()) {
                 case "pdf":
                     return JasperExportManager.exportReportToPdf(jasperPrint);
                 case "excel":
@@ -80,15 +80,15 @@ public class ResportsService {
                     throw new IllegalArgumentException("Formato no soportado" + format);
 
             }
-        } catch (JRException e){
-            throw new JRRuntimeException("Error al generar el reporte "+e.getMessage(), e);
-        } catch (SQLException e){
-            throw new Exception("Error en la conexion a la base de datos "+e.getMessage(), e);
+        } catch (JRException e) {
+            throw new JRRuntimeException("Error al generar el reporte " + e.getMessage(), e);
+        } catch (SQLException e) {
+            throw new Exception("Error en la conexion a la base de datos " + e.getMessage(), e);
         }
     }
 
     private byte[] exportToExcel(JasperPrint jasperPrint) throws JRException {
-        try(ByteArrayOutputStream outputStream = new ByteArrayOutputStream()){
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             JRXlsxExporter exporter = new JRXlsxExporter();
             exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
             exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputStream));

@@ -23,7 +23,7 @@ public class OracleFunctionController {
     private final FunctionOracleService functionService;
 
     @GetMapping("/validar/recepcion/{empresa}/{creposicion}")
-    public ResponseEntity<ValidarRecepcionResult> validarRecepcion(@PathVariable  Long empresa, @PathVariable Long creposicion){
+    public ResponseEntity<ValidarRecepcionResult> validarRecepcion(@PathVariable Long empresa, @PathVariable Long creposicion) {
         ValidarRecepcionResult result = functionService.validarRecepcion(empresa, creposicion);
         return ResponseEntity.ok(result);
     }
